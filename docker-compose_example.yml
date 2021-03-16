@@ -10,4 +10,4 @@ services:
         restart_policy:
             condition: any
             max_attempts: 10
-            delay: 60
+            delay: 60s
