@@ -6,7 +6,7 @@ COPY tiingobot/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY tiingobot/src/ .
+COPY src/ .
 
 # command to run on container start
 CMD [ "python", "./tiingobot.py" ]
