@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  tiingobeat:
+    image: ghcr.io/remotephone/tiingobot:latest
+    environment:
+      DISCORD_TOKEN: "xxxxxx"
+      TIINGO_TOKEN: "xxxxx"
+    deploy:
+        restart_policy:
+            condition: any
+            max_attempts: 10
+            delay: 60
