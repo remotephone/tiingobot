@@ -27,7 +27,7 @@ async def on_command_error(error, ctx):
 
 @bot.command(name='stonkshelp', help='return help')
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def stonks(ctx, stock: str):
+async def stonks(ctx):
     helpmsg = "Gimme a stonk ticker, I only accept 4 character symbols. Cooldown enforced, no funny business."
     await ctx.send(helpmsg)
 
