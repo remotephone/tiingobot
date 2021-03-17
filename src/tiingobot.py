@@ -11,8 +11,6 @@ logging.basicConfig(filename='tiingo.log', filemode='w', format='%(name)s - %(le
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-client = discord.Client()
-
 bot = discord.ext.commands.Bot(command_prefix = "!")
 
 @bot.event
@@ -43,5 +41,4 @@ async def stonks(ctx, stock: str):
         ticker_response += k + ": " + str(v) + "\n"
     await ctx.send(ticker_response)
 
-print("ok")
 bot.run(TOKEN)
