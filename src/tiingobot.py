@@ -21,12 +21,11 @@ async def on_ready():
 @bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
-        await bot.send_message(ctx.message.channel, content='This command is on a %.2fs cooldown' % error.retry_after)
+        await bot.send_message(ctx.message.channel, content=f"This command is on a {error.retry_after} cooldown" )
     logging.info(error)  # re-raise the error so all the errors will still show up in console
 
 
 @bot.command(name='stonkshelp', help='return help')
-@commands.cooldown(1, 10, commands.BucketType.user)
 async def stonks(ctx):
     helpmsg = "Gimme a stonk ticker, I only accept 4 character symbols. Cooldown enforced, no funny business."
     await ctx.send(helpmsg)

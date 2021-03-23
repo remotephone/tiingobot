@@ -34,7 +34,7 @@ def get_stocks(stock):
         clean_stock['Open'] = stock[0]['open']
         clean_stock['High'] = stock[0]['high']
         clean_stock['Low'] = stock[0]['low']
-        clean_stock['Volume'] = stock[0]['volume']
+        clean_stock['% Change'] = f"{round(((stock[0]['last'] - stock[0]['open']) / stock[0]['open']) * 100, 4)}%" 
         if stock[0]['last'] > stock[0]['open']:
             clean_stock['Mood'] = "\U0001F4C8"
         elif stock[0]['last'] < stock[0]['open']:
