@@ -41,3 +41,32 @@ def get_stocks(stock):
             clean_stock['Mood'] = "\U0001F4C9"
 
     return clean_stock
+
+def get_stonkest(stock):
+    TOKEN = os.environ['TIINGO_TOKEN']
+
+    headers = {
+    'Content-Type': 'application/json'
+    }
+    response = requests.get(f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers)
+    stocks = response.json()
+
+    clean_stocks = []
+
+    for stock in stocks:
+        clean_stock = {}
+        clean_stock['Ticker'] = stock['ticker']
+        clean_stock['Quote Timestamp'] = stock['quoteTimestamp']
+        clean_stock['Most Recent Price'] = stock['last']
+        clean_stock['Open'] = stock['open']
+        clean_stock['High'] = stock['high']
+        clean_stock['Low'] = stock['low']
+        clean_stock['% Change'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4) 
+        if stock['last'] > stock['open']:
+            clean_stock['Mood'] = "\U0001F4C8"
+        elif stock['last'] < stock['open']:
+            clean_stock['Mood'] = "\U0001F4C9"
+        clean_stocks.append(clean_stock)
+
+    stonkest = sorted(clean_stocks, key = lambda x: x['% Change'])
+    return stonkest[:4]

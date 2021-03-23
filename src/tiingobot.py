@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from tiingoapi import get_stocks
+from tiingoapi import get_stocks, get_stonkest
 
 logging.basicConfig(filename='tiingo.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
@@ -39,5 +39,16 @@ async def stonks(ctx, stock: str):
     for k, v in ticker.items():
         ticker_response += k + ": " + str(v) + "\n"
     await ctx.send(ticker_response)
+
+
+@bot.command(name='stonkest', help='Return stock message, defaults to GME if trickery is afoot')
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def stonkest(ctx):
+    stonkest = get_stonkest()
+    stonkest_response = ""
+    for stonk in stonkest:
+        for k, v in stonk.items():
+            stonkest_response += k + ": " + str(v) + "\n"
+    await ctx.send(stonkest_response)
 
 bot.run(TOKEN)
