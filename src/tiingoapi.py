@@ -42,7 +42,7 @@ def get_stocks(stock):
 
     return clean_stock
 
-def get_stonkest(stock):
+def get_stonkest():
     TOKEN = os.environ['TIINGO_TOKEN']
 
     headers = {
