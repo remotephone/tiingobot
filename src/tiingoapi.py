@@ -68,5 +68,8 @@ def get_stonkest():
             clean_stock['Mood'] = "\U0001F4C9"
         clean_stocks.append(clean_stock)
 
-    stonkest = sorted(clean_stocks, key = lambda x: x['% Change'])
-    return stonkest[:4]
+    no_pennies = [clean_stock for clean_stock in clean_stocks if (clean_stock['Most Recent Price'] > 0.10)] 
+
+    stonkest = sorted(no_pennies, key = lambda x: x['% Change'])
+
+    return stonkest[-4:]
