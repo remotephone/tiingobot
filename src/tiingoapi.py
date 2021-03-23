@@ -72,4 +72,4 @@ def get_stonkest():
 
     stonkest = sorted(no_pennies, key = lambda x: x['% Change'])
 
-    return stonkest[-4:]
+    return stonkest[:4]
