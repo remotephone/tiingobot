@@ -43,7 +43,7 @@ def get_stocks(stock):
         clean_stock['Open'] = stock[0]['open']
         clean_stock['High'] = stock[0]['high']
         clean_stock['Low'] = stock[0]['low']
-        clean_stock['% Change'] = f"{round(((stock[0]['last'] - stock[0]['open']) / stock[0]['open']) * 100, 4)}%" 
+        clean_stock['% Change'] = f"{round(((stock[0]['last'] - stock[0]['open']) / stock[0]['open']) * 100, 2)}%" 
         if stock[0]['last'] > stock[0]['open']:
             clean_stock['Mood'] = "\U0001F4C8"
         elif stock[0]['last'] < stock[0]['open']:
@@ -51,7 +51,7 @@ def get_stocks(stock):
 
     return clean_stock
 
-def get_stonkest():
+def get_em_all():
     TOKEN = os.environ['TIINGO_TOKEN']
 
     headers = {
@@ -59,6 +59,10 @@ def get_stonkest():
     }
     response = requests.get(f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers)
     stocks = response.json()
+    return stocks
+
+def get_stonkest():
+    stocks = get_em_all()
 
     clean_stocks = []
 
@@ -79,3 +83,27 @@ def get_stonkest():
         stonk['\U0001F680'] = "{}% up up up".format(str(stonk['\U0001F680']))
 
     return stonkest[-5:]
+
+
+def get_stankest():
+    stocks = get_em_all()
+
+    clean_stocks = []
+
+    for stock in stocks:
+        clean_stock = {}
+        clean_stock['Ticker'] = stock['ticker']
+        clean_stock['Quote Timestamp'] = stock['quoteTimestamp']
+        clean_stock['Most Recent Price'] = stock['last']
+        clean_stock['Open'] = stock['open']
+        clean_stock['\U0001F4A5'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 2) 
+        clean_stocks.append(clean_stock)
+
+    no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
+    no_pennies = [clean_stock for clean_stock in no_oldies if (clean_stock['Most Recent Price'] > 1.0)] 
+    stankest = sorted(no_pennies, key = lambda x: x['\U0001F4A5'])
+
+    for stonk in stankest:
+        stonk['\U0001F4A5'] = "{}% up up up".format(str(stonk['\U0001F4A5']))
+
+    return stankest[-5:]
