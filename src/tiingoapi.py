@@ -74,7 +74,8 @@ def get_stonkest():
     no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
     no_pennies = [clean_stock for clean_stock in no_oldies if (clean_stock['Most Recent Price'] > 1.0)] 
     stonkest = sorted(no_pennies, key = lambda x: x['\U0001F680'])
-    for stonk in stonkest.items():
+
+    for stonk in stonkest:
         stonk['\U0001F680'] = "{}% up up up".format(str(stonk['\U0001F680']))
 
     return stonkest[-5:]
