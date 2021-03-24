@@ -101,9 +101,9 @@ def get_stankest():
 
     no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
     no_pennies = [clean_stock for clean_stock in no_oldies if (clean_stock['Most Recent Price'] > 1.0)] 
-    stankest = sorted(no_pennies, key = lambda x: x['\U0001F4A5'])
+    stankest = sorted(no_pennies, key = lambda x: x['\U0001F4A5'], reverse=True)
 
     for stonk in stankest:
-        stonk['\U0001F4A5'] = "{}% up up up".format(str(stonk['\U0001F4A5']))
+        stonk['\U0001F4A5'] = "{}% down down down".format(str(stonk['\U0001F4A5']))
 
     return stankest[-5:]
