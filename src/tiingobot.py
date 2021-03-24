@@ -27,11 +27,12 @@ async def on_command_error(error, ctx):
 
 @bot.command(name='stonkshelp', help='return help')
 async def stonks(ctx):
-    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols. Cooldown enforced, no funny business.\n Supported commands:\
-        !stonkshelp - you're looking at it\
-        !stonks <ticker> - gimme a ticker, I'll look it up. no funny business\
-        !stonkest - gimme the stonkingest stonks of the day (most positive % change)\
-        !stankest - gimme the stankingest stonks of the day (most negative % change)\
+    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols. \n10 second cooldown enforced, and no funny business.\n \
+        Supported commands:\n\
+        !stonkshelp - you're looking at it\n\
+        !stonks <ticker> - gimme a ticker, I'll look it up. no funny business\n\
+        !stonkest - gimme the stonkingest stonks of the day (most positive % change)\n\
+        !stankest - gimme the stankingest stonks of the day (most negative % change)\n\
             (These last two omit stocks worth less than $1)"""
     await ctx.send(helpmsg)
 
