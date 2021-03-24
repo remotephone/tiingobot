@@ -1,6 +1,7 @@
 import json
-import re 
 import os
+import re
+from datetime import datetime
 
 import requests
 
@@ -11,6 +12,14 @@ def validate_stonk(stock):
         return stock
     else:
         return "gme"
+
+def is_new(time):
+    dtobj = datetime.fromisoformat(time)
+    tz_info = dtobj.tzinfo
+    if (datetime.now(tz_info) - dtobj) > timedelta(days=1): 
+        return False
+    else:
+        return True
 
 def get_stocks(stock):
     TOKEN = os.environ['TIINGO_TOKEN']
@@ -59,11 +68,11 @@ def get_stonkest():
         clean_stock['Quote Timestamp'] = stock['quoteTimestamp']
         clean_stock['Most Recent Price'] = stock['last']
         clean_stock['Open'] = stock['open']
-        clean_stock['% Change'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4) 
+        clean_stock['\U0001F680'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4) 
         clean_stocks.append(clean_stock)
 
-    no_pennies = [clean_stock for clean_stock in clean_stocks if (clean_stock['Most Recent Price'] > 1.0)] 
-
-    stonkest = sorted(no_pennies, key = lambda x: x['% Change'])
+    no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
+    no_pennies = [clean_stock for clean_stock in no_oldies if (clean_stock['Most Recent Price'] > 1.0)] 
+    stonkest = sorted(no_pennies, key = lambda x: x['\U0001F680'])
 
     return stonkest[-5:]
