@@ -68,11 +68,13 @@ def get_stonkest():
         clean_stock['Quote Timestamp'] = stock['quoteTimestamp']
         clean_stock['Most Recent Price'] = stock['last']
         clean_stock['Open'] = stock['open']
-        clean_stock['\U0001F680'] = f"{str(round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4))}% up up up"
+        clean_stock['\U0001F680'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 2) 
         clean_stocks.append(clean_stock)
 
     no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
     no_pennies = [clean_stock for clean_stock in no_oldies if (clean_stock['Most Recent Price'] > 1.0)] 
     stonkest = sorted(no_pennies, key = lambda x: x['\U0001F680'])
+    for stonk in stonkest.items():
+        stonk['\U0001F680'] = f"{str(stonk['\U0001F680'])}% up up up"
 
     return stonkest[-5:]
