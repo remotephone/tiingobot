@@ -68,7 +68,7 @@ def get_stonkest():
         clean_stock['Quote Timestamp'] = stock['quoteTimestamp']
         clean_stock['Most Recent Price'] = stock['last']
         clean_stock['Open'] = stock['open']
-        clean_stock['\U0001F680'] = round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4) 
+        clean_stock['\U0001F680'] = f"{str(round(((float(stock['last']) - float(stock['open'])) / float(stock['open'])) * 100, 4))}% up up up"
         clean_stocks.append(clean_stock)
 
     no_oldies = [clean_stock for clean_stock in clean_stocks if (is_new(clean_stock['Quote Timestamp']))] 
