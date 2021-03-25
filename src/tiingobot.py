@@ -19,6 +19,7 @@ shandler.setFormatter(
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
+TOKEN = os.getenv('DISCORD_TOKEN')
 bot = discord.ext.commands.Bot(command_prefix = "!")
 
 @bot.event
