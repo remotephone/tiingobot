@@ -69,10 +69,12 @@ async def stonks(ctx, stock: str):
 @bot.command(name="stonkest", help="Return top 5 most performat stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonkest(ctx):
+    logger.info(f"{ctx.message.author} requested stonkest.")
     stonkest = get_stonkest()
     if len(stonkest) == 0:
         logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
+    logger.info(f"{ctx.message.author} requested stankest. {len(stonkest)} results returned")
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
@@ -87,10 +89,12 @@ async def stonkest(ctx):
 @bot.command(name="stankest", help="Return bottom 5 most performat stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stankest(ctx):
+    logger.info(f"{ctx.message.author} requested stankest.")
     stankest = get_stankest()
     if len(stankest) == 0:
         logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
+    logger.info(f"{ctx.message.author} requested stankest. {len(stankest)} results returned")
     stankest_response = ""
     tickers = []
     for stonk in stankest:
