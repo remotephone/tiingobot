@@ -7,8 +7,12 @@ name = "pypi"
 "discord" = "==1.3.3"
 python-dotenv = "==0.13.0"
 requests = "==2.25.1"
+black = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
