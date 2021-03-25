@@ -111,14 +111,25 @@ def get_stonkest():
         clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
-        clean_stock["\U0001F680"] = round(
-            (
-                (float(stock["last"]) - float(stock["prevClose"]))
-                / float(stock["prevClose"])
+        try:
+            clean_stock["\U0001F4A5"] = round(
+                (
+                    (float(stock["last"]) - float(stock["prevClose"]))
+                    / float(stock["prevClose"])
+                )
+                * 100,
+                2,
             )
-            * 100,
-            2,
-        )
+        except Exception as e:
+            logger.error(e)
+            clean_stock["\U0001F4A5"] = round(
+                (
+                    (float(stock["last"]) - float(stock["open"]))
+                    / float(stock["open"])
+                )
+                * 100,
+                2,
+            )
         clean_stocks.append(clean_stock)
 
     logger.info(f"returned {len(clean_stocks)} clean_stocks")
@@ -161,14 +172,25 @@ def get_stankest():
         clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
-        clean_stock["\U0001F4A5"] = round(
-            (
-                (float(stock["last"]) - float(stock["prevClose"]))
-                / float(stock["prevClose"])
+        try:
+            clean_stock["\U0001F4A5"] = round(
+                (
+                    (float(stock["last"]) - float(stock["prevClose"]))
+                    / float(stock["prevClose"])
+                )
+                * 100,
+                2,
             )
-            * 100,
-            2,
-        )
+        except Exception as e:
+            logger.error(e)
+            clean_stock["\U0001F4A5"] = round(
+                (
+                    (float(stock["last"]) - float(stock["open"]))
+                    / float(stock["open"])
+                )
+                * 100,
+                2,
+            )
         clean_stocks.append(clean_stock)
 
     logger.info(f"returned {len(clean_stocks)} clean_stocks")
