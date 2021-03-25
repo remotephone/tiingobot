@@ -112,7 +112,7 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         clean_stock["\U0001F680"] = round(
-            ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
+            ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"]))
             * 100,
             2,
         )
@@ -151,7 +151,7 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         clean_stock["\U0001F4A5"] = round(
-            ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
+            ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"]))
             * 100,
             2,
         )
