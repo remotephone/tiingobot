@@ -112,14 +112,17 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            clean_stock["\U0001F4A5"] = round(
-                (
-                    (float(stock["last"]) - float(stock["prevClose"]))
-                    / float(stock["prevClose"])
+            if stock["prevClose"]:
+                clean_stock["\U0001F4A5"] = round(
+                    (
+                        (float(stock["last"]) - float(stock["prevClose"]))
+                        / float(stock["prevClose"])
+                    )
+                    * 100,
+                    2,
                 )
-                * 100,
-                2,
-            )
+            else:
+                raise Exception
         except Exception as e:
             logger.error(e)
             clean_stock["\U0001F4A5"] = round(
@@ -173,14 +176,17 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            clean_stock["\U0001F4A5"] = round(
-                (
-                    (float(stock["last"]) - float(stock["prevClose"]))
-                    / float(stock["prevClose"])
+            if stock["prevClose"]:
+                clean_stock["\U0001F4A5"] = round(
+                    (
+                        (float(stock["last"]) - float(stock["prevClose"]))
+                        / float(stock["prevClose"])
+                    )
+                    * 100,
+                    2,
                 )
-                * 100,
-                2,
-            )
+            else:
+                raise Exception
         except Exception as e:
             logger.error(e)
             clean_stock["\U0001F4A5"] = round(
