@@ -104,7 +104,7 @@ def get_stonkest():
         logger.info("No stonkest returned, something went wrong")
         return None
     clean_stocks = []
-
+    logger.info(f"cleaning {len(stocks)}")
     for stock in stocks:
         clean_stock = {}
         clean_stock["Ticker"] = stock["ticker"]
@@ -112,22 +112,32 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         clean_stock["\U0001F680"] = round(
-            ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"]))
+            (
+                (float(stock["last"]) - float(stock["prevClose"]))
+                / float(stock["prevClose"])
+            )
             * 100,
             2,
         )
         clean_stocks.append(clean_stock)
+
+    logger.info(f"returned {len(clean_stocks)} clean_stocks")
 
     no_oldies = [
         clean_stock
         for clean_stock in clean_stocks
         if (is_new(clean_stock["Quote Timestamp"]))
     ]
+
+    logger.info(f"returned {len(no_oldies)} current stocks")
+
     no_pennies = [
         clean_stock
         for clean_stock in no_oldies
         if (clean_stock["Most Recent Price"] > 1.0)
     ]
+    logger.info(f"returned {len(no_pennies)} non-penny stocks")
+
     stonkest = sorted(no_pennies, key=lambda x: x["\U0001F680"])
 
     for stonk in stonkest:
@@ -141,6 +151,7 @@ def get_stankest():
     if len(stocks) == 0:
         logger.info("No stankest returned, something went wrong")
         return None
+    logger.info(f"cleaning {len(stocks)}")
 
     clean_stocks = []
 
@@ -151,22 +162,32 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         clean_stock["\U0001F4A5"] = round(
-            ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"]))
+            (
+                (float(stock["last"]) - float(stock["prevClose"]))
+                / float(stock["prevClose"])
+            )
             * 100,
             2,
         )
         clean_stocks.append(clean_stock)
+
+    logger.info(f"returned {len(clean_stocks)} clean_stocks")
 
     no_oldies = [
         clean_stock
         for clean_stock in clean_stocks
         if (is_new(clean_stock["Quote Timestamp"]))
     ]
+
+    logger.info(f"returned {len(no_oldies)} current stocks")
+
     no_pennies = [
         clean_stock
         for clean_stock in no_oldies
         if (clean_stock["Most Recent Price"] > 1.0)
     ]
+    logger.info(f"returned {len(no_pennies)} non-penny stocks")
+
     stankest = sorted(no_pennies, key=lambda x: x["\U0001F4A5"], reverse=True)
 
     for stonk in stankest:

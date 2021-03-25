@@ -19,8 +19,9 @@ shandler.setFormatter(
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
-TOKEN = os.getenv('DISCORD_TOKEN')
-bot = discord.ext.commands.Bot(command_prefix = "!")
+TOKEN = os.getenv("DISCORD_TOKEN")
+bot = discord.ext.commands.Bot(command_prefix="!")
+
 
 @bot.event
 async def on_ready():
@@ -74,7 +75,9 @@ async def stonkest(ctx):
     if len(stonkest) == 0:
         logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
-    logger.info(f"{ctx.message.author} requested stankest. {len(stonkest)} results returned")
+    logger.info(
+        f"{ctx.message.author} requested stankest. {len(stonkest)} results returned"
+    )
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
@@ -94,7 +97,9 @@ async def stankest(ctx):
     if len(stankest) == 0:
         logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
-    logger.info(f"{ctx.message.author} requested stankest. {len(stankest)} results returned")
+    logger.info(
+        f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
+    )
     stankest_response = ""
     tickers = []
     for stonk in stankest:
