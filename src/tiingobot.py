@@ -48,7 +48,7 @@ async def stonks(ctx):
         !stonkest - gimme the stonkingest stonks of the day (most positive % change)\n\
         !stankest - gimme the stankingest stonks of the day (most negative % change)\n\
             (These last two omit stocks worth less than $1)"""
-    logger.info(f"{ctx.author} requested help")
+    logger.info(f"{ctx.message.author} requested help")
     await ctx.send(helpmsg)
 
 
@@ -57,11 +57,12 @@ async def stonks(ctx):
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonks(ctx, stock: str):
+    logger.info(f"{ctx.message.author} requested stock {stock}")
     ticker = get_stocks(stock)
     ticker_response = ""
     for k, v in ticker.items():
         ticker_response += k + ": " + str(v) + "\n"
-    logger.info(f"{ctx.author} requested stock {stock}")
+    logger.info(f"{ctx.message.author} got info on {stock}")
     await ctx.send(ticker_response)
 
 
@@ -70,7 +71,7 @@ async def stonks(ctx, stock: str):
 async def stonkest(ctx):
     stonkest = get_stonkest()
     if len(stonkest) == 0:
-        logger.info(f"{ctx.author} requested stankest. No results returned")
+        logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
     stonkest_response = ""
     tickers = []
@@ -79,7 +80,7 @@ async def stonkest(ctx):
             stonkest_response += k + ": " + str(v) + "\n"
             if k == "Ticker":
                 tickers.append(v)
-    logger.info(f"{ctx.author} requested stonkest. returned tickers: {tickers}")
+    logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
     await ctx.send(stonkest_response)
 
 
@@ -88,15 +89,16 @@ async def stonkest(ctx):
 async def stankest(ctx):
     stankest = get_stankest()
     if len(stankest) == 0:
-        logger.info(f"{ctx.author} requested stankest. No results returned")
+        logger.info(f"{ctx.message.author} requested stankest. No results returned")
         await ctx.send("Something went wrong")
     stankest_response = ""
+    tickers = []
     for stonk in stankest:
         for k, v in stonk.items():
             stankest_response += k + ": " + str(v) + "\n"
             if k == "Ticker":
                 tickers.append(v)
-    logger.info(f"{ctx.author} requested stankest. returned tickers: {tickers}")
+    logger.info(f"{ctx.message.author} requested stankest. returned tickers: {tickers}")
     await ctx.send(stankest_response)
 
 

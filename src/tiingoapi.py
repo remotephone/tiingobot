@@ -72,8 +72,8 @@ def get_stocks(stock):
         clean_stock["Low"] = validstock[0]["low"]
         clean_stock[
             "% Change"
-        ] = f"{round(((stvalidstockock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
-        if stovalidstockck[0]["last"] > validstock[0]["open"]:
+        ] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
+        if validstock[0]["last"] > validstock[0]["open"]:
             clean_stock["Mood"] = "\U0001F4C8"
         elif validstock[0]["last"] < validstock[0]["open"]:
             clean_stock["Mood"] = "\U0001F4C9"
@@ -102,6 +102,7 @@ def get_em_all():
 def get_stonkest():
     stocks = get_em_all()
     if len(stocks) == 0:
+        logger.info(f"No stonkest returned, something went wrong")
         return None
     clean_stocks = []
 
@@ -139,6 +140,7 @@ def get_stonkest():
 def get_stankest():
     stocks = get_em_all()
     if len(stocks) == 0:
+        logger.info(f"No stankest returned, something went wrong")\
         return None
 
     clean_stocks = []
