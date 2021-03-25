@@ -72,12 +72,12 @@ async def stonks(ctx, stock: str):
 async def stonkest(ctx):
     logger.info(f"{ctx.message.author} requested stonkest.")
     stonkest = get_stonkest()
-    if len(stonkest) == 0:
-        logger.info(f"{ctx.message.author} requested stankest. No results returned")
-        await ctx.send("Something went wrong")
     logger.info(
-        f"{ctx.message.author} requested stankest. {len(stonkest)} results returned"
+        f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned"
     )
+    if len(stonkest) == 0:
+        logger.info(f"{ctx.message.author} requested stonkest. No results returned")
+        await ctx.send("Something went wrong")
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
@@ -94,12 +94,12 @@ async def stonkest(ctx):
 async def stankest(ctx):
     logger.info(f"{ctx.message.author} requested stankest.")
     stankest = get_stankest()
-    if len(stankest) == 0:
-        logger.info(f"{ctx.message.author} requested stankest. No results returned")
-        await ctx.send("Something went wrong")
     logger.info(
         f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
     )
+    if len(stankest) == 0:
+        logger.info(f"{ctx.message.author} requested stankest. No results returned")
+        await ctx.send("Something went wrong")
     stankest_response = ""
     tickers = []
     for stonk in stankest:

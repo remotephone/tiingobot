@@ -126,10 +126,7 @@ def get_stonkest():
         except Exception as e:
             logger.error(e)
             clean_stock["\U0001F4A5"] = round(
-                (
-                    (float(stock["last"]) - float(stock["open"]))
-                    / float(stock["open"])
-                )
+                ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
                 * 100,
                 2,
             )
@@ -153,9 +150,11 @@ def get_stonkest():
     logger.info(f"returned {len(no_pennies)} non-penny stocks")
 
     stonkest = sorted(no_pennies, key=lambda x: x["\U0001F680"])
+    logger.info(f"sorted {len(stonkest)} stocks successfully")
 
     for stonk in stonkest:
         stonk["\U0001F680"] = "{}% up up up".format(str(stonk["\U0001F680"]))
+    logger.info("added emojis successfully")
 
     return stonkest[-5:]
 
@@ -190,10 +189,7 @@ def get_stankest():
         except Exception as e:
             logger.error(e)
             clean_stock["\U0001F4A5"] = round(
-                (
-                    (float(stock["last"]) - float(stock["open"]))
-                    / float(stock["open"])
-                )
+                ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
                 * 100,
                 2,
             )
@@ -217,8 +213,10 @@ def get_stankest():
     logger.info(f"returned {len(no_pennies)} non-penny stocks")
 
     stankest = sorted(no_pennies, key=lambda x: x["\U0001F4A5"], reverse=True)
+    logger.info(f"sorted {len(stankest)} stocks successfully")
 
     for stonk in stankest:
         stonk["\U0001F4A5"] = "{}% down down down".format(str(stonk["\U0001F4A5"]))
+    logger.info("added emojis successfully")
 
     return stankest[-5:]
