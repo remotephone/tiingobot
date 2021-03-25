@@ -19,6 +19,7 @@ shandler.setFormatter(
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
+bot = discord.ext.commands.Bot(command_prefix = "!")
 
 @bot.event
 async def on_ready():
