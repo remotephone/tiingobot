@@ -140,7 +140,7 @@ def get_stonkest():
 def get_stankest():
     stocks = get_em_all()
     if len(stocks) == 0:
-        logger.info(f"No stankest returned, something went wrong")\
+        logger.info(f"No stankest returned, something went wrong")
         return None
 
     clean_stocks = []
