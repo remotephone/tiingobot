@@ -2,6 +2,7 @@ import logging
 import os
 import re
 from datetime import datetime, timedelta
+from dateutil.parser import parse
 
 import requests
 
@@ -32,7 +33,7 @@ def is_new(time):
     """Had the logic backwards here at first. If the test passes and the dates for the
     quote and now are less than 3 days apart, assume the stock is currently listed and
     keep it in the list by returning true. Otherwise return false and remove it."""
-    dtobj = datetime.fromisoformat(time)
+    dtobj = parse(time)
     tz_info = dtobj.tzinfo
     if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
         return True
