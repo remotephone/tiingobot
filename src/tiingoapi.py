@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import re
@@ -102,7 +101,7 @@ def get_em_all():
 def get_stonkest():
     stocks = get_em_all()
     if len(stocks) == 0:
-        logger.info(f"No stonkest returned, something went wrong")
+        logger.info("No stonkest returned, something went wrong")
         return None
     clean_stocks = []
 
@@ -140,7 +139,7 @@ def get_stonkest():
 def get_stankest():
     stocks = get_em_all()
     if len(stocks) == 0:
-        logger.info(f"No stankest returned, something went wrong")
+        logger.info("No stankest returned, something went wrong")
         return None
 
     clean_stocks = []

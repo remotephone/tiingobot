@@ -24,7 +24,7 @@ bot = discord.ext.commands.Bot(command_prefix = "!")
 
 @bot.event
 async def on_ready():
-    logger.info(f"tiingobot has connected to Discord!")
+    logger.info("tiingobot has connected to Discord!")
 
 
 @bot.event
@@ -40,7 +40,7 @@ async def on_command_error(error, ctx):
 
 
 @bot.command(name="stonkshelp", help="return help")
-async def stonks(ctx):
+async def stonkshelp(ctx):
     helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols. \n10 second cooldown enforced, and no funny business.\n \
         Supported commands:\n\
         !stonkshelp - you're looking at it\n\
