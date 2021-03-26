@@ -32,7 +32,12 @@ def validate_stonk(stock):
 def is_new(time):
     """Had the logic backwards here at first. If the test passes and the dates for the
     quote and now are less than 3 days apart, assume the stock is currently listed and
-    keep it in the list by returning true. Otherwise return false and remove it."""
+    keep it in the list by returning true. Otherwise return false and remove it.
+    Also had to switch to dateutil.parser.parse because occassionally the timestamps
+    come back in a format that python doesnt recognize as iso and it throws an error.
+    Logging that now so I can troubleshoot it better and just returning True since it
+    only seems to do that with timestamps during trading hours, otherwise Tiingo 
+    truncates the milliseconds to an iso compatible length"""
     try:
         dtobj = parse(time)
         tz_info = dtobj.tzinfo
