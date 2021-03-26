@@ -33,13 +33,16 @@ def is_new(time):
     """Had the logic backwards here at first. If the test passes and the dates for the
     quote and now are less than 3 days apart, assume the stock is currently listed and
     keep it in the list by returning true. Otherwise return false and remove it."""
-    dtobj = parse(time)
-    tz_info = dtobj.tzinfo
-    if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
+    logger.info(f"testing time: {str(time)}")
+    try:
+        dtobj = parse(time)
+        tz_info = dtobj.tzinfo
+        if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
+            return True
+        else:
+            return False
+    except:
         return True
-    else:
-        return False
-
 
 def get_stocks(stock):
     """ return a stock quote, cleaned up """
