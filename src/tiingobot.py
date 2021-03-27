@@ -83,7 +83,7 @@ async def stonkest(ctx):
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
-        stonkest_response += "**{}** - \\N{{rocket}} \\N{{rocket}} \\N{{rocket}}: {}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
+        stonkest_response += "**{}** - :rocket: :rocket: :rocket:: {}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
         stonkest_response += "worked"
         for k, v in stonk.items():
             if k == "Ticker":
@@ -106,7 +106,7 @@ async def stankest(ctx):
     stankest_response = ""
     tickers = []
     for stonk in stankest:
-        stankest_response += "**{}** - \\N{{boom}} \\N{{boom}} \\N{{boom}}: {}\n".format(stankest['ticker'], stankest['\U0001F4A5'])
+        stankest_response += "**{}** - :boom: :boom: :boom: {}\n".format(stankest['ticker'], stankest['\U0001F4A5'])
         for k, v in stonk.items():
             if k == "Ticker":
                 tickers.append(v)
