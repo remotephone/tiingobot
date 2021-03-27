@@ -12,6 +12,7 @@ fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w
 fhandler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
+fhandler.setLevel(logging.ERROR)
 shandler = logging.StreamHandler()
 shandler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")

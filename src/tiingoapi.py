@@ -9,7 +9,7 @@ import requests
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
-fhandler = logging.setLevel(logging.ERROR)
+fhandler.setLevel(logging.ERROR)
 fhandler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
