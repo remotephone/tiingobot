@@ -83,8 +83,8 @@ async def stonkest(ctx):
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
+        stonkest_response = "**{}** -  \U0001F680\U0001F680\U0001F680:{}".format(stonkest['ticker'], stonkest['\U0001F680'])
         for k, v in stonk.items():
-            stonkest_response += k + ": " + str(v) + "\n"
             if k == "Ticker":
                 tickers.append(v)
     logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
@@ -105,8 +105,8 @@ async def stankest(ctx):
     stankest_response = ""
     tickers = []
     for stonk in stankest:
+        stankest_response = "**{}** -  \U0001F4A5\U0001F4A5\U0001F4A5:{}".format(stankest['ticker'], stankest['\U0001F4A5'])
         for k, v in stonk.items():
-            stankest_response += k + ": " + str(v) + "\n"
             if k == "Ticker":
                 tickers.append(v)
     logger.info(f"{ctx.message.author} requested stankest. returned tickers: {tickers}")
