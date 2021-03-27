@@ -83,7 +83,7 @@ async def stonkest(ctx):
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
-        stonkest_response += "**{}** -  \U0001F680 \U0001F680 \U0001F680:{}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
+        stonkest_response += "**{}** - \\U0001F680 \\U0001F680 \\U0001F680:{}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
         for k, v in stonk.items():
             if k == "Ticker":
                 tickers.append(v)
@@ -100,12 +100,12 @@ async def stankest(ctx):
         f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
     )
     if len(stankest) == 0:
-        logger.info(f"{ctx.message.author} requested stankest. No results returned")
+        logger.error(f"{ctx.message.author} requested stankest. No results returned: {stankest}")
         await ctx.send("Something went wrong")
     stankest_response = ""
     tickers = []
     for stonk in stankest:
-        stankest_response += "**{}** - \U0001F4A5 \U0001F4A5 \U0001F4A5:{}\n".format(stankest['ticker'], stankest['\U0001F4A5'])
+        stankest_response += "**{}** - \\U0001F4A5 \\U0001F4A5 \\U0001F4A5:{}\n".format(stankest['ticker'], stankest['\U0001F4A5'])
         for k, v in stonk.items():
             if k == "Ticker":
                 tickers.append(v)
