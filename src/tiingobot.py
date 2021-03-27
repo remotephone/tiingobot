@@ -72,43 +72,49 @@ async def stonks(ctx, stock: str):
 @bot.command(name="stonkest", help="Return top 5 most performat stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonkest(ctx):
-    logger.info(f"{ctx.message.author} requested stonkest.")
-    stonkest = get_stonkest()
-    logger.info(
-        f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned"
-    )
-    if len(stonkest) == 0:
-        logger.info(f"{ctx.message.author} requested stonkest. No results returned")
-        await ctx.send("Something went wrong")
-    stonkest_response = ""
-    tickers = []
-    for stonk in stonkest:
-        stonkest_response += "**{}** -  \U0001F680 \U0001F680 \U0001F680:{}\n".format(stonk['ticker'], stonk['\U0001F680'])
-        for k, v in stonk.items():
-            if k == "Ticker":
-                tickers.append(v)
-    logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
+    try:
+        logger.info(f"{ctx.message.author} requested stonkest.")
+        stonkest = get_stonkest()
+        logger.info(
+            f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned"
+        )
+        if len(stonkest) == 0:
+            logger.info(f"{ctx.message.author} requested stonkest. No results returned")
+            await ctx.send("Something went wrong")
+        stonkest_response = ""
+        tickers = []
+        for stonk in stonkest:
+            stonkest_response += "**{}** - \\U0001F680 \\U0001F680 \\U0001F680:{}\n".format(stonk['ticker'], stonk['\U0001F680'])
+            for k, v in stonk.items():
+                if k == "Ticker":
+                    tickers.append(v)
+        logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
+    except Exception as e:
+        logger.error(e)
     await ctx.send(stonkest_response)
 
 
 @bot.command(name="stankest", help="Return bottom 5 most performat stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stankest(ctx):
-    logger.info(f"{ctx.message.author} requested stankest.")
-    stankest = get_stankest()
-    logger.info(
-        f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
-    )
-    if len(stankest) == 0:
-        logger.info(f"{ctx.message.author} requested stankest. No results returned")
-        await ctx.send("Something went wrong")
-    stankest_response = ""
-    tickers = []
-    for stonk in stankest:
-        stankest_response += "**{}** - \U0001F4A5 \U0001F4A5 \U0001F4A5:{}\n".format(stonk['ticker'], stonk['\U0001F4A5'])
-        for k, v in stonk.items():
-            if k == "Ticker":
-                tickers.append(v)
+    try:
+        logger.info(f"{ctx.message.author} requested stankest.")
+        stankest = get_stankest()
+        logger.info(
+            f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
+        )
+        if len(stankest) == 0:
+            logger.info(f"{ctx.message.author} requested stankest. No results returned")
+            await ctx.send("Something went wrong")
+        stankest_response = ""
+        tickers = []
+        for stonk in stankest:
+            stankest_response += "**{}** - \\U0001F4A5 \\U0001F4A5 \\U0001F4A5:{}\n".format(stonk['ticker'], stonk['\U0001F4A5'])
+            for k, v in stonk.items():
+                if k == "Ticker":
+                    tickers.append(v)
+    except Exception as e:
+        logger.error(e)
     logger.info(f"{ctx.message.author} requested stankest. returned tickers: {tickers}")
     await ctx.send(stankest_response)
 
