@@ -83,7 +83,7 @@ async def stonkest(ctx):
     stonkest_response = ""
     tickers = []
     for stonk in stonkest:
-        stonkest_response += "**{}** - \\U0001F680 \\U0001F680 \\U0001F680: {}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
+        # stonkest_response += "**{}** - \\U0001F680 \\U0001F680 \\U0001F680: {}\n".format(stonkest['ticker'], stonkest['\U0001F680'])
         stonkest_response += "worked"
         for k, v in stonk.items():
             if k == "Ticker":
