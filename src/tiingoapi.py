@@ -163,7 +163,7 @@ def get_stonkest():
     logger.info(f"sorted {len(stonkest)} stocks successfully")
 
     for stonk in stonkest:
-        stonk["\U0001F680"] = "{}% up up up".format(str(stonk["\U0001F680"]))
+        stonk["\U0001F680"] = "{}% ".format(str(stonk["\U0001F680"]))
     logger.info("added emojis successfully")
 
     return stonkest[-5:]
@@ -226,7 +226,7 @@ def get_stankest():
     logger.info(f"sorted {len(stankest)} stocks successfully")
 
     for stonk in stankest:
-        stonk["\U0001F4A5"] = "{}% down down down".format(str(stonk["\U0001F4A5"]))
+        stonk["\U0001F4A5"] = "{}% ".format(str(stonk["\U0001F4A5"]))
     logger.info("added emojis successfully")
 
     return stankest[-5:]
