@@ -9,6 +9,7 @@ import requests
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
+fhandler = logging.setLevel(logging.ERROR)
 fhandler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
@@ -61,7 +62,7 @@ def get_stocks(stock):
         )
         validstock = response.json()
     except Exception as e:
-        logger.info(f"Failed to connect to tiingo api. Reason: {e}")
+        logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validstock = []
     # This returns a list of dictionaries with each item a stock
     # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
@@ -102,7 +103,7 @@ def get_em_all():
         stocks = response.json()
         return stocks
     except Exception as e:
-        logger.info(f"error: {e}")
+        logger.error(f"Failed to get all iex results. Error: {e}")
         stocks = []
         return stocks
 
@@ -110,7 +111,7 @@ def get_em_all():
 def get_stonkest():
     stocks = get_em_all()
     if len(stocks) == 0:
-        logger.info("No stonkest returned, something went wrong")
+        logger.error("No stonkest returned, something went wrong")
         return None
     clean_stocks = []
     logger.info(f"cleaning {len(stocks)}")
@@ -171,7 +172,7 @@ def get_stonkest():
 def get_stankest():
     stocks = get_em_all()
     if len(stocks) == 0:
-        logger.info("No stankest returned, something went wrong")
+        logger.error("No stankest returned, something went wrong")
         return None
     logger.info(f"cleaning {len(stocks)}")
 
@@ -197,7 +198,6 @@ def get_stankest():
                 raise Exception
         except Exception as e:
             logger.error(f"error: {e}, issues processing {stock['ticker']}")
-            logger.error(e)
             clean_stock["\U0001F4A5"] = round(
                 ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
                 * 100,
