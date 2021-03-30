@@ -84,11 +84,15 @@ async def stonkest(ctx):
         stonkest_response = ""
         tickers = []
         for stonk in stonkest:
-            stonkest_response += "**{}** - :rocket::rocket::rocket: {} up\n".format(stonk['Ticker'], stonk['\U0001F680'])
+            stonkest_response += "**{}** - :rocket::rocket::rocket: {} up\n".format(
+                stonk["Ticker"], stonk["\U0001F680"]
+            )
             for k, v in stonk.items():
                 if k == "Ticker":
                     tickers.append(v)
-        logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
+        logger.info(
+            f"{ctx.message.author} requested stonkest. returned tickers: {tickers}"
+        )
     except Exception as e:
         logger.error(e)
     await ctx.send(stonkest_response)
@@ -109,7 +113,9 @@ async def stankest(ctx):
         stankest_response = ""
         tickers = []
         for stonk in stankest:
-            stankest_response += "**{}** - :boom::boom::boom: {} down\n".format(stonk['Ticker'], stonk['\U0001F4A5'])
+            stankest_response += "**{}** - :boom::boom::boom: {} down\n".format(
+                stonk["Ticker"], stonk["\U0001F4A5"]
+            )
             for k, v in stonk.items():
                 if k == "Ticker":
                     tickers.append(v)

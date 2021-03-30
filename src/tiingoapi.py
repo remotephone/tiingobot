@@ -37,7 +37,7 @@ def is_new(time):
     Also had to switch to dateutil.parser.parse because occassionally the timestamps
     come back in a format that python doesnt recognize as iso and it throws an error.
     Logging that now so I can troubleshoot it better and just returning True since it
-    only seems to do that with timestamps during trading hours, otherwise Tiingo 
+    only seems to do that with timestamps during trading hours, otherwise Tiingo
     truncates the milliseconds to an iso compatible length"""
     try:
         dtobj = parse(time)
@@ -49,6 +49,7 @@ def is_new(time):
     except Exception as e:
         logger.error(f"testing time: {str(time)}, exception: {e}")
         return True
+
 
 def get_stocks(stock):
     """ return a stock quote, cleaned up """
@@ -122,7 +123,7 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock['prevClose'] != None:
+            if stock["prevClose"] != None:
                 clean_stock["\U0001F680"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -132,14 +133,18 @@ def get_stonkest():
                     2,
                 )
             else:
-                raise Exception
+                clean_stock["\U0001F680"] = round(
+                    (
+                        (float(stock["last"]) - float(stock["open"]))
+                        / float(stock["open"])
+                    )
+                    * 100,
+                    2,
+                )
         except Exception as e:
             logger.error(f"error: {e}, issues processing {stock['ticker']}")
-            clean_stock["\U0001F680"] = round(
-                ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
-                * 100,
-                2,
-            )
+            continue
+
         clean_stocks.append(clean_stock)
 
     logger.info(f"returned {len(clean_stocks)} clean_stocks")
@@ -185,7 +190,7 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock['prevClose'] != None:
+            if stock["prevClose"] != None:
                 clean_stock["\U0001F4A5"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -195,14 +200,18 @@ def get_stankest():
                     2,
                 )
             else:
-                raise Exception
+                clean_stock["\U0001F4A5"] = round(
+                    (
+                        (float(stock["last"]) - float(stock["open"]))
+                        / float(stock["open"])
+                    )
+                    * 100,
+                    2,
+                )
         except Exception as e:
             logger.error(f"error: {e}, issues processing {stock['ticker']}")
-            clean_stock["\U0001F4A5"] = round(
-                ((float(stock["last"]) - float(stock["open"])) / float(stock["open"]))
-                * 100,
-                2,
-            )
+            continue
+
         clean_stocks.append(clean_stock)
 
     logger.info(f"returned {len(clean_stocks)} clean_stocks")
