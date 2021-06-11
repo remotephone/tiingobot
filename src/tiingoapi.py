@@ -77,16 +77,26 @@ def get_stocks(stock):
         clean_stock["Ticker"] = validstock[0]["ticker"]
         clean_stock["Quote Timestamp"] = validstock[0]["quoteTimestamp"]
         clean_stock["Most Recent Price"] = validstock[0]["last"]
+        clean_stock["Last Close"] = validstock[0]["prevClose"]
         clean_stock["Open"] = validstock[0]["open"]
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
-        clean_stock[
-            "% Change"
-        ] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
-        if validstock[0]["last"] > validstock[0]["open"]:
-            clean_stock["Mood"] = "\U0001F4C8"
-        elif validstock[0]["last"] < validstock[0]["open"]:
-            clean_stock["Mood"] = "\U0001F4C9"
+        if validstock[0]["prevClose"] != None:
+            clean_stock[
+                "% Change since last close"
+            ] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
+            if validstock[0]["last"] > validstock[0]["prevClose"]:
+                clean_stock["Mood"] = "\U0001F4C8"
+            elif validstock[0]["last"] < validstock[0]["prevClose"]:
+                clean_stock["Mood"] = "\U0001F4C9"
+        else:
+            clean_stock[
+                "% Change since open"
+            ] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
+            if validstock[0]["last"] > validstock[0]["open"]:
+                clean_stock["Mood"] = "\U0001F4C8"
+            elif validstock[0]["last"] < validstock[0]["open"]:
+                clean_stock["Mood"] = "\U0001F4C9"
 
     return clean_stock
 
