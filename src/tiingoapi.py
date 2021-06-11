@@ -2,9 +2,10 @@ import logging
 import os
 import re
 from datetime import datetime, timedelta
-from dateutil.parser import parse
 
 import requests
+from dateutil import tz
+from dateutil.parser import parse
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -50,6 +51,8 @@ def is_new(time):
         logger.error(f"testing time: {str(time)}, exception: {e}")
         return True
 
+def timezoner(stamp):
+    return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
 def get_stocks(stock):
     """ return a stock quote, cleaned up """
@@ -75,7 +78,7 @@ def get_stocks(stock):
         logger.info(f"ticker failed to return any results for {str(stock)}")
     else:
         clean_stock["Ticker"] = validstock[0]["ticker"]
-        clean_stock["Quote Timestamp"] = validstock[0]["quoteTimestamp"]
+        clean_stock["Quote Timestamp"] = timezoner(validstock[0]["quoteTimestamp"])
         clean_stock["Most Recent Price"] = validstock[0]["last"]
         clean_stock["Last Close"] = validstock[0]["prevClose"]
         clean_stock["Open"] = validstock[0]["open"]
@@ -129,7 +132,7 @@ def get_stonkest():
     for stock in stocks:
         clean_stock = {}
         clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
+        clean_stock["Quote Timestamp"] = timezoner(stock["quoteTimestamp"])
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
@@ -196,7 +199,7 @@ def get_stankest():
     for stock in stocks:
         clean_stock = {}
         clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
+        clean_stock["Quote Timestamp"] = timezoner(stock["quoteTimestamp"])
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
