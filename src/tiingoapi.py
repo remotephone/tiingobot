@@ -132,7 +132,7 @@ def get_stonkest():
     for stock in stocks:
         clean_stock = {}
         clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = timezoner(stock["quoteTimestamp"])
+        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
@@ -181,6 +181,7 @@ def get_stonkest():
     logger.info(f"sorted {len(stonkest)} stocks successfully")
 
     for stonk in stonkest:
+        stonk["Quote Timestamp"] = timezoner(stonk["Quote Timestamp"])
         stonk["\U0001F680"] = "{}% ".format(str(stonk["\U0001F680"]))
     logger.info("added emojis successfully")
 
@@ -199,7 +200,7 @@ def get_stankest():
     for stock in stocks:
         clean_stock = {}
         clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = timezoner(stock["quoteTimestamp"])
+        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
@@ -248,6 +249,7 @@ def get_stankest():
     logger.info(f"sorted {len(stankest)} stocks successfully")
 
     for stonk in stankest:
+        stonk["Quote Timestamp"] = timezoner(stonk["Quote Timestamp"])
         stonk["\U0001F4A5"] = "{}% ".format(str(stonk["\U0001F4A5"]))
     logger.info("added emojis successfully")
 
