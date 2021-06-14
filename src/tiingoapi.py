@@ -41,12 +41,15 @@ def is_new(time):
     only seems to do that with timestamps during trading hours, otherwise Tiingo
     truncates the milliseconds to an iso compatible length"""
     try:
-        dtobj = parse(time)
-        tz_info = dtobj.tzinfo
-        if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
-            return True
+        if time != None:
+            dtobj = parse(time)
+            tz_info = dtobj.tzinfo
+            if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
+                return True
+            else:
+                return False
         else:
-            return False
+            return False    
     except Exception as e:
         logger.error(f"testing time: {str(time)}, exception: {e}")
         return True
