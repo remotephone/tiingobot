@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import re
@@ -64,7 +65,7 @@ def get_crypto(crypto):
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.get(
-            f"https://api.tiingo.com/tiingo/crypto/?tickers={validcrypto}&token={TOKEN}",
+            f"https://api.tiingo.com/tiingo/crypto/top?tickers={validcrypto}&token={TOKEN}",
             headers=headers,
         )
         validcrypto = response.json()
