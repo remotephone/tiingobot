@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 from tiingoapi import get_stankest, get_stocks, get_stonkest
+from tiingocrypto import get_crypto
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -47,7 +48,8 @@ async def stonkshelp(ctx):
 10 second cooldown enforced, and no funny business.
 Supported commands:
 !stonkshelp - you're looking at it
-!stonks <ticker> - gimme a ticker, I'll look it up. no funny business
+!stonks <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/iex
+!crypto <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/crypto
 !stonkest - gimme the stonkingest stonks of the day (most positive % change)
 !stankest - gimme the stankingest stonks of the day (most negative % change)
     (These last two omit stocks worth less than $1)"""
@@ -69,7 +71,21 @@ async def stonks(ctx, stock: str):
     await ctx.send(ticker_response)
 
 
-@bot.command(name="stonkest", help="Return top 5 most performat stocks by percent")
+@bot.command(
+    name="crypto", help="Return crypto message, defaults to btcusd if trickery is afoot"
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def crypto(ctx, crypto: str):
+    logger.info(f"{ctx.message.author} requested crypto {crypto}")
+    ticker = get_crypto(crypto)
+    ticker_response = ""
+    for k, v in ticker.items():
+        ticker_response += k + ": " + str(v) + "\n"
+    logger.info(f"{ctx.message.author} got info on {crypto}")
+    await ctx.send(ticker_response)
+
+
+@bot.command(name="stonkest", help="Return top 5 most performant stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonkest(ctx):
     try:
@@ -98,7 +114,7 @@ async def stonkest(ctx):
     await ctx.send(stonkest_response)
 
 
-@bot.command(name="stankest", help="Return bottom 5 most performat stocks by percent")
+@bot.command(name="stankest", help="Return bottom 5 most performant stocks by percent")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stankest(ctx):
     try:
