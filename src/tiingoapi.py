@@ -318,9 +318,12 @@ def get_stocks_weekly(stock):
     # Monday = 0, Sunday = 6
     currentdate = prev_weekday(datetime.today())
     week_ago = prev_weekday(datetime.today() - timedelta(days=7))
-    logging.info
-    latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
-    week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+    logging.info(f"Working with Current date {currentdate} and date a week ago {week_ago}")
+    try:
+        latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
+        week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+    except:
+        logging.error(e)
 
     difference = (
         (latest_price[0]["close"] - week_ago_price[0]["close"])
