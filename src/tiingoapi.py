@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 import requests
 from dateutil import tz
@@ -49,16 +49,18 @@ def is_new(time):
             else:
                 return False
         else:
-            return False    
+            return False
     except Exception as e:
         logger.error(f"testing time: {str(time)}, exception: {e}")
         return True
 
+
 def timezoner(stamp):
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
+
 def get_stocks(stock):
-    """ return a stock quote, cleaned up """
+    """return a stock quote, cleaned up"""
     TOKEN = os.environ["TIINGO_TOKEN"]
     validstock = validate_stonk(stock)
     headers = {"Content-Type": "application/json"}
@@ -257,3 +259,85 @@ def get_stankest():
     logger.info("added emojis successfully")
 
     return stankest[-5:]
+
+
+def get_stock_on_day(valid_stock, day):
+    """return a stock quote, and the difference over the last week cleaned up"""
+    TOKEN = os.environ["TIINGO_TOKEN"]
+    headers = {"Content-Type": "application/json"}
+    try:
+        response = requests.get(
+            f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices&?startDate={day}&endDate={day}token={TOKEN}",
+            headers=headers,
+        )
+        price_at_day = response.json()
+    except Exception as e:
+        logger.error(f"Failed to connect to tiingo api. Reason: {e}")
+        price_at_day = None
+
+    if price_at_day["detail"].startswith("Error"):
+        logger.error(f"Error requested {valid_stock} - {price_at_day['detail']}")
+        price_at_day = None
+    # This returns a list of dictionaries with each item a stock
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    return price_at_day
+
+
+def prev_weekday(adate):
+    _offsets = (3, 0, 0, 0, 0, 0, 2)
+    if adate.weekday() in [0, 1, 2, 3, 4]:
+        return adate
+    else:
+        return adate - timedelta(days=_offsets[adate.weekday()])
+
+
+def get_stocks_weekly(stock):
+    """return a stock quote, and the difference over the last week cleaned up
+
+    # This returns a list of dictionaries with an item per day
+    # [
+    #   {
+    #     "date": "2019-01-14T00:00:00.000Z",
+    #     "close": 150,
+    #     "high": 151.27,
+    #     "low": 149.22,
+    #     "open": 150.85,
+    #     "volume": 32439186,
+    #     "adjClose": 36.3556620563,
+    #     "adjHigh": 36.6634733284,
+    #     "adjLow": 36.1666126136,
+    #     "adjOpen": 36.5616774746,
+    #     "adjVolume": 129756744,
+    #     "divCash": 0,
+    #     "splitFactor": 1
+    #   }
+    # ]
+    """
+    valid_stock = validate_stonk(stock)
+
+    # Monday = 0, Sunday = 6
+    currentdate = prev_weekday(datetime.today())
+    week_ago = prev_weekday(datetime.today() - timedelta(days=7))
+
+    latest_price = get_stock_on_day(valid_stock, currentdate)
+    week_ago_price = get_stock_on_day(valid_stock, week_ago)
+
+    difference = (
+        (latest_price[0]["close"] - week_ago_price[0]["close"])
+        / week_ago_price[0]["close"]
+    ) * 100
+
+    clean_stock = {}
+
+    clean_stock["Ticker"] = valid_stock
+    clean_stock["Latest Date"] = currentdate.strftime("%Y-%m-%d")
+    clean_stock["Latest Price"] = latest_price[0]["close"]
+
+    clean_stock["Previous Date"] = week_ago.strftime("%Y-%m-%d")
+    clean_stock["Previous Price"] = week_ago_price[0]["close"]
+    clean_stock["Change over Time"] = difference
+    if latest_price[0]["close"] > week_ago_price[0]["close"]:
+        clean_stock["Mood"] = "\U0001F4C8"
+    else:
+        clean_stock["Mood"] = "\U0001F4C9"
+    return clean_stock

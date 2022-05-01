@@ -49,16 +49,18 @@ def is_new(time):
             else:
                 return False
         else:
-            return False    
+            return False
     except Exception as e:
         logger.error(f"testing time: {str(time)}, exception: {e}")
         return True
 
+
 def timezoner(stamp):
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
+
 def get_crypto(crypto):
-    """ return a crypto quote, cleaned up """
+    """return a crypto quote, cleaned up"""
     TOKEN = os.environ["TIINGO_TOKEN"]
     validcrypto = validate_stonk(crypto)
     headers = {"Content-Type": "application/json"}
@@ -81,8 +83,14 @@ def get_crypto(crypto):
         logger.info(f"ticker failed to return any results for {str(crypto)}")
     else:
         clean_crypto["Ticker"] = validcrypto[0]["ticker"]
-        clean_crypto["Quote Timestamp"] = timezoner(validcrypto[0]["topOfBookData"][0]["quoteTimestamp"])
-        clean_crypto["Most Recent Price"] = validcrypto[0]["topOfBookData"][0]["lastPrice"]
-        clean_crypto["Exchange Reporting"] = validcrypto[0]["topOfBookData"][0]["lastExchange"]
+        clean_crypto["Quote Timestamp"] = timezoner(
+            validcrypto[0]["topOfBookData"][0]["quoteTimestamp"]
+        )
+        clean_crypto["Most Recent Price"] = validcrypto[0]["topOfBookData"][0][
+            "lastPrice"
+        ]
+        clean_crypto["Exchange Reporting"] = validcrypto[0]["topOfBookData"][0][
+            "lastExchange"
+        ]
 
     return clean_crypto

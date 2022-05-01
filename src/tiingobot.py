@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-from tiingoapi import get_stankest, get_stocks, get_stonkest
+from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
 
 logger = logging.getLogger(__name__)
@@ -139,6 +139,21 @@ async def stankest(ctx):
         logger.error(e)
     logger.info(f"{ctx.message.author} requested stankest. returned tickers: {tickers}")
     await ctx.send(stankest_response)
+
+
+@bot.command(
+    name="weekly",
+    help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def stonks(ctx, stock: str):
+    logger.info(f"{ctx.message.author} requested stock {stock}")
+    ticker = get_stocks_weekly(stock)
+    ticker_response = "Performance over week:\n"
+    for k, v in ticker.items():
+        ticker_response += k + ": " + str(v) + "\n"
+    logger.info(f"{ctx.message.author} got info on {stock}")
+    await ctx.send(ticker_response)
 
 
 bot.run(TOKEN)
