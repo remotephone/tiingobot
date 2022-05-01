@@ -146,7 +146,7 @@ async def stankest(ctx):
     help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def stonks(ctx, stock: str):
+async def weekly(ctx, stock: str):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     ticker = get_stocks_weekly(stock)
     ticker_response = "Performance over week:\n"
