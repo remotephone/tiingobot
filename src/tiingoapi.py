@@ -270,12 +270,17 @@ def get_stock_on_day(valid_stock, day):
     TOKEN = os.environ["TIINGO_TOKEN"]
     headers = {"Content-Type": "application/json"}
     try:
-        logger.info(f"Checking {valid_stock} on {day}")
-        response = requests.get(
-            f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices?startDate={day}&endDate={day}&token={TOKEN}",
-            headers=headers,
-        )
-        price_at_day = response.json()
+        price_at_day = []
+        counter = 0
+        while price_at_day == [] or counter < 5:
+            logger.info(f"Checking {valid_stock} on {day}")
+            response = requests.get(
+                f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices?startDate={day.strftime('%Y-%m-%d')}&endDate={day.strftime('%Y-%m-%d')}&token={TOKEN}",
+                headers=headers,
+            )
+            price_at_day = response.json()
+            counter += 1
+            day -= timedelta(days=1)
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -334,8 +339,8 @@ def get_stocks_weekly(stock):
     try:
         # latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
         # week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
-        latest_price = get_stock_on_day(valid_stock, "04-29-2022")
-        week_ago_price = get_stock_on_day(valid_stock, "04-22-2022")
+        latest_price = get_stock_on_day(valid_stock, currentdate)
+        week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
@@ -344,14 +349,14 @@ def get_stocks_weekly(stock):
         / week_ago_price[0]["close"]
     ) * 100
 
+
     clean_stock = {}
 
     clean_stock["Ticker"] = valid_stock
-    clean_stock["Latest Date"] = currentdate.strftime("%Y-%m-%d")
-    clean_stock["Latest Price"] = latest_price[0]["close"]
-
-    clean_stock["Previous Date"] = week_ago.strftime("%Y-%m-%d")
-    clean_stock["Previous Price"] = week_ago_price[0]["close"]
+    clean_stock["Beginning of Week Date"] = week_ago.strftime("%Y-%m-%d")
+    clean_stock["Beginning of Week Price"] = week_ago_price[0]["close"]
+    clean_stock["End of Week Price"] = latest_price[0]["close"]
+    clean_stock["End of Week Date"] = currentdate.strftime("%Y-%m-%d")
     clean_stock["Change over Time"] = difference
     if latest_price[0]["close"] > week_ago_price[0]["close"]:
         clean_stock["Mood"] = "\U0001F4C8"
