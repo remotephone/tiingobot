@@ -272,7 +272,7 @@ def get_stock_on_day(valid_stock, day):
     try:
         price_at_day = []
         counter = 0
-        while price_at_day == [] or counter < 5:
+        while price_at_day == [] and counter < 5:
             logger.info(f"Checking {valid_stock} on {day}")
             response = requests.get(
                 f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices?startDate={day.strftime('%Y-%m-%d')}&endDate={day.strftime('%Y-%m-%d')}&token={TOKEN}",
@@ -292,7 +292,7 @@ def get_stock_on_day(valid_stock, day):
     logger.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
     # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
-    return price_at_day
+    return day, price_at_day
 
 
 def prev_weekday(adate):
@@ -327,20 +327,14 @@ def get_stocks_weekly(stock):
     """
     valid_stock = validate_stonk(stock)
 
-    # Monday = 0, Sunday = 6
     today = datetime.today()
     today = today.replace(tzinfo=None)
-
-    currentdate = prev_weekday(today)
-    week_ago = prev_weekday(currentdate - timedelta(days=7))
-    logging.info(
-        f"Working with Current date {currentdate} and date a week ago {week_ago}"
-    )
+    
     try:
-        # latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
-        # week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
-        latest_price = get_stock_on_day(valid_stock, currentdate)
-        week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+        currentdate = prev_weekday(today)
+        day, latest_price = get_stock_on_day(valid_stock, currentdate)
+        week_ago = prev_weekday(day - timedelta(days=7))
+        week_ago_price = get_stock_on_day(valid_stock, week_ago)
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
