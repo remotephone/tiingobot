@@ -148,12 +148,18 @@ async def stankest(ctx):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def weekly(ctx, stock: str):
     logger.info(f"{ctx.message.author} requested stock {stock}")
-    ticker = get_stocks_weekly(stock)
-    ticker_response = "Performance over week:\n"
-    for k, v in ticker.items():
-        ticker_response += k + ": " + str(v) + "\n"
-    logger.info(f"{ctx.message.author} got info on {stock}")
-    await ctx.send(ticker_response)
+    try:
+        ticker = get_stocks_weekly(stock)
+        ticker_response = "Performance over week:\n"
+        for k, v in ticker.items():
+            ticker_response += k + ": " + str(v) + "\n"
+        logger.info(f"{ctx.message.author} got info on {stock}")
+        await ctx.send(ticker_response)
+    except:
+        logging.error(f"Something broke")
+        await ctx.send("Something broke :(")
+
+    
 
 
 bot.run(TOKEN)
