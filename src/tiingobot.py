@@ -155,8 +155,8 @@ async def weekly(ctx, stock: str):
             ticker_response += k + ": " + str(v) + "\n"
         logger.info(f"{ctx.message.author} got info on {stock}")
         await ctx.send(ticker_response)
-    except:
-        logging.error(f"Something broke")
+    except Exception as e:
+        logging.error(f"Something broke - {e}")
         await ctx.send("Something broke :(")
 
     
