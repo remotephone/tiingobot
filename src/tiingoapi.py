@@ -335,7 +335,7 @@ def get_stocks_weekly(stock):
         currentdate = prev_weekday(today)
         day, latest_price = get_stock_on_day(valid_stock, currentdate)
         week_ago = prev_weekday(day - timedelta(days=7))
-        newday, week_ago_price = get_stock_on_day(valid_stock, week_ago)
+        weekagoday, week_ago_price = get_stock_on_day(valid_stock, week_ago)
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
@@ -348,10 +348,10 @@ def get_stocks_weekly(stock):
     clean_stock = {}
 
     clean_stock["Ticker"] = valid_stock
-    clean_stock["Beginning of Week Date"] = week_ago.strftime("%Y-%m-%d")
+    clean_stock["Beginning of Week Date"] = weekagoday.strftime("%Y-%m-%d")
     clean_stock["Beginning of Week Price"] = week_ago_price[0]["close"]
     clean_stock["End of Week Price"] = latest_price[0]["close"]
-    clean_stock["End of Week Date"] = currentdate.strftime("%Y-%m-%d")
+    clean_stock["End of Week Date"] = day.strftime("%Y-%m-%d")
     clean_stock["Change over Time"] = str(difference) + "%"
     if latest_price[0]["close"] > week_ago_price[0]["close"]:
         clean_stock["Mood"] = "\U0001F4C8"
