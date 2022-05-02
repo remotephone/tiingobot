@@ -332,8 +332,10 @@ def get_stocks_weekly(stock):
         f"Working with Current date {currentdate} and date a week ago {week_ago}"
     )
     try:
-        latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
-        week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+        # latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
+        # week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+        latest_price = get_stock_on_day(valid_stock, "04-29-2022")
+        week_ago_price = get_stock_on_day(valid_stock, "04-22-2022")
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
