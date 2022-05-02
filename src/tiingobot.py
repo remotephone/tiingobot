@@ -11,12 +11,16 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 fhandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
+    logging.Formatter(
+        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
+    )
 )
 fhandler.setLevel(logging.ERROR)
 shandler = logging.StreamHandler()
 shandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
+    logging.Formatter(
+        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
+    )
 )
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
@@ -159,8 +163,6 @@ async def weekly(ctx, stock: str):
     except Exception as e:
         logger.error(f"Something broke - {e}")
         await ctx.send("Something broke :(")
-
-    
 
 
 bot.run(TOKEN)

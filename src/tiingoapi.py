@@ -12,11 +12,15 @@ logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 fhandler.setLevel(logging.ERROR)
 fhandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
+    logging.Formatter(
+        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
+    )
 )
 shandler = logging.StreamHandler()
 shandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
+    logging.Formatter(
+        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
+    )
 )
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
@@ -271,14 +275,15 @@ def get_stock_on_day(valid_stock, day):
             headers=headers,
         )
         price_at_day = response.json()
+        logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         price_at_day = None
 
-    if "detai" in price_at_day:
+    if "detail" in price_at_day:
         logger.error(f"Error requested {valid_stock} - {price_at_day['detail']}")
         price_at_day = None
-    logging.info(f"Working with price_at_day = {price_at_day}")
+    logger.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
     # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
     return price_at_day
