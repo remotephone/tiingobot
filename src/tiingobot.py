@@ -11,12 +11,12 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 fhandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
+    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
 )
 fhandler.setLevel(logging.ERROR)
 shandler = logging.StreamHandler()
 shandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
+    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s")
 )
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
@@ -151,12 +151,13 @@ async def weekly(ctx, stock: str):
     try:
         ticker = get_stocks_weekly(stock)
         ticker_response = "Performance over week:\n"
+        logger.info(f"processing - {ticker_response}")
         for k, v in ticker.items():
             ticker_response += k + ": " + str(v) + "\n"
         logger.info(f"{ctx.message.author} got info on {stock}")
         await ctx.send(ticker_response)
     except Exception as e:
-        logging.error(f"Something broke - {e}")
+        logger.error(f"Something broke - {e}")
         await ctx.send("Something broke :(")
 
     
