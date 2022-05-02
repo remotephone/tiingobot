@@ -53,6 +53,7 @@ async def stonkshelp(ctx):
 Supported commands:
 !stonkshelp - you're looking at it
 !stonks <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/iex
+!stonk_week <ticker> - gimme a ticker, I'll tell you how it did over the last week. no funny business - https://api.tiingo.com/documentation/iex
 !crypto <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/crypto
 !stonkest - gimme the stonkingest stonks of the day (most positive % change)
 !stankest - gimme the stankingest stonks of the day (most negative % change)
@@ -146,11 +147,11 @@ async def stankest(ctx):
 
 
 @bot.command(
-    name="weekly",
+    name="stonk_week",
     help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def weekly(ctx, stock: str):
+async def stonk_week(ctx, stock: str):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     try:
         ticker = get_stocks_weekly(stock)
