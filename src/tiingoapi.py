@@ -281,7 +281,7 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
-            logger.info(f"price_at_day = {price_at_day}, day = {day}, counter = {counter}")
+            logger.info(f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}")
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -344,7 +344,7 @@ def get_stocks_weekly(stock):
         / week_ago_price[0]["close"]
     ) * 100
 
-
+    logger.info(f"Building response with difference {difference}...")
     clean_stock = {}
 
     clean_stock["Ticker"] = valid_stock
@@ -352,9 +352,10 @@ def get_stocks_weekly(stock):
     clean_stock["Beginning of Week Price"] = week_ago_price[0]["close"]
     clean_stock["End of Week Price"] = latest_price[0]["close"]
     clean_stock["End of Week Date"] = currentdate.strftime("%Y-%m-%d")
-    clean_stock["Change over Time"] = difference
+    clean_stock["Change over Time"] = str(difference) + "%"
     if latest_price[0]["close"] > week_ago_price[0]["close"]:
         clean_stock["Mood"] = "\U0001F4C8"
     else:
         clean_stock["Mood"] = "\U0001F4C9"
+    logger.info(f"Returning result {clean_stock}...")
     return clean_stock
