@@ -278,6 +278,7 @@ def get_stock_on_day(valid_stock, day):
     if price_at_day["detail"].startswith("Error"):
         logger.error(f"Error requested {valid_stock} - {price_at_day['detail']}")
         price_at_day = None
+    logging.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
     # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
     return price_at_day
