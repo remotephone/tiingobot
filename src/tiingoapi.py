@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, timezone
 
 import requests
 from dateutil import tz
@@ -323,7 +323,9 @@ def get_stocks_weekly(stock):
     valid_stock = validate_stonk(stock)
 
     # Monday = 0, Sunday = 6
-    currentdate = prev_weekday(datetime.today())
+    today = datetime.today().astimezone().tzinfo
+
+    currentdate = prev_weekday(today)
     week_ago = prev_weekday(currentdate - timedelta(days=7))
     logging.info(
         f"Working with Current date {currentdate} and date a week ago {week_ago}"
