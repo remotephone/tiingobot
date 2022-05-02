@@ -281,6 +281,7 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
+            logger.info(f"price_at_day = {price_at_day}, day = {day}, counter = {counter}")
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
