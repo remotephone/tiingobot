@@ -275,7 +275,7 @@ def get_stock_on_day(valid_stock, day):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         price_at_day = None
 
-    if price_at_day["detail"].startswith("Error"):
+    if "detai" in price_at_day:
         logger.error(f"Error requested {valid_stock} - {price_at_day['detail']}")
         price_at_day = None
     logging.info(f"Working with price_at_day = {price_at_day}")
