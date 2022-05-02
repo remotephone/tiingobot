@@ -323,7 +323,8 @@ def get_stocks_weekly(stock):
     valid_stock = validate_stonk(stock)
 
     # Monday = 0, Sunday = 6
-    today = datetime.today().astimezone().tzinfo
+    today = datetime.today()
+    today = today.replace(tzinfo=None)
 
     currentdate = prev_weekday(today)
     week_ago = prev_weekday(currentdate - timedelta(days=7))
