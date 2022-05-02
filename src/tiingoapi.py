@@ -267,7 +267,7 @@ def get_stock_on_day(valid_stock, day):
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.get(
-            f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices&?startDate={day}&endDate={day}token={TOKEN}",
+            f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices?startDate={day}&endDate={day}&token={TOKEN}",
             headers=headers,
         )
         price_at_day = response.json()
@@ -325,9 +325,9 @@ def get_stocks_weekly(stock):
     try:
         latest_price = get_stock_on_day(valid_stock, currentdate.strftime("%Y-%m-%d"))
         week_ago_price = get_stock_on_day(valid_stock, week_ago.strftime("%Y-%m-%d"))
+        logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
-    logging.info(f"Got {latest_price} and {week_ago_price}")
     difference = (
         (latest_price[0]["close"] - week_ago_price[0]["close"])
         / week_ago_price[0]["close"]
