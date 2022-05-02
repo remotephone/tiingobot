@@ -270,6 +270,7 @@ def get_stock_on_day(valid_stock, day):
     TOKEN = os.environ["TIINGO_TOKEN"]
     headers = {"Content-Type": "application/json"}
     try:
+        logger.info(f"Checking {valid_stock} on {day}")
         response = requests.get(
             f"https://api.tiingo.com/tiingo/daily/{valid_stock}/prices?startDate={day}&endDate={day}&token={TOKEN}",
             headers=headers,
