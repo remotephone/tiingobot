@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 import requests
 from dateutil import tz
 from dateutil.parser import parse
-
+from simpledb import get_stocks_for_user, put_stocks_for_user
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
@@ -359,3 +359,26 @@ def get_stocks_weekly(stock):
         clean_stock["Mood"] = "\U0001F4C9"
     logger.info(f"Returning result {clean_stock}...")
     return clean_stock
+
+
+def put_wigglers(author, stock):
+    client = boto3.client('sdb')
+    response = client.put_attributes(
+        DomainName='wiggles',
+        ItemName='remotephone',
+        Attributes=[
+            {
+                'Name': 'stocks',
+                'Value': 'goog,aapl',
+                'Replace': True
+            },
+        ]
+    )
+
+def get_wigglers(author: str) -> str:
+    stocks = get_stocks_for_user(author)
+    stocks = stocks.split(',')
+    response = "You're watching the wiggles on: "
+    for stock in stocks:
+        response += stock + " "
+    return response

@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
+from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly, get_wigglers, put_wigglers
 from tiingocrypto import get_crypto
 
 logger = logging.getLogger(__name__)
@@ -165,5 +165,33 @@ async def stonk_week(ctx, stock: str):
         logger.error(f"Something broke - {e}")
         await ctx.send("Something broke :(")
 
+@bot.command(
+    name="set_wiggle",
+    help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def user_set_wiggler(ctx, stock: str):
+    logger.info(f"{ctx.message.author} put wiggler {stock}")
+    try:
+        put_wigglers(ctx.message.author, stock)
+        ticker_response = f"Thanks {ctx.message.author}, I will report wiggles for {stock}, replacing any wiggles you previously had"
+        await ctx.send(ticker_response)
+    except Exception as e:
+        logger.error(f"Something broke - {e}")
+        await ctx.send("Something broke :(")
+
+@bot.command(
+    name="get_wiggle",
+    help="Get the wiggle of a stock",
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def user_get_wiggler(ctx: str):
+    logger.info(f"{ctx.message.author} put wiggler {stock}")
+    try:
+        wiggle_response = get_wigglers(ctx.message.author)
+        await ctx.send(wiggle_response)
+    except Exception as e:
+        logger.error(f"Something broke - {e}")
+        await ctx.send("Something broke :(")
 
 bot.run(TOKEN)
