@@ -1,7 +1,8 @@
-import requests
 import re
 import json
 import logging
+import aiohttp
+import asyncio
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -21,18 +22,10 @@ shandler.setFormatter(
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
-def megamillions():
-    try:
-        r = requests.get(' https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData')
-        r.raise_for_status()
-    except Exception as e:
-        logger.error(f'Failed to connect - {e}')
 
-    results = re.findall(r'{.*}', r.text)
+def process_results(results):
     if len(results) != 1:
         logger.error('Got too many results???')
-        return "Come back later"
-
     for result in results:
         winning_numbers = ""
         drawing = json.loads(result)
@@ -45,3 +38,14 @@ def megamillions():
             if k == "MBall":
                 winning_numbers += f"Megaball - {v}".format(v)
     return winning_numbers
+
+
+async def megamillions():
+    url = https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as r:
+            r_text = await r.text
+    results = re.findall(r'{.*}', r_text)
+    winning_numbers = process_results(results)
+    return winning_numbers
+
