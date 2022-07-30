@@ -41,7 +41,7 @@ def process_results(results):
 
 
 async def megamillions():
-    url = https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData
+    url = 'https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData'
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as r:
             r_text = await r.text
