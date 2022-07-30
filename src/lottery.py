@@ -32,10 +32,10 @@ def process_results(results):
                 winning_numbers += str(v) + " - "
             if k == "MBall":
                 winning_numbers += f"Megaball - {v}".format(v)
-    logging.info(f'Constructed winning_numbers string: {winning_numbers}')
+    logging.info(f"Constructed winning_numbers string: {winning_numbers.split(':')[0]}")
     return winning_numbers
 
-def megamillions():
+def get_megamillions():
     try:
         r = requests.get('https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData')
     except Exception as e:
