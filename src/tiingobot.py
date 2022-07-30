@@ -171,7 +171,7 @@ async def stonk_week(ctx, stock: str):
     name="megamillions", help="Get latest megamillions numbers"
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def megamillions(ctx, stock: str):
+async def megamillions(ctx):
     logger.info(f"{ctx.message.author} requested megamillions data")
     results = megamillions()
     logger.info(f"{ctx.message.author} got results {results}")
