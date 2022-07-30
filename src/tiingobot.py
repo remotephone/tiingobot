@@ -4,6 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
+from lottery import megamillions
 from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
 
@@ -164,6 +165,18 @@ async def stonk_week(ctx, stock: str):
     except Exception as e:
         logger.error(f"Something broke - {e}")
         await ctx.send("Something broke :(")
+
+
+@bot.command(
+    name="megamillions", help="Get latest megamillions numbers"
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def megamillions(ctx, stock: str):
+    logger.info(f"{ctx.message.author} requested megamillions data")
+    results = megamillions()
+    logger.info(f"{ctx.message.author} got results {results}")
+    await ctx.send(results)
+
 
 
 bot.run(TOKEN)
