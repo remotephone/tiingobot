@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 from lottery import megamillions
-from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly, get_wigglers, put_wigglers
+from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
 
 logger = logging.getLogger(__name__)
