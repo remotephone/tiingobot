@@ -1,29 +1,13 @@
 import logging
 import os
 import re
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 import requests
 from dateutil import tz
 from dateutil.parser import parse
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
-fhandler.setLevel(logging.ERROR)
-fhandler.setFormatter(
-    logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
-    )
-)
-shandler = logging.StreamHandler()
-shandler.setFormatter(
-    logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
-    )
-)
-logger.addHandler(fhandler)
-logger.addHandler(shandler)
+logger = logging.getLogger("tiingobot_logger")
 
 
 def validate_stonk(stock):
@@ -45,7 +29,7 @@ def is_new(time):
     only seems to do that with timestamps during trading hours, otherwise Tiingo
     truncates the milliseconds to an iso compatible length"""
     try:
-        if time != None:
+        if time is not None:
             dtobj = parse(time)
             tz_info = dtobj.tzinfo
             if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
@@ -93,7 +77,7 @@ def get_stocks(stock):
         clean_stock["Open"] = validstock[0]["open"]
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
-        if validstock[0]["prevClose"] != None:
+        if validstock[0]["prevClose"] is not None:
             clean_stock[
                 "% Change since last close"
             ] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
@@ -145,7 +129,7 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock["prevClose"] != None:
+            if stock["prevClose"] is not None:
                 clean_stock["\U0001F680"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -213,7 +197,7 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock["prevClose"] != None:
+            if stock["prevClose"] is not None:
                 clean_stock["\U0001F4A5"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -330,7 +314,7 @@ def get_stocks_weekly(stock):
 
     today = datetime.today()
     today = today.replace(tzinfo=None)
-    
+
     try:
         currentdate = prev_weekday(today)
         day, latest_price = get_stock_on_day(valid_stock, currentdate)

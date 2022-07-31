@@ -8,7 +8,8 @@ from lottery import get_megamillions
 from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger("tiingobot_logger")
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 fhandler.setFormatter(
@@ -23,6 +24,7 @@ shandler.setFormatter(
         "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
     )
 )
+shandler.setLevel(logging.INFO)
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
@@ -49,7 +51,7 @@ async def on_command_error(error, ctx):
 
 @bot.command(name="stonkshelp", help="return help", pass_context=True)
 async def stonkshelp(ctx):
-    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols. 
+    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols.
 10 second cooldown enforced, and no funny business.
 Supported commands:
 !stonkshelp - you're looking at it

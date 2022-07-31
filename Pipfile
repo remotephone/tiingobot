@@ -29,12 +29,15 @@ urllib3 = "==1.26.9"
 websockets = "==10.3"
 yarl = "==1.7.2"
 pip-upgrader = "*"
+flake8 = "*"
+autoflake8 = "*"
+pytest = "*"
 
 [dev-packages]
 black = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10.1"
 
 [pipenv]
 allow_prereleases = true
