@@ -9,6 +9,7 @@ from dateutil.parser import parse
 
 logger = logging.getLogger("tiingobot_logger")
 
+
 def validate_stonk(crypto):
     if re.search(r"^[A-Za-z0-9][\S]{0,15}$", crypto):
         logger.info(f"validated {crypto}")
@@ -61,7 +62,11 @@ def get_crypto(crypto):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validcrypto = []
     # This returns a list of dictionaries with each item a crypto
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0,
+    # 'last': 123.99}]
 
     clean_crypto = {}
 

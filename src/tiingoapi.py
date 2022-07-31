@@ -62,7 +62,10 @@ def get_stocks(stock):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validstock = []
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
 
     clean_stock = {}
 
@@ -265,7 +268,9 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
-            logger.info(f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}")
+            logger.info(
+                f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}"
+            )
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -276,7 +281,11 @@ def get_stock_on_day(valid_stock, day):
         price_at_day = None
     logger.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0,
+    # 'last': 123.99}]
     return day, price_at_day
 
 

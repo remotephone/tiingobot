@@ -55,12 +55,13 @@ async def stonkshelp(ctx):
 10 second cooldown enforced, and no funny business.
 Supported commands:
 !stonkshelp - you're looking at it
-!stonks <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/iex
-!stonk_week <ticker> - gimme a ticker, I'll tell you how it did over the last week. no funny business - https://api.tiingo.com/documentation/iex
-!crypto <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/crypto
+!stonks <ticker> - gimme a ticker, I'll look it up. no funny business
+!stonk_week <ticker> - gimme a ticker, I'll tell you how it did over the last week. no funny business
+!crypto <ticker> - gimme a ticker, I'll look it up. no funny business
 !stonkest - gimme the stonkingest stonks of the day (most positive % change)
 !stankest - gimme the stankingest stonks of the day (most negative % change)
-    (These last two omit stocks worth less than $1)"""
+(These last two omit stocks worth less than $1)
+See https://api.tiingo.com/documentation for tiingo API docs"""
     logger.info(f"{ctx.message.author} requested help")
     await ctx.send(helpmsg)
 

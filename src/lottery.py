@@ -20,7 +20,7 @@ def process_results(results):
                 winning_numbers += str(v) + " - "
             if k == "MBall":
                 winning_numbers += f"Megaball - {v}".format(v)
-        break # we only want to do this once
+        break  # we only want to do this once
     logging.info(f"Constructed winning_numbers string: {winning_numbers.split(':')[0]}")
     return winning_numbers
 
@@ -50,6 +50,6 @@ def get_megamillions():
         parsed_results = parse_results(r)
     else:
         return r
-    
+
     processed_results = process_results(parsed_results)
     return processed_results
