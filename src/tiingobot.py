@@ -8,7 +8,8 @@ from lottery import get_megamillions
 from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger("tiingobot_logger")
 logger.setLevel(logging.DEBUG)
 fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
 fhandler.setFormatter(
@@ -23,6 +24,7 @@ shandler.setFormatter(
         "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
     )
 )
+shandler.setLevel(logging.INFO)
 logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
@@ -49,16 +51,17 @@ async def on_command_error(error, ctx):
 
 @bot.command(name="stonkshelp", help="return help", pass_context=True)
 async def stonkshelp(ctx):
-    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols. 
+    helpmsg = """Gimme a stonk ticker, I only accept 4 character symbols.
 10 second cooldown enforced, and no funny business.
 Supported commands:
 !stonkshelp - you're looking at it
-!stonks <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/iex
-!stonk_week <ticker> - gimme a ticker, I'll tell you how it did over the last week. no funny business - https://api.tiingo.com/documentation/iex
-!crypto <ticker> - gimme a ticker, I'll look it up. no funny business - https://api.tiingo.com/documentation/crypto
+!stonks <ticker> - gimme a ticker, I'll look it up. no funny business
+!stonk_week <ticker> - gimme a ticker, I'll tell you how it did over the last week. no funny business
+!crypto <ticker> - gimme a ticker, I'll look it up. no funny business
 !stonkest - gimme the stonkingest stonks of the day (most positive % change)
 !stankest - gimme the stankingest stonks of the day (most negative % change)
-    (These last two omit stocks worth less than $1)"""
+(These last two omit stocks worth less than $1)
+See https://api.tiingo.com/documentation for tiingo API docs"""
     logger.info(f"{ctx.message.author} requested help")
     await ctx.send(helpmsg)
 

@@ -1,29 +1,13 @@
 import logging
 import os
 import re
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 import requests
 from dateutil import tz
 from dateutil.parser import parse
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
-fhandler.setLevel(logging.ERROR)
-fhandler.setFormatter(
-    logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
-    )
-)
-shandler = logging.StreamHandler()
-shandler.setFormatter(
-    logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: {%(pathname)s:%(lineno)d}: %(message)s"
-    )
-)
-logger.addHandler(fhandler)
-logger.addHandler(shandler)
+logger = logging.getLogger("tiingobot_logger")
 
 
 def validate_stonk(stock):
@@ -45,7 +29,7 @@ def is_new(time):
     only seems to do that with timestamps during trading hours, otherwise Tiingo
     truncates the milliseconds to an iso compatible length"""
     try:
-        if time != None:
+        if time is not None:
             dtobj = parse(time)
             tz_info = dtobj.tzinfo
             if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
@@ -78,7 +62,10 @@ def get_stocks(stock):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validstock = []
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
 
     clean_stock = {}
 
@@ -93,7 +80,7 @@ def get_stocks(stock):
         clean_stock["Open"] = validstock[0]["open"]
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
-        if validstock[0]["prevClose"] != None:
+        if validstock[0]["prevClose"] is not None:
             clean_stock[
                 "% Change since last close"
             ] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
@@ -145,7 +132,7 @@ def get_stonkest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock["prevClose"] != None:
+            if stock["prevClose"] is not None:
                 clean_stock["\U0001F680"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -213,7 +200,7 @@ def get_stankest():
         clean_stock["Most Recent Price"] = stock["last"]
         clean_stock["Open"] = stock["open"]
         try:
-            if stock["prevClose"] != None:
+            if stock["prevClose"] is not None:
                 clean_stock["\U0001F4A5"] = round(
                     (
                         (float(stock["last"]) - float(stock["prevClose"]))
@@ -281,7 +268,9 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
-            logger.info(f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}")
+            logger.info(
+                f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}"
+            )
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -292,7 +281,11 @@ def get_stock_on_day(valid_stock, day):
         price_at_day = None
     logger.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0,
+    # 'last': 123.99}]
     return day, price_at_day
 
 
@@ -330,7 +323,7 @@ def get_stocks_weekly(stock):
 
     today = datetime.today()
     today = today.replace(tzinfo=None)
-    
+
     try:
         currentdate = prev_weekday(today)
         day, latest_price = get_stock_on_day(valid_stock, currentdate)

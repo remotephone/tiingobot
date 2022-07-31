@@ -3,19 +3,7 @@ import re
 import json
 import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
-fhandler.setLevel(logging.ERROR)
-fhandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
-)
-shandler = logging.StreamHandler()
-shandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
-)
-logger.addHandler(fhandler)
-logger.addHandler(shandler)
+logger = logging.getLogger("tiingobot_logger")
 
 
 def process_results(results):
@@ -24,7 +12,7 @@ def process_results(results):
         winning_numbers = ""
         drawing = json.loads(result)
         results = drawing['Drawing']
-        for k,v in results.items():
+        for k, v in results.items():
             if k == "PlayDate":
                 logger.info(f'Results for date: {v}')
                 winning_numbers = f"Winning Numbers for {v.split('T')[0]}:\n".format(v)
@@ -32,13 +20,36 @@ def process_results(results):
                 winning_numbers += str(v) + " - "
             if k == "MBall":
                 winning_numbers += f"Megaball - {v}".format(v)
+        break  # we only want to do this once
     logging.info(f"Constructed winning_numbers string: {winning_numbers.split(':')[0]}")
     return winning_numbers
 
-def get_megamillions():
+
+def make_web_request() -> tuple[str, int]:
     try:
         r = requests.get('https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData')
+        status = r.status_code
+        r.raise_for_status()
+        logging.info('Successfully connected to endpoint')
     except Exception as e:
         logger.error(f"Failed to connect to megamillions endpoint. Reason: {e}")
-    results = re.findall(r'{.*}', r.text)
-    return process_results(results)
+        return e, status
+    return r, status
+
+
+def parse_results(results):
+    # The endpoint returns a json string inside xml ?????
+    # I hate that, so I just regex it out
+    parsed_results = re.findall(r'{.*}', results.text)
+    return parsed_results
+
+
+def get_megamillions():
+    r, status = make_web_request()
+    if status == 200:
+        parsed_results = parse_results(r)
+    else:
+        return r
+
+    processed_results = process_results(parsed_results)
+    return processed_results

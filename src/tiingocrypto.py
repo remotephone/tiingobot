@@ -7,19 +7,7 @@ import requests
 from dateutil import tz
 from dateutil.parser import parse
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-fhandler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
-fhandler.setLevel(logging.ERROR)
-fhandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
-)
-shandler = logging.StreamHandler()
-shandler.setFormatter(
-    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
-)
-logger.addHandler(fhandler)
-logger.addHandler(shandler)
+logger = logging.getLogger("tiingobot_logger")
 
 
 def validate_stonk(crypto):
@@ -41,7 +29,7 @@ def is_new(time):
     only seems to do that with timestamps during trading hours, otherwise Tiingo
     truncates the milliseconds to an iso compatible length"""
     try:
-        if time != None:
+        if time is not None:
             dtobj = parse(time)
             tz_info = dtobj.tzinfo
             if (datetime.now(tz_info) - dtobj) < timedelta(days=3):
@@ -74,7 +62,11 @@ def get_crypto(crypto):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validcrypto = []
     # This returns a list of dictionaries with each item a crypto
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00', 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03, 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00', 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
+    # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
+    # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0,
+    # 'last': 123.99}]
 
     clean_crypto = {}
 
