@@ -7,6 +7,7 @@ from discord.ext import commands
 from lottery import get_megamillions
 from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
+from sparkle import give_sparkle
 
 
 logger = logging.getLogger("tiingobot_logger")
@@ -173,6 +174,7 @@ async def stonk_week(ctx, stock: str):
 @bot.command(
     name="megamillions", help="Get latest megamillions numbers"
 )
+@commands.cooldown(1, 10, commands.BucketType.user)
 async def megamillions(ctx):
     logger.info(f"{ctx.message.author} requested megamillions data")
     try:
@@ -182,6 +184,18 @@ async def megamillions(ctx):
         logger.error(f'no picks for you - {e}')
     logger.info(f"{ctx.message.author} got results {results.split(':')[0]}")
     await ctx.send(results)
+
+
+@bot.command(
+    name="sparkle", help="Sparkle a chat member"
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def sparkle(ctx, receiver: str):
+    logger.info(f"{ctx.message.author} sparkled {receiver}")
+    sparkle_count = give_sparkle(ctx.message.author, receiver )
+    sparkle_response = f"{ctx.message.author} sparkled {receiver}. They now have {sparkle_count} sparkles"
+    logger.info(sparkle_response)
+    await ctx.send(sparkle_response)
 
 
 bot.run(TOKEN)
