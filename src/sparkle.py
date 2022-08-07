@@ -28,4 +28,4 @@ def give_sparkle(giver: str, receiver: str) -> str:
         enable_cross_partition_query=True):
         sparkle_count = str(item)
         logger.info(f"Got {sparkle_count} sparkles for {receiver}")
-    return f"✨✨ @{receiver} has {sparkle_count} sparkles! ✨✨"
+    return f"✨✨ {receiver} has {sparkle_count} sparkles! ✨✨"
