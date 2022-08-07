@@ -194,7 +194,7 @@ async def sparkle(ctx):
     receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     logger.info(f"{ctx.message.author} sparkled {receiver}")
     sparkle_response = give_sparkle(ctx.message.author, receiver)
-    sparkle_response = f"@{ctx.message.author} sparkled {receiver}.\n  {sparkle_response}"
+    sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
 
