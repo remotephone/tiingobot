@@ -32,7 +32,7 @@ pip-upgrader = "*"
 flake8 = "*"
 autoflake8 = "*"
 pytest = "*"
-azure-cosmos = "*"
+azure-cosmos = "==4.3.0"
 
 [dev-packages]
 black = "*"
