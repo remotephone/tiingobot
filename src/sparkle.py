@@ -6,10 +6,10 @@ from azure.cosmos import CosmosClient
 
 logger = logging.getLogger("tiingobot_logger")
 
-
+# giver is not a string, not sure what it is
 def give_sparkle(giver: str, receiver: str) -> str:
     client = CosmosClient(os.environ['COSMOS_URI'], credential=os.environ['COSMOS_KEY'])
-
+    giver = str(giver)
     database = client.get_database_client(os.environ['DATABASE_NAME'])
     container = database.get_container_client(os.environ['CONTAINER_NAME'])
     try:
