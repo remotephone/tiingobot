@@ -190,10 +190,10 @@ async def megamillions(ctx):
     name="sparkle", help="Sparkle a chat member"
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def sparkle(ctx, receiver: str):
-    logger.info(f"{ctx.message.author} sparkled {receiver}")
-    sparkle_response = give_sparkle(ctx.message.author, receiver )
-    sparkle_response = f"@{ctx.message.author} sparkled {receiver}.\n  {sparkle_response}"
+async def sparkle(ctx):
+    logger.info(f"{ctx.message.author} sparkled {ctx.message.mentions[0].name}")
+    sparkle_response = give_sparkle(ctx.message.author, ctx.message.mentions[0].name)
+    sparkle_response = f"@{ctx.message.author} sparkled {ctx.message.mentions[0].name}.\n  {sparkle_response}"
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
 
