@@ -29,3 +29,18 @@ def give_sparkle(giver: str, receiver: str) -> str:
         sparkle_count = str(item)
         logger.info(f"Got {sparkle_count} sparkles for {receiver}")
     return f"✨✨ {receiver} has {sparkle_count} sparkles! ✨✨"
+
+def get_leaderboard() -> str:
+    client = CosmosClient(os.environ['COSMOS_URI'], credential=os.environ['COSMOS_KEY'])
+    giver = str(giver)
+    database = client.get_database_client(os.environ['DATABASE_NAME'])
+    container = database.get_container_client(os.environ['CONTAINER_NAME'])
+
+    response = "✨✨Sparkle Leaderboard✨✨\n"
+    for item in container.query_items(
+        query=f'SELECT TOP 3 COUNT(1) AS Sparkles, c.receiver AS Sparkled FROM sparkledb c GROUP BY c.receiver',
+        enable_cross_partition_query=True):
+        response += f"{item.get('Sparkled', 'Everyone Else')} has ✨✨{item.get('Sparkles', '0')}✨✨\n"
+        logger.info(f"returning {response}")
+    return response
+

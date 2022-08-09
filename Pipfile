@@ -33,6 +33,7 @@ flake8 = "*"
 autoflake8 = "*"
 pytest = "*"
 azure-cosmos = "==4.3.0"
+replicate = "*"
 
 [dev-packages]
 black = "*"

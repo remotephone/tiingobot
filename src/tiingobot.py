@@ -7,7 +7,7 @@ from discord.ext import commands
 from lottery import get_megamillions
 from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
 from tiingocrypto import get_crypto
-from sparkle import give_sparkle
+from sparkle import give_sparkle, get_leaderboard
 
 
 logger = logging.getLogger("tiingobot_logger")
@@ -194,6 +194,17 @@ async def sparkle(ctx):
     receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     logger.info(f"{ctx.message.author} sparkled {receiver}")
     sparkle_response = give_sparkle(ctx.message.author, receiver)
+    sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
+    logger.info(sparkle_response)
+    await ctx.send(sparkle_response)
+
+
+@bot.command(
+    name="sparkle_leaderboard", help="See the top 3 sparklers"
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def sparkle_leaderboard(ctx):
+    logger.info(f"{ctx.message.author} requested the leaderboard")
     sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
