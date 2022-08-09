@@ -205,7 +205,7 @@ async def sparkle(ctx):
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def sparkle_leaderboard(ctx):
     logger.info(f"{ctx.message.author} requested the leaderboard")
-    sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
+    sparkle_response = get_leaderboard()
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
 

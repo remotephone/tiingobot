@@ -6,12 +6,18 @@ from azure.cosmos import CosmosClient
 
 logger = logging.getLogger("tiingobot_logger")
 
-# giver is not a string, not sure what it is
-def give_sparkle(giver: str, receiver: str) -> str:
+
+def db_connection():
     client = CosmosClient(os.environ['COSMOS_URI'], credential=os.environ['COSMOS_KEY'])
-    giver = str(giver)
     database = client.get_database_client(os.environ['DATABASE_NAME'])
     container = database.get_container_client(os.environ['CONTAINER_NAME'])
+
+# giver is not a string, not sure what it is
+def give_sparkle(giver: str, receiver: str) -> str:
+
+    giver = str(giver)
+    container = db_connection()
+
     try:
         container.upsert_item({
                 'id': str(uuid.uuid4()),
@@ -31,10 +37,7 @@ def give_sparkle(giver: str, receiver: str) -> str:
     return f"✨✨ {receiver} has {sparkle_count} sparkles! ✨✨"
 
 def get_leaderboard() -> str:
-    client = CosmosClient(os.environ['COSMOS_URI'], credential=os.environ['COSMOS_KEY'])
-    giver = str(giver)
-    database = client.get_database_client(os.environ['DATABASE_NAME'])
-    container = database.get_container_client(os.environ['CONTAINER_NAME'])
+    container = db_connection()
 
     response = "✨✨Sparkle Leaderboard✨✨\n"
     for item in container.query_items(
