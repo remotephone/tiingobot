@@ -39,7 +39,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_command_error(error, ctx):
+async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await bot.send_message(
             ctx.message.channel,

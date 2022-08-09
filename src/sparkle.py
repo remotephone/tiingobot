@@ -1,6 +1,7 @@
+import logging
 import os
 import uuid
-import logging
+from collections import Counter
 
 from azure.cosmos import CosmosClient
 
@@ -41,11 +42,11 @@ def give_sparkle(giver: str, receiver: str) -> str:
 
 def get_leaderboard() -> str:
     container = db_connection()
-
-    response = "✨✨Sparkle Leaderboard✨✨\n"
-    for item in container.query_items(
-            query='SELECT TOP 3 COUNT(1) AS Sparkles, c.receiver AS Sparkled FROM sparkledb c GROUP BY c.receiver',
-            enable_cross_partition_query=True):
-        response += f"{item.get('Sparkled', 'Everyone Else')} has ✨✨{item.get('Sparkles', '0')}✨✨\n"
-        logger.info(f"returning {response}")
+    response = "✨✨  Sparkle Leaderboard  ✨✨\n"
+    results = container.query_items(
+            query='SELECT sparkledb.receiver FROM sparkledb',
+            enable_cross_partition_query=True)
+    results = Counter(x['receiver'] for x in results).most_common()[0:3]
+    for result in results:
+        response += f"`@{result[0]}` has ✨✨{result[1]}✨✨\n"
     return response
