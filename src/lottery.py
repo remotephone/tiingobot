@@ -8,19 +8,17 @@ logger = logging.getLogger("tiingobot_logger")
 
 def process_results(results):
     logger.info(f'Got {len(results)} results')
-    for result in results:
-        winning_numbers = ""
-        drawing = json.loads(result)
-        results = drawing['Drawing']
-        for k, v in results.items():
-            if k == "PlayDate":
-                logger.info(f'Results for date: {v}')
-                winning_numbers = f"Winning Numbers for {v.split('T')[0]}:\n".format(v)
-            if 'N' in k:
-                winning_numbers += str(v) + " - "
-            if k == "MBall":
-                winning_numbers += f"Megaball - {v}".format(v)
-        break  # we only want to do this once
+    winning_numbers = ""
+    drawing = json.loads(results)
+    results = drawing['Drawing']
+    for k, v in results.items():
+        if k == "PlayDate":
+            logger.info(f'Results for date: {v}')
+            winning_numbers = f"Winning Numbers for {v.split('T')[0]}:\n".format(v)
+        if 'N' in k:
+            winning_numbers += str(v) + " - "
+        if k == "MBall":
+            winning_numbers += f"Megaball - {v}".format(v)
     logging.info(f"Constructed winning_numbers string: {winning_numbers.split(':')[0]}")
     return winning_numbers
 
@@ -41,7 +39,7 @@ def parse_results(results):
     # The endpoint returns a json string inside xml ?????
     # I hate that, so I just regex it out
     parsed_results = re.findall(r'{.*}', results.text)
-    return parsed_results
+    return parsed_results[0]
 
 
 def get_megamillions():
