@@ -171,9 +171,7 @@ async def stonk_week(ctx, stock: str):
         await ctx.send("Something broke :(")
 
 
-@bot.command(
-    name="megamillions", help="Get latest megamillions numbers"
-)
+@bot.command(name="megamillions", help="Get latest megamillions numbers")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def megamillions(ctx):
     logger.info(f"{ctx.message.author} requested megamillions data")
@@ -181,27 +179,27 @@ async def megamillions(ctx):
         results = get_megamillions()
         logger.info(f"got {results}")
     except Exception as e:
-        logger.error(f'no picks for you - {e}')
+        logger.error(f"no picks for you - {e}")
     logger.info(f"{ctx.message.author} got results {results.split(':')[0]}")
     await ctx.send(results)
 
 
-@bot.command(
-    name="sparkle", help="Sparkle a chat member"
-)
+@bot.command(name="sparkle", help="Sparkle a chat member")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def sparkle(ctx):
-    receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
+    receiver = (
+        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
+    )
     logger.info(f"{ctx.message.author} sparkled {receiver}")
     sparkle_response = give_sparkle(ctx.message.author, receiver)
-    sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
+    sparkle_response = (
+        f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
+    )
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
 
 
-@bot.command(
-    name="sparkle_leaderboard", help="See the top 3 sparklers"
-)
+@bot.command(name="sparkle_leaderboard", help="See the top 3 sparklers")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def sparkle_leaderboard(ctx):
     logger.info(f"{ctx.message.author} requested the leaderboard")

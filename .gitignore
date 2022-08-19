@@ -2,6 +2,7 @@ docker-compose.yml
 tiingo.log
 .envtest.py
 test.py
+*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
