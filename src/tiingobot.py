@@ -30,7 +30,7 @@ logger.addHandler(fhandler)
 logger.addHandler(shandler)
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-intents = discord.Intents(messages=True, guilds=True, reactions=True)
+intents = discord.Intents(messages=True, guilds=True, message_content=True)
 bot = discord.ext.commands.Bot(intents=intents, command_prefix="!")
 
 
@@ -42,10 +42,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
-        await bot.send_message(
-            ctx.message.channel,
-            content=f"This command is on a {error.retry_after} cooldown",
-        )
+        await ctx.send(f"This command is on a {int(error.retry_after)} second cooldown, please wait")
     logger.info(
         error
     )  # re-raise the error so all the errors will still show up in console
