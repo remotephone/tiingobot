@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions
-from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_weekly
+from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_monthly, get_stocks_weekly
 from tiingocrypto import get_crypto
 from sparkle import give_sparkle, get_leaderboard
 
