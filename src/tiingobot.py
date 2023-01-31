@@ -5,7 +5,13 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions
-from tiingoapi import get_stankest, get_stocks, get_stonkest, get_stocks_monthly, get_stocks_weekly
+from tiingoapi import (
+    get_stankest,
+    get_stocks,
+    get_stonkest,
+    get_stocks_monthly,
+    get_stocks_weekly,
+)
 from tiingocrypto import get_crypto
 from sparkle import give_sparkle, get_leaderboard
 
@@ -42,7 +48,9 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(f"This command is on a {int(error.retry_after)} second cooldown, please wait")
+        await ctx.send(
+            f"This command is on a {int(error.retry_after)} second cooldown, please wait"
+        )
     logger.info(
         error
     )  # re-raise the error so all the errors will still show up in console
@@ -152,7 +160,7 @@ async def stankest(ctx):
 @bot.command(
     name="stonk_week",
     help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
-    aliases=["stonks_week", "stonk_weekly", "stonks_weekly", "weekly"]
+    aliases=["stonks_week", "stonk_weekly", "stonks_weekly", "weekly"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_week(ctx, stock: str):
@@ -173,7 +181,7 @@ async def stonk_week(ctx, stock: str):
 @bot.command(
     name="stonk_month",
     help="Returns a result of stonk over a month, defaults to GME if trickery is afoot",
-    aliases=["stonks_month", "stonk_monthly", "stonks_monthly", "monthly"]
+    aliases=["stonks_month", "stonk_monthly", "stonks_monthly", "monthly"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_month(ctx, stock: str):

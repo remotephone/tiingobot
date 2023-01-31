@@ -12,11 +12,176 @@ logger = logging.getLogger("tiingobot_logger")
 
 
 def get_meme_stocks():
+    """
+    Pull most recently memed stocks from reddit r/wallstreetbets.
+    If this site goes down just use a stored list. 
+    """
     stonks = []
-    r = requests.get('https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json')
-    for x in r.json()['data']:
-        stonks.append(x[0])
+    try:
+        r = requests.get(
+            "https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json"
+        )
+        r.raise_for_status()
+        for x in r.json()["data"]:
+            stonks.append(x[0])
+    except:
+        stonks = [
+            "X",
+            "TSLA",
+            "FORD",
+            "SOFI",
+            "CVNA",
+            "AMZN",
+            "SNAP",
+            "PDT",
+            "AMD",
+            "AAPL",
+            "CC",
+            "NVDA",
+            "CAT",
+            "GDP",
+            "MSFT",
+            "SUM",
+            "JPM",
+            "PH",
+            "JBL",
+            "JP",
+            "SPOT",
+            "UNIT",
+            "AMC",
+            "BP",
+            "DTE",
+            "GM",
+            "GOOG",
+            "HOOD",
+            "MARA",
+            "NXPI",
+            "RAMP",
+            "RSI",
+            "WEN",
+            "AHH",
+            "BBQ",
+            "DAL",
+            "ES",
+            "FCF",
+            "GRAY",
+            "GS",
+            "ICON",
+            "IRL",
+            "JNJ",
+            "KEYS",
+            "LH",
+            "MAR",
+            "MEI",
+            "MO",
+            "NAT",
+            "NFH",
+            "NICK",
+            "OPT",
+            "PACE",
+            "PHD",
+            "PROS",
+            "REV",
+            "RIG",
+            "RIOT",
+            "SBUX",
+            "SHOP",
+            "SI",
+            "SIM",
+            "SNOW",
+            "SPCE",
+            "SPR",
+            "THY",
+            "TOPS",
+            "TREE",
+            "UPS",
+            "XOM",
+            "XP",
+            "AAL",
+            "AB",
+            "ADP",
+            "AFC",
+            "AFI",
+            "ALLY",
+            "AMER",
+            "ATV",
+            "BB",
+            "BJ",
+            "BODY",
+            "BWA",
+            "BYD",
+            "CAL",
+            "CCS",
+            "CHEF",
+            "CIG",
+            "CLOV",
+            "CUBE",
+            "DDOG",
+            "DEH",
+            "DIS",
+            "DISH",
+            "DK",
+            "DKNG",
+            "DOC",
+            "EBAY",
+            "FATE",
+            "FB",
+            "FROG",
+            "FSD",
+            "FT",
+            "GE",
+            "GME",
+            "GT",
+            "HA",
+            "HP",
+            "HPQ",
+            "HR",
+            "IBKR",
+            "IBM",
+            "INTC",
+            "IO",
+            "LAKE",
+            "LMT",
+            "LU",
+            "LYFT",
+            "MCD",
+            "MGM",
+            "MIST",
+            "MLM",
+            "MORN",
+            "MS",
+            "NEON",
+            "NFLX",
+            "NG",
+            "NYC",
+            "OFC",
+            "PB",
+            "PHAT",
+            "PTON",
+            "RICE",
+            "RIO",
+            "ROOT",
+            "SAN",
+            "SAND",
+            "STK",
+            "SUP",
+            "TAP",
+            "TDA",
+            "TH",
+            "TMO",
+            "TRU",
+            "TTM",
+            "UBER",
+            "UPST",
+            "USAT",
+            "VC",
+            "WEI",
+            "WIT",
+            "WRAP",
+            "WTI",
+        ]
     return stonks
+
 
 def validate_stonk(stock):
     if re.search(r"^[A-Za-z][\S]{0,4}$", stock):
@@ -307,7 +472,6 @@ def prev_weekday(adate):
         return adate - timedelta(days=_offsets[adate.weekday()])
 
 
-
 def get_stocks_weekly(stock):
     """return a stock quote, and the difference over the last week cleaned up
 
@@ -343,10 +507,14 @@ def get_stocks_weekly(stock):
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
-    difference = round((
-        (latest_price[0]["close"] - week_ago_price[0]["close"])
-        / week_ago_price[0]["close"]
-    ) * 100, 2)
+    difference = round(
+        (
+            (latest_price[0]["close"] - week_ago_price[0]["close"])
+            / week_ago_price[0]["close"]
+        )
+        * 100,
+        2,
+    )
 
     logger.info(f"Building response with difference {difference}...")
     clean_stock = {}
@@ -363,7 +531,6 @@ def get_stocks_weekly(stock):
         clean_stock["Mood"] = "\U0001F4C9"
     logger.info(f"Returning result {clean_stock}...")
     return clean_stock
-
 
 
 def get_stocks_monthly(stock):
@@ -401,10 +568,14 @@ def get_stocks_monthly(stock):
         logging.info(f"Got {latest_price} and {month_ago_price}")
     except Exception as e:
         logging.error(e)
-    difference = round((
-        (latest_price[0]["close"] - month_ago_price[0]["close"])
-        / month_ago_price[0]["close"]
-    ) * 100, 2)
+    difference = round(
+        (
+            (latest_price[0]["close"] - month_ago_price[0]["close"])
+            / month_ago_price[0]["close"]
+        )
+        * 100,
+        2,
+    )
 
     logger.info(f"Building response with difference {difference}...")
     clean_stock = {}

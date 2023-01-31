@@ -17,8 +17,8 @@ def test_lottery_endpoint_content():
 
 
 def test_results_processing():
-    p = Path(__file__).with_name('sample_megamillions.json')
-    with p.open('r') as f:
+    p = Path(__file__).with_name("sample_megamillions.json")
+    with p.open("r") as f:
         results = f.read()
     processed_results = process_results(results)
     assert "Winning Numbers for" in processed_results
