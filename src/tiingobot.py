@@ -169,6 +169,26 @@ async def stonk_week(ctx, stock: str):
         await ctx.send("Something broke :(")
 
 
+@bot.command(
+    name="stonk_month",
+    help="Returns a result of stonk over a month, defaults to GME if trickery is afoot",
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def stonk_month(ctx, stock: str):
+    logger.info(f"{ctx.message.author} requested stock {stock}")
+    try:
+        ticker = get_stocks_monthly(stock)
+        ticker_response = "Performance over month:\n"
+        logger.info(f"processing - {ticker_response}")
+        for k, v in ticker.items():
+            ticker_response += k + ": " + str(v) + "\n"
+        logger.info(f"{ctx.message.author} got info on {stock}")
+        await ctx.send(ticker_response)
+    except Exception as e:
+        logger.error(f"Something broke - {e}")
+        await ctx.send("Something broke :(")
+
+
 @bot.command(name="megamillions", help="Get latest megamillions numbers")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def megamillions(ctx):
