@@ -3,6 +3,7 @@ import os
 import re
 from datetime import datetime, timedelta
 
+import random
 import requests
 from dateutil import tz
 from dateutil.parser import parse
@@ -10,13 +11,22 @@ from dateutil.parser import parse
 logger = logging.getLogger("tiingobot_logger")
 
 
+def get_meme_stocks():
+    stonks = []
+    r = requests.get('https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json')
+    for x in r.json()['data']:
+        stonks.append(x[0])
+    return stonks
+
 def validate_stonk(stock):
     if re.search(r"^[A-Za-z][\S]{0,4}$", stock):
         logger.info(f"validated {stock}")
         return stock
     else:
+        random.seed(datetime.now().timestamp())
+        stock = random.choice(get_meme_stocks())
         logger.info(f"Failed to validate {str(stock)}")
-        return "gme"
+        return stock
 
 
 def is_new(time):
