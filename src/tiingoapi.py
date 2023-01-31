@@ -333,10 +333,10 @@ def get_stocks_weekly(stock):
         logging.info(f"Got {latest_price} and {week_ago_price}")
     except Exception as e:
         logging.error(e)
-    difference = (
+    difference = round((
         (latest_price[0]["close"] - week_ago_price[0]["close"])
         / week_ago_price[0]["close"]
-    ) * 100
+    ) * 100, 2)
 
     logger.info(f"Building response with difference {difference}...")
     clean_stock = {}
@@ -391,10 +391,10 @@ def get_stocks_monthly(stock):
         logging.info(f"Got {latest_price} and {month_ago_price}")
     except Exception as e:
         logging.error(e)
-    difference = (
+    difference = round((
         (latest_price[0]["close"] - month_ago_price[0]["close"])
         / month_ago_price[0]["close"]
-    ) * 100
+    ) * 100, 2)
 
     logger.info(f"Building response with difference {difference}...")
     clean_stock = {}
