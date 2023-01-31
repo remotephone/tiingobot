@@ -184,7 +184,7 @@ def get_meme_stocks():
 
 
 def validate_stonk(stock):
-    if re.search(r"^[A-Za-z][\S]{0,4}$", stock):
+    if re.match(r"^\$?[A-Za-z\.\/]{0,9}$", stock):
         logger.info(f"validated {stock}")
         return stock
     else:
