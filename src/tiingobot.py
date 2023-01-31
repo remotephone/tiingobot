@@ -79,7 +79,7 @@ See https://api.tiingo.com/documentation for tiingo API docs"""
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonks(ctx, stock: str):
     logger.info(f"{ctx.message.author} requested stock {stock}")
-    if stock.lower() is "greg":
+    if stock.lower() == "greg":
         await ctx.send("I love you Greg, please don't try to hurt me.")
     else:
         ticker = get_stocks(stock)
