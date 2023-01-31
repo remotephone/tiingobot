@@ -81,6 +81,7 @@ async def stonks(ctx, stock: str):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     if stock.lower() == "greg":
         await ctx.send("I love you Greg, please don't try to hurt me.")
+        return
     else:
         ticker = get_stocks(stock)
         ticker_response = ""
