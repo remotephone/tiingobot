@@ -152,6 +152,7 @@ async def stankest(ctx):
 @bot.command(
     name="stonk_week",
     help="Returns a result of stonk over a week, defaults to GME if trickery is afoot",
+    aliases=["stonks_week", "stonk_weekly", "stonks_weekly", "weekly"]
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_week(ctx, stock: str):
@@ -172,6 +173,7 @@ async def stonk_week(ctx, stock: str):
 @bot.command(
     name="stonk_month",
     help="Returns a result of stonk over a month, defaults to GME if trickery is afoot",
+    aliases=["stonks_month", "stonk_monthly", "stonks_monthly", "monthly"]
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_month(ctx, stock: str):
