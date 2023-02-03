@@ -17,7 +17,6 @@ def db_connection():
 
 # giver is not a string, not sure what it is
 def give_sparkle(giver: str, receiver: str) -> str:
-
     giver = str(giver)
     container = db_connection()
 

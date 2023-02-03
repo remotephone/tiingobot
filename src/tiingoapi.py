@@ -14,7 +14,7 @@ logger = logging.getLogger("tiingobot_logger")
 def get_meme_stocks():
     """
     Pull most recently memed stocks from reddit r/wallstreetbets.
-    If this site goes down just use a stored list. 
+    If this site goes down just use a stored list.
     """
     stonks = []
     try:

@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 
-from lottery import get_megamillions
+from lottery import get_megamillions, get_powerball
 from tiingoapi import (
     get_stankest,
     get_stocks,
@@ -209,6 +209,19 @@ async def megamillions(ctx):
     logger.info(f"{ctx.message.author} requested megamillions data")
     try:
         results = get_megamillions()
+        logger.info(f"got {results}")
+    except Exception as e:
+        logger.error(f"no picks for you - {e}")
+    logger.info(f"{ctx.message.author} got results {results.split(':')[0]}")
+    await ctx.send(results)
+
+
+@bot.command(name="powerball", help="Get latest powerball numbers")
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def powerball(ctx):
+    logger.info(f"{ctx.message.author} requested powerball data")
+    try:
+        results = get_powerball()
         logger.info(f"got {results}")
     except Exception as e:
         logger.error(f"no picks for you - {e}")
