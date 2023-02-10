@@ -78,7 +78,13 @@ See https://api.tiingo.com/documentation for tiingo API docs"""
     name="stonks", help="Return stock message, defaults to GME if trickery is afoot"
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def stonks(ctx, stock: str):
+async def stonks(
+    ctx,
+    stock: str = commands.parameter(
+        default="GME",
+        description="A stock ticker, don't try any trickery",
+    ),
+):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     if stock.lower() == "greg":
         await ctx.send("I love you Greg, please don't try to hurt me.")
@@ -96,7 +102,13 @@ async def stonks(ctx, stock: str):
     name="crypto", help="Return crypto message, defaults to btcusd if trickery is afoot"
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def crypto(ctx, crypto: str):
+async def crypto(
+    ctx,
+    crypto: str = commands.parameter(
+        default="BTCUSD",
+        description="A cryuto currency token ticker, don't try any trickery",
+    ),
+):
     logger.info(f"{ctx.message.author} requested crypto {crypto}")
     ticker = get_crypto(crypto)
     ticker_response = ""
@@ -168,7 +180,13 @@ async def stankest(ctx):
     aliases=["stonks_week", "stonk_weekly", "stonks_weekly", "weekly"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def stonk_week(ctx, stock: str):
+async def stonk_week(
+    ctx,
+    stock: str = commands.parameter(
+        default="GME",
+        description="A stock ticker, don't try any trickery",
+    ),
+):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     try:
         ticker = get_stocks_weekly(stock)
@@ -189,7 +207,13 @@ async def stonk_week(ctx, stock: str):
     aliases=["stonks_month", "stonk_monthly", "stonks_monthly", "monthly"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def stonk_month(ctx, stock: str):
+async def stonk_month(
+    ctx,
+    stock: str = commands.parameter(
+        default="GME",
+        description="A stock ticker, don't try any trickery",
+    ),
+):
     logger.info(f"{ctx.message.author} requested stock {stock}")
     try:
         ticker = get_stocks_monthly(stock)
@@ -257,9 +281,18 @@ async def sparkle_leaderboard(ctx):
     await ctx.send(sparkle_response)
 
 
-@bot.command(name="whats_my_refund", help="Provide your social security number and estimate your tax refund")
+@bot.command(
+    name="whats_my_refund",
+    help="Provide your social security number and estimate your tax refund",
+)
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def tax_refund(ctx, ssn: str):
+async def tax_refund(
+    ctx,
+    ssn: str = commands.parameter(
+        default="100",
+        description="Your real social security number, please do not use a fake",
+    ),
+):
     logger.info(f"{ctx.message.author} requested their tax refund")
     try:
         sparkle_response = get_tax_refund(ssn)
