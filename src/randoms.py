@@ -3,8 +3,8 @@ import random
 def get_tax_refund(ssn):
     ssn = ssn.replace('-','')
     try:
-        minimum = -int(ssn) * 100
-        maximum = int(ssn) * 100
+        minimum = -int(ssn) * 10
+        maximum = int(ssn) * 10
         random.seed()
         refund = random.randint(minimum, maximum)
         print(refund)
