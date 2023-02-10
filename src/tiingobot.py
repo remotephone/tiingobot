@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions, get_powerball
+from randoms import get_tax_refund
 from tiingoapi import (
     get_stankest,
     get_stocks,
@@ -251,6 +252,18 @@ async def sparkle_leaderboard(ctx):
     try:
         sparkle_response = get_leaderboard()
         logger.info("Got sparkle_response, posting to discord")
+    except Exception as e:
+        logger.error(f"something happened - {e}")
+    await ctx.send(sparkle_response)
+
+
+@bot.command(name="whats_my_refund", help="Provide your social security number and estimate your tax refund")
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def tax_refund(ctx, ssn: str):
+    logger.info(f"{ctx.message.author} requested their tax refund")
+    try:
+        sparkle_response = get_tax_refund(ssn)
+        logger.info("successfully returned tax refund")
     except Exception as e:
         logger.error(f"something happened - {e}")
     await ctx.send(sparkle_response)
