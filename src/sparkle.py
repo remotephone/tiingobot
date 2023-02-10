@@ -17,9 +17,11 @@ def db_connection():
 
 # giver is not a string, not sure what it is
 def give_sparkle(giver: str, receiver: str) -> str:
-    giver = str(giver)
-    container = db_connection()
-
+    try:
+        giver = str(giver)
+        container = db_connection()
+    except Exception as e:
+        logger.error(f'Failed to connect to db - {e}')
     try:
         container.upsert_item(
             {"id": str(uuid.uuid4()), "giver": giver, "receiver": receiver}

@@ -1,6 +1,7 @@
 import random
 
 def get_tax_refund(ssn):
+    ssn = ssn.replace('-','')
     try:
         minimum = -int(ssn) * 100
         maximum = int(ssn) * 100

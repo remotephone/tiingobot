@@ -6,3 +6,7 @@ def test_refund_works_invalid():
 
 def test_refund_works_valid():
     assert "You owe $" or "Your refund is $" in get_tax_refund('1')
+
+
+def test_refund_works_valid_with_dashes():
+    assert "You owe $" or "Your refund is $" in get_tax_refund('123-45-6789')
