@@ -10,3 +10,7 @@ def test_refund_works_valid():
 
 def test_refund_works_valid_with_dashes():
     assert "You owe $" or "Your refund is $" in get_tax_refund('123-45-6789')
+
+
+def test_empty_social():
+    assert get_tax_refund() == "Please provide your real, honest social security number"

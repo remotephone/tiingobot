@@ -1,7 +1,9 @@
 import random
 
 
-def get_tax_refund(ssn):
+def get_tax_refund(ssn: str = None):
+    if not ssn:
+        return 'Please provide your real, honest social security number'
     ssn = ssn.replace("-", "")
     try:
         minimum = -int(ssn) * 10

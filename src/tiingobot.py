@@ -289,7 +289,7 @@ async def sparkle_leaderboard(ctx):
 async def tax_refund(
     ctx,
     ssn: str = commands.parameter(
-        default="100",
+        default=None,
         description="Your real social security number, please do not use a fake",
     ),
 ):
