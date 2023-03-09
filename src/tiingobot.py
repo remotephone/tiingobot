@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions, get_powerball
-from randoms import get_tax_refund
+from randoms import get_artificial_intelligence, get_tax_refund
 from tiingoapi import (
     get_stankest,
     get_stocks,
@@ -300,6 +300,21 @@ async def tax_refund(
     except Exception as e:
         logger.error(f"something happened - {e}")
     await ctx.send(sparkle_response)
+
+
+@bot.command(
+    name="ai",
+    help="Tap into the unlimited power of AI to generate brilliant insight and advice",
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def ai(ctx):
+    logger.info(f"{ctx.message.author} requested artificial intelligence")
+    try:
+        ai_response = get_artificial_intelligence()
+        logger.info("successfully got AI")
+    except Exception as e:
+        logger.error(f"something happened - {e}")
+    await ctx.send(ai_response)
 
 
 bot.run(TOKEN)

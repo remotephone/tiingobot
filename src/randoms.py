@@ -1,9 +1,12 @@
+import json
 import random
+
+import requests
 
 
 def get_tax_refund(ssn: str = None):
     if not ssn:
-        return 'Please provide your real, honest social security number'
+        return "Please provide your real, honest social security number"
     ssn = ssn.replace("-", "")
     try:
         minimum = -int(ssn) * 10
@@ -17,3 +20,10 @@ def get_tax_refund(ssn: str = None):
             return f"You owe ${str(abs(refund))}"
     except ValueError as e:
         return "You owe one million dollars"
+
+
+def get_artificial_intelligence():
+    response = requests.get("https://api.adviceslip.com/advice")
+    json_data = json.loads(response.text)
+    quote = json_data["slip"]["advice"]
+    return quote
