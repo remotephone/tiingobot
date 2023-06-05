@@ -1,6 +1,7 @@
 import json
 import random
 
+import openai
 import requests
 
 
@@ -27,3 +28,14 @@ def get_artificial_intelligence():
     json_data = json.loads(response.text)
     quote = json_data["slip"]["advice"]
     return quote
+
+
+def get_artificial_intelligence_v2(question):
+    # Use the chatGPT free api to ask a question
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", messages=[{"role": "user", "content": question}]
+    )
+
+    return completion.choices[0].message.content

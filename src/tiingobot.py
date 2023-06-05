@@ -5,7 +5,8 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions, get_powerball
-from randoms import get_artificial_intelligence, get_tax_refund
+from randoms import get_artificial_intelligence, get_artificial_intelligence_v2, get_tax_refund
+from requestor import make_request
 from tiingoapi import (
     get_stankest,
     get_stocks,
@@ -315,6 +316,23 @@ async def ai(ctx):
     except Exception as e:
         logger.error(f"something happened - {e}")
     await ctx.send(ai_response)
+
+
+@bot.command(
+    name="aiv2",
+    help='Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total',
+)
+@commands.cooldown(3, 60)
+async def new_issue(ctx, *, arg):
+    try:
+        # parse the arguements
+        response = get_artificial_intelligence_v2(arg)
+        logger.info(f"Bot response: {response}")
+        # send the results of the github issue creation to the channel
+        await ctx.send(f"{response}")
+    except KeyError as e:
+        logger.warning(f"KeyError: {e}")
+        await ctx.send(f"KeyError: {e}")
 
 
 bot.run(TOKEN)
