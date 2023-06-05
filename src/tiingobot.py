@@ -10,7 +10,6 @@ from randoms import (
     get_artificial_intelligence_v2,
     get_tax_refund,
 )
-from requestor import make_request
 from tiingoapi import (
     get_stankest,
     get_stocks,
