@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 
 from randoms import get_artificial_intelligence, get_tax_refund
 
@@ -18,9 +18,11 @@ def test_refund_works_valid_with_dashes():
 def test_empty_social():
     assert get_tax_refund() == "Please provide your real, honest social security number"
 
+
 @pytest.mark.ai
 def test_ai_format():
     assert isinstance(get_artificial_intelligence(), str)
+
 
 @pytest.mark.ai
 def test_ai_length():

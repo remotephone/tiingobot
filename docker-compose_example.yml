@@ -6,6 +6,7 @@ services:
     environment:
       DISCORD_TOKEN: "xxxxxx"
       TIINGO_TOKEN: "xxxxx"
+      OPENAI_API_KEY: "xxxxx"
     deploy:
         restart_policy:
             condition: any
