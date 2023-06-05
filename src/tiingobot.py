@@ -5,7 +5,11 @@ import discord
 from discord.ext import commands
 
 from lottery import get_megamillions, get_powerball
-from randoms import get_artificial_intelligence, get_artificial_intelligence_v2, get_tax_refund
+from randoms import (
+    get_artificial_intelligence,
+    get_artificial_intelligence_v2,
+    get_tax_refund,
+)
 from requestor import make_request
 from tiingoapi import (
     get_stankest,
@@ -320,7 +324,7 @@ async def ai(ctx):
 
 @bot.command(
     name="aiv2",
-    help='Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total',
+    help="Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total",
 )
 @commands.cooldown(3, 60)
 async def new_issue(ctx, *, arg):
