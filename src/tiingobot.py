@@ -1,8 +1,11 @@
 import logging
 import os
+import re
 
 import discord
 from discord.ext import commands
+
+from complaints import complaint_lodger
 
 from lottery import get_megamillions, get_powerball
 from randoms import (
@@ -10,6 +13,7 @@ from randoms import (
     get_artificial_intelligence_v2,
     get_tax_refund,
 )
+
 from tiingoapi import (
     get_stankest,
     get_stocks,
@@ -323,19 +327,56 @@ async def ai(ctx):
 
 @bot.command(
     name="aiv2",
-    help="Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total",
+    help="Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total, 500 character limit",
 )
 @commands.cooldown(3, 60)
 async def new_issue(ctx, *, arg):
+    if len(arg) > 600:
+        logger.error(f"Message too long: {len(arg)}")
+        await ctx.send("Please keep your message under 500 characters, no trickery")
     try:
         # parse the arguements
-        response = get_artificial_intelligence_v2(arg)
+        response = get_artificial_intelligence_v2(ctx.message.author, arg)
         logger.info(f"Bot response: {response}")
-        # send the results of the github issue creation to the channel
         await ctx.send(f"{response}")
     except KeyError as e:
         logger.warning(f"KeyError: {e}")
-        await ctx.send(f"KeyError: {e}")
+        await ctx.send(f"An error occurred: {e}")
+
+
+@bot.command(
+    name="lodge_a_complaint",
+    help='Lodge a complaint about a user, expected format `!lodge_a_complaint @user "complaint in many words". Surround your message in double quotes. Rate limited to 1x per day per user, 1000 character limit',
+)
+@commands.cooldown(1, 86400, commands.BucketType.user)
+async def lodge_a_complaint(ctx, *, arg):
+    receiver = (
+        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
+    )
+    # complaint is the rest of the message, where the message is !lodge_a_complaint @user complaint
+    complaint = arg.split(" ", 1)[1]
+    logger.info(f"{ctx.message.author} lodged a complaint against {receiver}")
+    complaint_response = complaint_lodger(ctx.message.author, receiver, complaint)
+    logger.info(complaint_response)
+    await ctx.send(complaint_response)
+
+
+@bot.command(
+    name="get_complaints",
+    help='Get complaints about a user, expected format `!get_complaints @user". Rate limited to 1x per hour per user',
+)
+@commands.cooldown(1, 3600, commands.BucketType.user)
+async def get_complaints(ctx):
+    receiver = (
+        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
+    )
+    logger.info(f"{ctx.message.author} requested the complaints for {receiver}")
+    try:
+        complaints_response = get_complaints(receiver)
+        logger.info("Got complaints_response, posting to discord")
+    except Exception as e:
+        logger.error(f"something happened - {e}")
+    await ctx.send(complaints_response)
 
 
 bot.run(TOKEN)

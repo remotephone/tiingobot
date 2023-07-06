@@ -17,9 +17,10 @@ def db_connection():
 
 # giver is not a string, not sure what it is
 def give_sparkle(giver: str, receiver: str) -> str:
+    container = db_connection()
+    sparkle_count = str()
     try:
         giver = str(giver)
-        container = db_connection()
     except Exception as e:
         logger.error(f"Failed to connect to db - {e}")
     try:
@@ -36,7 +37,8 @@ def give_sparkle(giver: str, receiver: str) -> str:
     ):
         sparkle_count = str(item)
         logger.info(f"Got {sparkle_count} sparkles for {receiver}")
-    return f"✨✨ {receiver} has {sparkle_count} sparkles! ✨✨"
+    if sparkle_count:
+        return f"✨✨ {receiver} has {sparkle_count} sparkles! ✨✨"
 
 
 def get_leaderboard() -> str:
