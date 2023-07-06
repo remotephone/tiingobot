@@ -347,8 +347,9 @@ async def new_issue(ctx: commands.Context, *, arg):
 @bot.command(
     name="lodge_a_complaint",
     help='Lodge a complaint about a user, expected format `!lodge_a_complaint @user "complaint in many words". Surround your message in double quotes. Rate limited to 1x per day per user, 1000 character limit',
+    aliases=["complain", "gripe", "bellyache", "nag"],
 )
-@commands.cooldown(1, 86400, commands.BucketType.user)
+@commands.cooldown(1, 60, commands.BucketType.user)
 async def lodge_a_complaint(ctx: commands.Context, *, arg: str) -> None:
     receiver = (
         ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
@@ -364,6 +365,7 @@ async def lodge_a_complaint(ctx: commands.Context, *, arg: str) -> None:
 @bot.command(
     name="get_complaints",
     help='Get complaints about a user, expected format `!get_complaints @user". Rate limited to 1x per hour per user',
+    aliases=["get_gripes", "get_bellyaches", "get_nags"],
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def get_complaints(ctx: commands.Context) -> None:

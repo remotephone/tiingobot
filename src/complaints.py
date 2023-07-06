@@ -49,12 +49,11 @@ def complaint_lodger(giver: str, receiver: str, complaint: str) -> str:
 
 def get_complaints_for_user(user: str) -> str:
     container = db_connection()
-    response = f"😒😒  Complaints for {user}  😒😒\n"
     results = container.query_items(
         query=f"SELECT TOP 3 * FROM complaints where complaints.receiver = '{user}' ORDER BY complaints._ts desc",
         enable_cross_partition_query=True,
     )
-    response = f"😒😒 Recent Complaints for {user}  😒😒\n"
+    response = f"😒😒 Recent Complaints 😒😒\n"
     for result in results:
         response += f"- {result['complaint']}\n"
     return response
