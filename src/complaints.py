@@ -56,5 +56,5 @@ def get_complaints_for_user(user: str) -> str:
     )
     response = f"😒😒 Recent Complaints for {user}  😒😒\n"
     for result in results:
-        response += f" - {result['complaint']}\n"
+        response += f"- {result['complaint']}\n"
     return response
