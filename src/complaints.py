@@ -51,7 +51,7 @@ def get_complaints_for_user(user: str) -> str:
     container = db_connection()
     response = f"😒😒  Complaints for {user}  😒😒\n"
     results = container.query_items(
-        query="SELECT complaints.complaint FROM complaints where complaints.receiver = '{user}' limit 3 sort by complaints._ts desc",
+        query=f"SELECT TOP 3 * FROM complaints where complaints.receiver = '{user}' ORDER BY complaints._ts desc",
         enable_cross_partition_query=True,
     )
     response = f"😒😒 Recent Complaints for {user}  😒😒\n"
