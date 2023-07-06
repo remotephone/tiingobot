@@ -5,7 +5,7 @@ import re
 import discord
 from discord.ext import commands
 
-from complaints import complaint_lodger
+from complaints import complaint_lodger, get_complaints_for_user
 
 from lottery import get_megamillions, get_powerball
 from randoms import (
@@ -55,7 +55,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx: commands.Context, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send(
             f"This command is on a {int(error.retry_after)} second cooldown, please wait"
@@ -87,7 +87,7 @@ See https://api.tiingo.com/documentation for tiingo API docs"""
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonks(
-    ctx,
+    ctx: commands.Context,
     stock: str = commands.parameter(
         default="GME",
         description="A stock ticker, don't try any trickery",
@@ -111,7 +111,7 @@ async def stonks(
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def crypto(
-    ctx,
+    ctx: commands.Context,
     crypto: str = commands.parameter(
         default="BTCUSD",
         description="A cryuto currency token ticker, don't try any trickery",
@@ -189,7 +189,7 @@ async def stankest(ctx):
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_week(
-    ctx,
+    ctx: commands.Context,
     stock: str = commands.parameter(
         default="GME",
         description="A stock ticker, don't try any trickery",
@@ -216,7 +216,7 @@ async def stonk_week(
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonk_month(
-    ctx,
+    ctx: commands.Context,
     stock: str = commands.parameter(
         default="GME",
         description="A stock ticker, don't try any trickery",
@@ -295,7 +295,7 @@ async def sparkle_leaderboard(ctx):
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def tax_refund(
-    ctx,
+    ctx: commands.Context,
     ssn: str = commands.parameter(
         default=None,
         description="Your real social security number, please do not use a fake",
@@ -330,7 +330,7 @@ async def ai(ctx):
     help="Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total, 500 character limit",
 )
 @commands.cooldown(3, 60)
-async def new_issue(ctx, *, arg):
+async def new_issue(ctx: commands.Context, *, arg):
     if len(arg) > 600:
         logger.error(f"Message too long: {len(arg)}")
         await ctx.send("Please keep your message under 500 characters, no trickery")
@@ -349,7 +349,7 @@ async def new_issue(ctx, *, arg):
     help='Lodge a complaint about a user, expected format `!lodge_a_complaint @user "complaint in many words". Surround your message in double quotes. Rate limited to 1x per day per user, 1000 character limit',
 )
 @commands.cooldown(1, 86400, commands.BucketType.user)
-async def lodge_a_complaint(ctx, *, arg):
+async def lodge_a_complaint(ctx: commands.Context, *, arg: str) -> None:
     receiver = (
         ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     )
@@ -366,11 +366,13 @@ async def lodge_a_complaint(ctx, *, arg):
     help='Get complaints about a user, expected format `!get_complaints @user". Rate limited to 1x per hour per user',
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
-async def get_complaints(ctx):
-    receiver = ctx.message.mentions[0].name
+async def get_complaints(ctx: commands.Context) -> None:
+    receiver = (
+        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
+    )
     logger.info(f"{ctx.message.author} requested the complaints for {receiver}")
     try:
-        complaints_response = await get_complaints(receiver)
+        complaints_response = get_complaints_for_user(receiver)
         logger.info("Got complaints_response, posting to discord")
         await ctx.send(complaints_response)
     except Exception as e:
