@@ -367,16 +367,14 @@ async def lodge_a_complaint(ctx, *, arg):
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def get_complaints(ctx):
-    receiver = (
-        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
-    )
+    receiver = ctx.message.mentions[0].name
     logger.info(f"{ctx.message.author} requested the complaints for {receiver}")
     try:
         complaints_response = await get_complaints(receiver)
         logger.info("Got complaints_response, posting to discord")
+        await ctx.send(complaints_response)
     except Exception as e:
         logger.error(f"something happened - {e}")
-    await ctx.send(complaints_response)
 
 
 bot.run(TOKEN)
