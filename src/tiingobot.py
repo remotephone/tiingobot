@@ -330,13 +330,13 @@ async def ai(ctx):
     help="Ask ChatGPT something, surround your message in double quotes. Rate limited to 3x per minute total, 500 character limit",
 )
 @commands.cooldown(3, 60)
-async def new_issue(ctx: commands.Context, *, arg):
+async def ask_aiv2(ctx: commands.Context, *, arg):
     if len(arg) > 600:
         logger.error(f"Message too long: {len(arg)}")
         await ctx.send("Please keep your message under 500 characters, no trickery")
     try:
         # parse the arguements
-        response = get_artificial_intelligence_v2(ctx.message.author, arg)
+        response = get_artificial_intelligence_v2(arg)
         logger.info(f"Bot response: {response}")
         await ctx.send(f"{response}")
     except KeyError as e:

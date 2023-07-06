@@ -14,6 +14,7 @@ openai = "0.27"
 pytest = "*"
 pytest-docker = "1.0.1"
 black = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.10"

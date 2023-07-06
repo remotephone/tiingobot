@@ -1,6 +1,7 @@
+import openai
 import pytest
 
-from randoms import get_artificial_intelligence, get_tax_refund
+from randoms import get_artificial_intelligence, get_tax_refund, get_artificial_intelligence_v2
 
 
 def test_refund_works_invalid():
@@ -34,3 +35,12 @@ def test_ai_unique():
     response1 = get_artificial_intelligence()
     response2 = get_artificial_intelligence()
     assert response1 != response2
+
+@pytest.mark.ai
+def test_get_artificial_intelligence_v2(mocker):
+    # Mock os.getenv to return a fake API key
+    mocker.patch("os.getenv", return_value="fake_api_key")
+
+    # Call the function with a short input string
+    response = get_artificial_intelligence_v2("hello" * 1000)
+    assert response == "Please ask a shorter question"
