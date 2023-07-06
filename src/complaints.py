@@ -47,7 +47,7 @@ def complaint_lodger(giver: str, receiver: str, complaint: str) -> str:
     return "oops, this code is busted"
 
 
-def get_complaints(user: str) -> str:
+def get_complaints_for_user(user: str) -> str:
     container = db_connection()
     response = f"😒😒  Complaints for {user}  😒😒\n"
     results = container.query_items(
