@@ -275,7 +275,7 @@ def get_stocks(stock):
     return clean_stock
 
 
-def get_stockest(type):
+def get_stockest(stocks_type):
     stocks = get_em_all()
     if len(stocks) == 0:
         logger.error("No stocks returned, something went wrong")
