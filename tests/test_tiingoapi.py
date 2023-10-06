@@ -18,7 +18,7 @@ def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
     stock = "AAPL"
     expected = {
         "Ticker": "AAPL",
-        "Quote Timestamp": "2021-03-15 15:00 CDT",
+        "Quote Timestamp": "2021-03-15 20:00 UTC",
         "Most Recent Price": 123.99,
         "Last Close": 121.03,
         "Open": 121.41,
