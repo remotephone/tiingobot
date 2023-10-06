@@ -18,9 +18,7 @@ def get_meme_stocks():
     """
     stonks = []
     try:
-        r = requests.get(
-            "https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json"
-        )
+        r = requests.get("https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json")
         r.raise_for_status()
         for x in r.json()["data"]:
             stonks.append(x[0])
@@ -222,6 +220,8 @@ def timezoner(stamp):
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
 
+
+
 def get_stocks(stock):
     """return a stock quote, cleaned up"""
     TOKEN = os.environ["TIINGO_TOKEN"]
@@ -275,6 +275,82 @@ def get_stocks(stock):
     return clean_stock
 
 
+def get_stockest(type):
+    stocks = get_em_all()
+    if len(stocks) == 0:
+        logger.error("No stocks returned, something went wrong")
+        return None
+
+    clean_stocks = []
+    logger.info(f"Cleaning {len(stocks)} stocks")
+    for stock in stocks:
+        clean_stock = {
+            "Ticker": stock["ticker"],
+            "Quote Timestamp": stock["quoteTimestamp"],
+            "Most Recent Price": stock["last"],
+            "Open": stock["open"],
+        }
+
+        try:
+            if stock["prevClose"] is not None:
+                if stocks_type == "stonkest":
+                    clean_stock["\U0001F680"] = round(
+                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100, 2
+                    )
+                elif stocks_type == "stankest":
+                    clean_stock["\U0001F4A5"] = round(
+                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100, 2
+                    )
+            else:
+                if stocks_type == "stonkest":
+                    clean_stock["\U0001F680"] = round(
+                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100, 2
+                    )
+                elif stocks_type == "stankest":
+                    clean_stock["\U0001F4A5"] = round(
+                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100, 2
+                    )
+        except Exception as e:
+            logger.error(f"Error processing {stock['ticker']}: {e}")
+            continue
+
+        if is_new(clean_stock["Quote Timestamp"]) and clean_stock["Most Recent Price"] > 1.0:
+            clean_stocks.append(clean_stock)
+
+    logger.info(f"Returned {len(clean_stocks)} clean stocks")
+
+    no_oldies = [
+        clean_stock
+        for clean_stock in clean_stocks
+        if is_new(clean_stock["Quote Timestamp"])
+    ]
+    logger.info(f"Returned {len(no_oldies)} current stocks")
+
+    no_pennies = [
+        clean_stock
+        for clean_stock in no_oldies
+        if clean_stock["Most Recent Price"] > 1.0
+    ]
+    logger.info(f"Returned {len(no_pennies)} non-penny stocks")
+
+    if stocks_type == "stonkest":
+        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001F680"])
+    elif stocks_type == "stankest":
+        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001F4A5"], reverse=True)
+
+    logger.info(f"Sorted {len(sorted_stocks)} stocks successfully")
+
+    for stock in sorted_stocks:
+        stock["Quote Timestamp"] = timezoner(stock["Quote Timestamp"])
+        if stocks_type == "stonkest":
+            stock["\U0001F680"] = "{}% ".format(str(stock["\U0001F680"]))
+        elif stocks_type == "stankest":
+            stock["\U0001F4A5"] = "{}% ".format(str(stock["\U0001F4A5"]))
+
+    logger.info("Added emojis successfully")
+
+    return sorted_stocks[-5:]
+
 def get_em_all():
     """a helper function for stonkest and stankest. Get me all the stocks
     and return them as a dictionary for further processing"""
@@ -282,9 +358,7 @@ def get_em_all():
 
     headers = {"Content-Type": "application/json"}
     try:
-        response = requests.get(
-            f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers
-        )
+        response = requests.get(f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers)
         stocks = response.json()
         return stocks
     except Exception as e:
@@ -293,138 +367,6 @@ def get_em_all():
         return stocks
 
 
-def get_stonkest():
-    stocks = get_em_all()
-    if len(stocks) == 0:
-        logger.error("No stonkest returned, something went wrong")
-        return None
-    clean_stocks = []
-    logger.info(f"cleaning {len(stocks)}")
-    for stock in stocks:
-        clean_stock = {}
-        clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
-        clean_stock["Most Recent Price"] = stock["last"]
-        clean_stock["Open"] = stock["open"]
-        try:
-            if stock["prevClose"] is not None:
-                clean_stock["\U0001F680"] = round(
-                    (
-                        (float(stock["last"]) - float(stock["prevClose"]))
-                        / float(stock["prevClose"])
-                    )
-                    * 100,
-                    2,
-                )
-            else:
-                clean_stock["\U0001F680"] = round(
-                    (
-                        (float(stock["last"]) - float(stock["open"]))
-                        / float(stock["open"])
-                    )
-                    * 100,
-                    2,
-                )
-        except Exception as e:
-            logger.error(f"error: {e}, issues processing {stock['ticker']}")
-            continue
-
-        clean_stocks.append(clean_stock)
-
-    logger.info(f"returned {len(clean_stocks)} clean_stocks")
-
-    no_oldies = [
-        clean_stock
-        for clean_stock in clean_stocks
-        if (is_new(clean_stock["Quote Timestamp"]))
-    ]
-
-    logger.info(f"returned {len(no_oldies)} current stocks")
-
-    no_pennies = [
-        clean_stock
-        for clean_stock in no_oldies
-        if (clean_stock["Most Recent Price"] > 1.0)
-    ]
-    logger.info(f"returned {len(no_pennies)} non-penny stocks")
-
-    stonkest = sorted(no_pennies, key=lambda x: x["\U0001F680"])
-    logger.info(f"sorted {len(stonkest)} stocks successfully")
-
-    for stonk in stonkest:
-        stonk["Quote Timestamp"] = timezoner(stonk["Quote Timestamp"])
-        stonk["\U0001F680"] = "{}% ".format(str(stonk["\U0001F680"]))
-    logger.info("added emojis successfully")
-
-    return stonkest[-5:]
-
-
-def get_stankest():
-    stocks = get_em_all()
-    if len(stocks) == 0:
-        logger.error("No stankest returned, something went wrong")
-        return None
-    logger.info(f"cleaning {len(stocks)}")
-
-    clean_stocks = []
-
-    for stock in stocks:
-        clean_stock = {}
-        clean_stock["Ticker"] = stock["ticker"]
-        clean_stock["Quote Timestamp"] = stock["quoteTimestamp"]
-        clean_stock["Most Recent Price"] = stock["last"]
-        clean_stock["Open"] = stock["open"]
-        try:
-            if stock["prevClose"] is not None:
-                clean_stock["\U0001F4A5"] = round(
-                    (
-                        (float(stock["last"]) - float(stock["prevClose"]))
-                        / float(stock["prevClose"])
-                    )
-                    * 100,
-                    2,
-                )
-            else:
-                clean_stock["\U0001F4A5"] = round(
-                    (
-                        (float(stock["last"]) - float(stock["open"]))
-                        / float(stock["open"])
-                    )
-                    * 100,
-                    2,
-                )
-        except Exception as e:
-            logger.error(f"error: {e}, issues processing {stock['ticker']}")
-            continue
-
-        clean_stocks.append(clean_stock)
-
-    logger.info(f"returned {len(clean_stocks)} clean_stocks")
-
-    no_oldies = [
-        clean_stock
-        for clean_stock in clean_stocks
-        if (is_new(clean_stock["Quote Timestamp"]))
-    ]
-
-    logger.info(f"returned {len(no_oldies)} current stocks")
-
-    no_pennies = [
-        clean_stock
-        for clean_stock in no_oldies
-        if (clean_stock["Most Recent Price"] > 1.0)
-    ]
-    logger.info(f"returned {len(no_pennies)} non-penny stocks")
-
-    stankest = sorted(no_pennies, key=lambda x: x["\U0001F4A5"], reverse=True)
-    logger.info(f"sorted {len(stankest)} stocks successfully")
-
-    for stonk in stankest:
-        stonk["Quote Timestamp"] = timezoner(stonk["Quote Timestamp"])
-        stonk["\U0001F4A5"] = "{}% ".format(str(stonk["\U0001F4A5"]))
-    logger.info("added emojis successfully")
-
-    return stankest[-5:]
 
 
 def get_stock_on_day(valid_stock, day):
@@ -443,9 +385,7 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
-            logger.info(
-                f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}"
-            )
+            logger.info(f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}")
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -508,11 +448,7 @@ def get_stocks_weekly(stock):
     except Exception as e:
         logging.error(e)
     difference = round(
-        (
-            (latest_price[0]["close"] - week_ago_price[0]["close"])
-            / week_ago_price[0]["close"]
-        )
-        * 100,
+        ((latest_price[0]["close"] - week_ago_price[0]["close"]) / week_ago_price[0]["close"]) * 100,
         2,
     )
 
@@ -569,11 +505,7 @@ def get_stocks_monthly(stock):
     except Exception as e:
         logging.error(e)
     difference = round(
-        (
-            (latest_price[0]["close"] - month_ago_price[0]["close"])
-            / month_ago_price[0]["close"]
-        )
-        * 100,
+        ((latest_price[0]["close"] - month_ago_price[0]["close"]) / month_ago_price[0]["close"]) * 100,
         2,
     )
 

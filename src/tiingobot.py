@@ -15,9 +15,8 @@ from randoms import (
 )
 
 from tiingoapi import (
-    get_stankest,
     get_stocks,
-    get_stonkest,
+    get_stockest,
     get_stocks_monthly,
     get_stocks_weekly,
 )
@@ -148,7 +147,7 @@ async def crypto(
 async def stonkest(ctx):
     try:
         logger.info(f"{ctx.message.author} requested stonkest.")
-        stonkest = get_stonkest()
+        stonkest = get_stockest("stonkest")
         logger.info(
             f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned"
         )
@@ -177,7 +176,7 @@ async def stonkest(ctx):
 async def stankest(ctx):
     try:
         logger.info(f"{ctx.message.author} requested stankest.")
-        stankest = get_stankest()
+        stankest = get_stockest("stankest")
         logger.info(
             f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
         )
