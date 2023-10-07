@@ -9,7 +9,16 @@ from lottery import (
     get_megamillions,
     get_powerball,
     parse_powerball_results,
+    get_next_powerball,
 )
+
+
+def test_get_next_powerball():
+    result = get_next_powerball()
+    assert isinstance(result, str)
+    assert "Next Drawing Date" in result
+    assert "Jackpot Amount" in result
+    assert "Cash Value" in result
 
 
 def test_lottery_endpoint_200s():
@@ -23,9 +32,7 @@ def test_lottery_endpoint_200s():
 
 
 def test_megamillions_endpoint_content():
-    r, status = make_lottery_web_request(
-        "https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData"
-    )
+    r, status = make_lottery_web_request("https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData")
     parsed_results = parse_megamillions_results(r)
     assert json.loads(parsed_results)
 

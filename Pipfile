@@ -9,6 +9,7 @@ requests = "*"
 python-dateutil = "*"
 azure-cosmos = "*"
 openai = "0.27"
+bs4 = "*"
 
 [dev-packages]
 pytest = "*"

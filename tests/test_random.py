@@ -36,6 +36,7 @@ def test_ai_unique():
     response2 = get_artificial_intelligence()
     assert response1 != response2
 
+
 @pytest.mark.ai
 def test_get_artificial_intelligence_v2(mocker):
     # Mock os.getenv to return a fake API key

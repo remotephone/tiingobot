@@ -38,9 +38,7 @@ def get_artificial_intelligence_v2(question: str) -> str:
     if len(question) > 1000:
         return "Please ask a shorter question"
     # Create a completion object
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", messages=[{"role": "user", "content": question}]
-    )
+    completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": question}])
 
     # Check if the completion was successful
     if completion.choices[0].message.content is None:

@@ -5,6 +5,7 @@ import pytest
 import requests
 from tiingocrypto import get_crypto
 
+
 def test_get_crypto(mocker):
     mocker.patch.dict(os.environ, {"TIINGO_TOKEN": "test_token"})
     mock_response = [

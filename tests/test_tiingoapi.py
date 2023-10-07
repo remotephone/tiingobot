@@ -11,7 +11,7 @@ def mock_tiingo_token():
     os.environ["TIINGO_TOKEN"] = "mock_token"
     yield
     del os.environ["TIINGO_TOKEN"]
-    
+
 
 def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
     # Arrange
@@ -45,6 +45,7 @@ def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
 
     # Assert
     assert result == expected
+
 
 def test_get_stocks_returns_not_found(mocker, mock_tiingo_token):
     # Arrange

@@ -7,7 +7,7 @@ from discord.ext import commands
 
 from complaints import complaint_lodger, get_complaints_for_user
 
-from lottery import get_megamillions, get_powerball
+from lottery import get_megamillions, get_next_powerball, get_powerball
 from randoms import (
     get_artificial_intelligence,
     get_artificial_intelligence_v2,
@@ -27,16 +27,16 @@ from sparkle import give_sparkle, get_leaderboard
 class JsonFormatter(logging.Formatter):
     def format(self, record):
         log_data = {
-            'timestamp': self.formatTime(record),
-            'level': record.levelname,
-            'message': record.getMessage(),
-            'module': record.module,
-            'function': record.funcName,
-            'line_number': record.lineno,
+            "timestamp": self.formatTime(record),
+            "level": record.levelname,
+            "message": record.getMessage(),
+            "module": record.module,
+            "function": record.funcName,
+            "line_number": record.lineno,
         }
 
         # Include additional data from the log record, if available
-        if hasattr(record, 'extra_data') and isinstance(record.extra_data, dict):
+        if hasattr(record, "extra_data") and isinstance(record.extra_data, dict):
             log_data.update(record.extra_data)
 
         return json.dumps(log_data, ensure_ascii=False)
@@ -73,12 +73,8 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx: commands.Context, error):
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.send(
-            f"This command is on a {int(error.retry_after)} second cooldown, please wait"
-        )
-    logger.info(
-        error
-    )  # re-raise the error so all the errors will still show up in console
+        await ctx.send(f"This command is on a {int(error.retry_after)} second cooldown, please wait")
+    logger.info(error)  # re-raise the error so all the errors will still show up in console
 
 
 @bot.command(name="stonkshelp", help="return help", pass_context=True)
@@ -98,9 +94,7 @@ See https://api.tiingo.com/documentation for tiingo API docs"""
     await ctx.send(helpmsg)
 
 
-@bot.command(
-    name="stonks", help="Return stock message, defaults to GME if trickery is afoot"
-)
+@bot.command(name="stonks", help="Return stock message, defaults to GME if trickery is afoot")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def stonks(
     ctx: commands.Context,
@@ -122,9 +116,7 @@ async def stonks(
         await ctx.send(ticker_response)
 
 
-@bot.command(
-    name="crypto", help="Return crypto message, defaults to btcusd if trickery is afoot"
-)
+@bot.command(name="crypto", help="Return crypto message, defaults to btcusd if trickery is afoot")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def crypto(
     ctx: commands.Context,
@@ -148,9 +140,7 @@ async def stonkest(ctx):
     try:
         logger.info(f"{ctx.message.author} requested stonkest.")
         stonkest = get_stockest("stonkest")
-        logger.info(
-            f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned"
-        )
+        logger.info(f"{ctx.message.author} requested stonkest. {len(stonkest)} results returned")
         if len(stonkest) == 0:
             logger.info(f"{ctx.message.author} requested stonkest. No results returned")
             await ctx.send("Something went wrong")
@@ -163,9 +153,7 @@ async def stonkest(ctx):
             for k, v in stonk.items():
                 if k == "Ticker":
                     tickers.append(v)
-        logger.info(
-            f"{ctx.message.author} requested stonkest. returned tickers: {tickers}"
-        )
+        logger.info(f"{ctx.message.author} requested stonkest. returned tickers: {tickers}")
     except Exception as e:
         logger.error(e)
     await ctx.send(stonkest_response)
@@ -177,18 +165,14 @@ async def stankest(ctx):
     try:
         logger.info(f"{ctx.message.author} requested stankest.")
         stankest = get_stockest("stankest")
-        logger.info(
-            f"{ctx.message.author} requested stankest. {len(stankest)} results returned"
-        )
+        logger.info(f"{ctx.message.author} requested stankest. {len(stankest)} results returned")
         if len(stankest) == 0:
             logger.info(f"{ctx.message.author} requested stankest. No results returned")
             await ctx.send("Something went wrong")
         stankest_response = ""
         tickers = []
         for stonk in stankest:
-            stankest_response += "**{}** - :boom::boom::boom: {} down\n".format(
-                stonk["Ticker"], stonk["\U0001F4A5"]
-            )
+            stankest_response += "**{}** - :boom::boom::boom: {} down\n".format(stonk["Ticker"], stonk["\U0001F4A5"])
             for k, v in stonk.items():
                 if k == "Ticker":
                     tickers.append(v)
@@ -278,17 +262,26 @@ async def powerball(ctx):
     await ctx.send(results)
 
 
+@bot.command(name="nextpowerball", help="Get next powerball drawing date")
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def nextpowerball(ctx):
+    logger.info(f"{ctx.message.author} requested next powerball data")
+    try:
+        results = get_next_powerball()
+        logger.info(f"got {results}")
+    except Exception as e:
+        logger.error(f"no picks for you - {e}")
+    logger.info(f"{ctx.message.author} got results {results.split(':')[0]}")
+    await ctx.send(results)
+
+
 @bot.command(name="sparkle", help="Sparkle a chat member")
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def sparkle(ctx):
-    receiver = (
-        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
-    )
+    receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     logger.info(f"{ctx.message.author} sparkled {receiver}")
     sparkle_response = give_sparkle(ctx.message.author, receiver)
-    sparkle_response = (
-        f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
-    )
+    sparkle_response = f"@{ctx.message.author} sparkled @{receiver}.\n  {sparkle_response}"
     logger.info(sparkle_response)
     await ctx.send(sparkle_response)
 
@@ -367,9 +360,7 @@ async def ask_aiv2(ctx: commands.Context, *, arg):
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def lodge_a_complaint(ctx: commands.Context, *, arg: str) -> None:
-    receiver = (
-        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
-    )
+    receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     # complaint is the rest of the message, where the message is !lodge_a_complaint @user complaint
     complaint = arg.split(" ", 1)[1]
     logger.info(f"{ctx.message.author} lodged a complaint against {receiver}")
@@ -385,9 +376,7 @@ async def lodge_a_complaint(ctx: commands.Context, *, arg: str) -> None:
 )
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def get_complaints(ctx: commands.Context) -> None:
-    receiver = (
-        ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
-    )
+    receiver = ctx.message.mentions[0].name + "#" + ctx.message.mentions[0].discriminator
     logger.info(f"{ctx.message.author} requested the complaints for {receiver}")
     try:
         complaints_response = get_complaints_for_user(receiver)

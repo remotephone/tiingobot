@@ -1,9 +1,29 @@
 import requests
+from bs4 import BeautifulSoup
 import re
 import json
+import time
 import logging
 
 logger = logging.getLogger("tiingobot_logger")
+
+
+def get_next_powerball():
+    url = "https://www.powerball.com/"
+    for i in range(3):
+        try:
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, "html.parser")
+            next_date = soup.find("div", {"class": "count-down"})["data-drawdateutc"]
+            jackpot = soup.find("span", {"class": "game-jackpot-number text-xxxl lh-1 text-center"}).text.strip()
+            cash_value = soup.find("span", {"class": "game-jackpot-number text-lg lh-1 text-center"}).text.strip()
+            return f"Next Drawing Date: {next_date}, Jackpot Amount: {jackpot}, Cash Value: {cash_value}"
+        except Exception as e:
+            logger.error(f"Error parsing powerball html - {e}")
+            if i < 2:
+                logger.info(f"Retrying in 5 seconds...")
+                time.sleep(5)
+    return "Something went wrong"
 
 
 def process_megamillions_results(results):
@@ -43,9 +63,7 @@ def parse_megamillions_results(results):
 
 
 def get_megamillions():
-    r, status = make_lottery_web_request(
-        "https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData"
-    )
+    r, status = make_lottery_web_request("https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData")
     if status == 200:
         parsed_results = parse_megamillions_results(r)
     else:
@@ -68,9 +86,7 @@ def parse_powerball_results(results: dict) -> str:
 
 
 def get_powerball() -> str:
-    r, status = make_lottery_web_request(
-        "https://data.ny.gov/api/views/d6yy-54nr/rows.json"
-    )
+    r, status = make_lottery_web_request("https://data.ny.gov/api/views/d6yy-54nr/rows.json")
     if status == 200:
         processed_results = parse_powerball_results(r.json())
     else:

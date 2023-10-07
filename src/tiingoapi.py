@@ -220,8 +220,6 @@ def timezoner(stamp):
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
 
-
-
 def get_stocks(stock):
     """return a stock quote, cleaned up"""
     TOKEN = os.environ["TIINGO_TOKEN"]
@@ -319,18 +317,10 @@ def get_stockest(stocks_type):
 
     logger.info(f"Returned {len(clean_stocks)} clean stocks")
 
-    no_oldies = [
-        clean_stock
-        for clean_stock in clean_stocks
-        if is_new(clean_stock["Quote Timestamp"])
-    ]
+    no_oldies = [clean_stock for clean_stock in clean_stocks if is_new(clean_stock["Quote Timestamp"])]
     logger.info(f"Returned {len(no_oldies)} current stocks")
 
-    no_pennies = [
-        clean_stock
-        for clean_stock in no_oldies
-        if clean_stock["Most Recent Price"] > 1.0
-    ]
+    no_pennies = [clean_stock for clean_stock in no_oldies if clean_stock["Most Recent Price"] > 1.0]
     logger.info(f"Returned {len(no_pennies)} non-penny stocks")
 
     if stocks_type == "stonkest":
@@ -351,6 +341,7 @@ def get_stockest(stocks_type):
 
     return sorted_stocks[-5:]
 
+
 def get_em_all():
     """a helper function for stonkest and stankest. Get me all the stocks
     and return them as a dictionary for further processing"""
@@ -365,8 +356,6 @@ def get_em_all():
         logger.error(f"Failed to get all iex results. Error: {e}")
         stocks = []
         return stocks
-
-
 
 
 def get_stock_on_day(valid_stock, day):

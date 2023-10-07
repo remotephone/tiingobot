@@ -9,6 +9,7 @@ from dateutil.parser import parse
 
 logger = logging.getLogger("tiingobot_logger")
 
+
 def validate_stonk(crypto):
     """Validate a crypto ticker."""
     if crypto and re.match(r"^\w{1,16}$", crypto):
