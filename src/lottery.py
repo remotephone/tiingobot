@@ -4,6 +4,8 @@ import re
 import json
 import time
 import logging
+from datetime import datetime
+from dateutil import tz
 
 logger = logging.getLogger("tiingobot_logger")
 
@@ -15,6 +17,9 @@ def get_next_powerball():
             response = requests.get(url)
             soup = BeautifulSoup(response.text, "html.parser")
             next_date = soup.find("div", {"class": "count-down"})["data-drawdateutc"]
+            utc_time = datetime.strptime(next_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            central_time = utc_time.replace(tzinfo=tz.tzutc()).astimezone(tz.tzlocal())
+            next_date = central_time.strftime("%Y-%m-%d %I:%M:%S %p %Z")
             jackpot = soup.find("span", {"class": "game-jackpot-number text-xxxl lh-1 text-center"}).text.strip()
             cash_value = soup.find("span", {"class": "game-jackpot-number text-lg lh-1 text-center"}).text.strip()
             return f"Next Drawing Date: {next_date}, Jackpot Amount: {jackpot}, Cash Value: {cash_value}"
