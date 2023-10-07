@@ -10,6 +10,7 @@ from lottery import (
     get_powerball,
     parse_powerball_results,
     get_next_powerball,
+    pick_my_powerball_numbers,
 )
 
 
@@ -19,6 +20,21 @@ def test_get_next_powerball():
     assert "Next Powerball drawing:" in result
     assert "Jackpot:" in result
     assert "Cash Payout:" in result
+
+
+def test_pick_my_powerball_numbers():
+    result = pick_my_powerball_numbers()
+    assert isinstance(result, str)
+    assert "Your numbers are" in result
+    assert "Red Powerball:" in result
+    numbers = result.split("Your numbers are ")[1].split(" - Red Powerball: ")[0].split(", ")
+    assert len(numbers) == 5
+    for number in numbers:
+        assert number.isdigit()
+        assert int(number) >= 1 and int(number) <= 69
+    red_powerball = result.split("Red Powerball: ")[1]
+    assert red_powerball.isdigit()
+    assert int(red_powerball) >= 1 and int(red_powerball) <= 26
 
 
 def test_lottery_endpoint_200s():

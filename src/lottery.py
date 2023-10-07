@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import json
-import time
+import random
 import logging
 from datetime import datetime
 from dateutil import tz
@@ -24,7 +24,23 @@ def get_next_powerball():
         return f"Next Powerball drawing: {jackpot_date} - Jackpot: {jackpot_amount} - Cash Payout: {jackpot_cash}"
     else:
         return "Something went wrong"
-    
+
+
+def get_one_pb_number():
+    return str(random.choice(range(1, 70)))
+
+
+def get_pb_red():
+    return str(random.choice(range(1, 27)))
+
+
+def pick_my_powerball_numbers():
+    numbers = []
+    for i in range(1, 7):
+        numbers.append(get_one_pb_number())
+    return f"Your numbers are {', '.join(numbers[:-1])} - Red Powerball: {get_pb_red()}"
+
+
 def process_megamillions_results(results):
     logger.info(f"Got {len(results)} results")
     winning_numbers = ""

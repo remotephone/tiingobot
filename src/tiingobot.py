@@ -7,7 +7,7 @@ from discord.ext import commands
 
 from complaints import complaint_lodger, get_complaints_for_user
 
-from lottery import get_megamillions, get_next_powerball, get_powerball
+from lottery import get_megamillions, get_next_powerball, get_powerball, pick_my_powerball_numbers
 from randoms import (
     get_artificial_intelligence,
     get_artificial_intelligence_v2,
@@ -255,6 +255,21 @@ async def powerball(ctx):
     logger.info(f"{ctx.message.author} requested powerball data")
     try:
         results = get_powerball()
+        logger.info(f"got {results}")
+    except Exception as e:
+        logger.error(f"no picks for you - {e}")
+    logger.info(f"{ctx.message.author} got results {results.split(':')[0]}")
+    await ctx.send(results)
+
+
+@bot.command(
+    name="powerball_numbers", help="Get latest powerball numbers", aliases=["winning_numbers", "winningnumbers"]
+)
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def powerball_numbers(ctx):
+    logger.info(f"{ctx.message.author} requested powerball data")
+    try:
+        results = pick_my_powerball_numbers()
         logger.info(f"got {results}")
     except Exception as e:
         logger.error(f"no picks for you - {e}")
