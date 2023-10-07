@@ -11,26 +11,20 @@ logger = logging.getLogger("tiingobot_logger")
 
 
 def get_next_powerball():
-    url = "https://www.powerball.com/"
-    for i in range(3):
-        try:
-            response = requests.get(url)
-            soup = BeautifulSoup(response.text, "html.parser")
-            next_date = soup.find("div", {"class": "count-down"})["data-drawdateutc"]
-            utc_time = datetime.strptime(next_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-            central_time = utc_time.replace(tzinfo=tz.tzutc()).astimezone(tz.tzlocal())
-            next_date = central_time.strftime("%Y-%m-%d %I:%M:%S %p %Z")
-            jackpot = soup.find("span", {"class": "game-jackpot-number text-xxxl lh-1 text-center"}).text.strip()
-            cash_value = soup.find("span", {"class": "game-jackpot-number text-lg lh-1 text-center"}).text.strip()
-            return f"Next Drawing Date: {next_date}, Jackpot Amount: {jackpot}, Cash Value: {cash_value}"
-        except Exception as e:
-            logger.error(f"Error parsing powerball html - {e}")
-            if i < 2:
-                logger.info(f"Retrying in 5 seconds...")
-                time.sleep(5)
-    return "Something went wrong"
-
-
+    # Parse it to get the date of the next drawing (10/07/2023 in this example), the size of the jackpot ($1.40 Billion) and the cash payout ($643.7 Million)
+    r = requests.get("https://www.texaslottery.com/export/sites/lottery/Games/Powerball/index.html")
+    soup = BeautifulSoup(r.text, "html.parser")
+    jackpot = soup.find("div", {"class": "jackpotPadding"})
+    jackpot_date = jackpot.find("p").text
+    # Get the date from the string and remove the :
+    jackpot_date = jackpot_date.split()[-1].strip(":")
+    jackpot_amount = jackpot.find("h1").text
+    jackpot_cash = jackpot.find_all("p")[1].text.split(":")[1].strip()
+    if jackpot_date and jackpot_amount and jackpot_cash:
+        return f"Next Powerball drawing: {jackpot_date} - Jackpot: {jackpot_amount} - Cash Payout: {jackpot_cash}"
+    else:
+        return "Something went wrong"
+    
 def process_megamillions_results(results):
     logger.info(f"Got {len(results)} results")
     winning_numbers = ""

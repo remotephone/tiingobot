@@ -16,9 +16,9 @@ from lottery import (
 def test_get_next_powerball():
     result = get_next_powerball()
     assert isinstance(result, str)
-    assert "Next Drawing Date" in result
-    assert "Jackpot Amount" in result
-    assert "Cash Value" in result
+    assert "Next Powerball drawing:" in result
+    assert "Jackpot:" in result
+    assert "Cash Payout:" in result
 
 
 def test_lottery_endpoint_200s():
