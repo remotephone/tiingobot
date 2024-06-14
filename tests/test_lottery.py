@@ -27,7 +27,9 @@ def test_pick_my_powerball_numbers():
     assert isinstance(result, str)
     assert "Your numbers are" in result
     assert "Red Powerball:" in result
-    numbers = result.split("Your numbers are ")[1].split(" - Red Powerball: ")[0].split(", ")
+    numbers = (
+        result.split("Your numbers are ")[1].split(" - Red Powerball: ")[0].split(", ")
+    )
     assert len(numbers) == 5
     for number in numbers:
         assert number.isdigit()
@@ -48,7 +50,9 @@ def test_lottery_endpoint_200s():
 
 
 def test_megamillions_endpoint_content():
-    r, status = make_lottery_web_request("https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData")
+    r, status = make_lottery_web_request(
+        "https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData"
+    )
     parsed_results = parse_megamillions_results(r)
     assert json.loads(parsed_results)
 

@@ -18,7 +18,9 @@ def get_meme_stocks():
     """
     stonks = []
     try:
-        r = requests.get("https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json")
+        r = requests.get(
+            "https://wsb-pop-index.s3.amazonaws.com/wallstreetbetsPopIndex.json"
+        )
         r.raise_for_status()
         for x in r.json()["data"]:
             stonks.append(x[0])
@@ -254,17 +256,17 @@ def get_stocks(stock):
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
         if validstock[0]["prevClose"] is not None:
-            clean_stock[
-                "% Change since last close"
-            ] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
+            clean_stock["% Change since last close"] = (
+                f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
+            )
             if validstock[0]["last"] > validstock[0]["prevClose"]:
                 clean_stock["Mood"] = "\U0001F4C8"
             elif validstock[0]["last"] < validstock[0]["prevClose"]:
                 clean_stock["Mood"] = "\U0001F4C9"
         else:
-            clean_stock[
-                "% Change since open"
-            ] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
+            clean_stock["% Change since open"] = (
+                f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
+            )
             if validstock[0]["last"] > validstock[0]["open"]:
                 clean_stock["Mood"] = "\U0001F4C8"
             elif validstock[0]["last"] < validstock[0]["open"]:
@@ -293,34 +295,65 @@ def get_stockest(stocks_type):
             if stock["prevClose"] is not None:
                 if stocks_type == "stonkest":
                     clean_stock["\U0001F680"] = round(
-                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100, 2
+                        (
+                            (float(stock["last"]) - float(stock["prevClose"]))
+                            / float(stock["prevClose"])
+                        )
+                        * 100,
+                        2,
                     )
                 elif stocks_type == "stankest":
                     clean_stock["\U0001F4A5"] = round(
-                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100, 2
+                        (
+                            (float(stock["last"]) - float(stock["prevClose"]))
+                            / float(stock["prevClose"])
+                        )
+                        * 100,
+                        2,
                     )
             else:
                 if stocks_type == "stonkest":
                     clean_stock["\U0001F680"] = round(
-                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100, 2
+                        (
+                            (float(stock["last"]) - float(stock["open"]))
+                            / float(stock["open"])
+                        )
+                        * 100,
+                        2,
                     )
                 elif stocks_type == "stankest":
                     clean_stock["\U0001F4A5"] = round(
-                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100, 2
+                        (
+                            (float(stock["last"]) - float(stock["open"]))
+                            / float(stock["open"])
+                        )
+                        * 100,
+                        2,
                     )
         except Exception as e:
             logger.error(f"Error processing {stock['ticker']}: {e}")
             continue
 
-        if is_new(clean_stock["Quote Timestamp"]) and clean_stock["Most Recent Price"] > 1.0:
+        if (
+            is_new(clean_stock["Quote Timestamp"])
+            and clean_stock["Most Recent Price"] > 1.0
+        ):
             clean_stocks.append(clean_stock)
 
     logger.info(f"Returned {len(clean_stocks)} clean stocks")
 
-    no_oldies = [clean_stock for clean_stock in clean_stocks if is_new(clean_stock["Quote Timestamp"])]
+    no_oldies = [
+        clean_stock
+        for clean_stock in clean_stocks
+        if is_new(clean_stock["Quote Timestamp"])
+    ]
     logger.info(f"Returned {len(no_oldies)} current stocks")
 
-    no_pennies = [clean_stock for clean_stock in no_oldies if clean_stock["Most Recent Price"] > 1.0]
+    no_pennies = [
+        clean_stock
+        for clean_stock in no_oldies
+        if clean_stock["Most Recent Price"] > 1.0
+    ]
     logger.info(f"Returned {len(no_pennies)} non-penny stocks")
 
     if stocks_type == "stonkest":
@@ -349,7 +382,9 @@ def get_em_all():
 
     headers = {"Content-Type": "application/json"}
     try:
-        response = requests.get(f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers)
+        response = requests.get(
+            f"https://api.tiingo.com/iex/?token={TOKEN}", headers=headers
+        )
         stocks = response.json()
         return stocks
     except Exception as e:
@@ -374,7 +409,9 @@ def get_stock_on_day(valid_stock, day):
             price_at_day = response.json()
             counter += 1
             day -= timedelta(days=1)
-            logger.info(f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}")
+            logger.info(
+                f"price_at_day = {price_at_day}, day = {day.strftime('%Y-%m-%d')}, counter = {counter}"
+            )
         logger.info(f"Got - {price_at_day} - checking details...")
     except Exception as e:
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
@@ -437,7 +474,11 @@ def get_stocks_weekly(stock):
     except Exception as e:
         logging.error(e)
     difference = round(
-        ((latest_price[0]["close"] - week_ago_price[0]["close"]) / week_ago_price[0]["close"]) * 100,
+        (
+            (latest_price[0]["close"] - week_ago_price[0]["close"])
+            / week_ago_price[0]["close"]
+        )
+        * 100,
         2,
     )
 
@@ -494,7 +535,11 @@ def get_stocks_monthly(stock):
     except Exception as e:
         logging.error(e)
     difference = round(
-        ((latest_price[0]["close"] - month_ago_price[0]["close"]) / month_ago_price[0]["close"]) * 100,
+        (
+            (latest_price[0]["close"] - month_ago_price[0]["close"])
+            / month_ago_price[0]["close"]
+        )
+        * 100,
         2,
     )
 

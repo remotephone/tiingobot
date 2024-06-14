@@ -12,7 +12,9 @@ logger = logging.getLogger("tiingobot_logger")
 
 def get_next_powerball():
     # Parse it to get the date of the next drawing (10/07/2023 in this example), the size of the jackpot ($1.40 Billion) and the cash payout ($643.7 Million)
-    r = requests.get("https://www.texaslottery.com/export/sites/lottery/Games/Powerball/index.html")
+    r = requests.get(
+        "https://www.texaslottery.com/export/sites/lottery/Games/Powerball/index.html"
+    )
     soup = BeautifulSoup(r.text, "html.parser")
     jackpot = soup.find("div", {"class": "jackpotPadding"})
     jackpot_date = jackpot.find("p").text
@@ -78,7 +80,9 @@ def parse_megamillions_results(results):
 
 
 def get_megamillions():
-    r, status = make_lottery_web_request("https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData")
+    r, status = make_lottery_web_request(
+        "https://www.megamillions.com/cmspages/utilservice.asmx/GetLatestDrawData"
+    )
     if status == 200:
         parsed_results = parse_megamillions_results(r)
     else:
@@ -101,7 +105,9 @@ def parse_powerball_results(results: dict) -> str:
 
 
 def get_powerball() -> str:
-    r, status = make_lottery_web_request("https://data.ny.gov/api/views/d6yy-54nr/rows.json")
+    r, status = make_lottery_web_request(
+        "https://data.ny.gov/api/views/d6yy-54nr/rows.json"
+    )
     if status == 200:
         processed_results = parse_powerball_results(r.json())
     else:

@@ -1,7 +1,11 @@
 import openai
 import pytest
 
-from randoms import get_artificial_intelligence, get_tax_refund, get_artificial_intelligence_v2
+from randoms import (
+    get_artificial_intelligence,
+    get_tax_refund,
+    get_artificial_intelligence_v2,
+)
 
 
 def test_refund_works_invalid():
