@@ -49,27 +49,36 @@ def get_artificial_intelligence_v2(question: str) -> str:
 
     return completion.choices[0].message.content
 
+import logging
 
 def rt(movie: str) -> str:
+    # Setup basic logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     # Function to process movie title input
     def process_movie_title(title):
+        logging.info(f"Processing movie title: {title}")
         return title.lower().replace(" ", "_")
 
     # Get user input for the movie title
     movie_title = input("Enter the movie title: ")
+    logging.info(f"User input for movie title: {movie_title}")
 
     # Process the movie title
     processed_title = process_movie_title(movie_title)
+    logging.info(f"Processed movie title: {processed_title}")
 
     # Construct the URL of the Rotten Tomatoes movie page
     url = f"https://www.rottentomatoes.com/m/{processed_title}"
+    logging.info(f"Constructed URL: {url}")
 
     # Make the HTTP request to the URL
+    logging.info(f"Making HTTP request to URL: {url}")
     response = requests.get(url)
 
     # Check if the request was successful
     if response.status_code == 200:
+        logging.info("HTTP request successful")
         # Parse the HTML content of the page
         soup = BeautifulSoup(response.content, "html.parser")
 
@@ -80,6 +89,7 @@ def rt(movie: str) -> str:
             if critics_score_button
             else "N/A"
         )
+        logging.info(f"Critics score extracted: {critics_score_text}")
 
         # Extract the audience score
         audience_score_button = soup.find("rt-button", {"slot": "audienceScore"})
@@ -88,8 +98,11 @@ def rt(movie: str) -> str:
             if audience_score_button
             else "N/A"
         )
+        logging.info(f"Audience score extracted: {audience_score_text}")
 
         result = f"Critics Score: {critics_score_text}\nAudience Score: {audience_score_text}"
+        logging.info(f"Result: {result}")
         return result
     else:
+        logging.error(f"Failed to retrieve the page. Status code: {response.status_code}")
         return f"Failed to retrieve the page. Status code: {response.status_code}"
