@@ -11,9 +11,7 @@ from tiingologger import logger
 
 def get_tax_refund(ssn: str = None):
     if not ssn:
-        logger.warning(
-            "No SSN provided"
-        )  # Assuming 'logger' is the imported logger instance
+        logger.warning("No SSN provided")  # Assuming 'logger' is the imported logger instance
         return "Please provide your real, honest social security number"
     ssn = ssn.replace("-", "")
     try:
@@ -27,9 +25,7 @@ def get_tax_refund(ssn: str = None):
         else:
             return f"You owe ${str(abs(refund))}"
     except ValueError as e:
-        logger.error(
-            "Error calculating refund", exc_info=True
-        )  # Use logger to log exceptions
+        logger.error("Error calculating refund", exc_info=True)  # Use logger to log exceptions
         return "You owe one million dollars"
 
 
@@ -47,9 +43,7 @@ def get_artificial_intelligence_v2(question: str) -> str:
     if len(question) > 1000:
         return "Please ask a shorter question"
     # Create a completion object
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", messages=[{"role": "user", "content": question}]
-    )
+    completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": question}])
 
     # Check if the completion was successful
     if completion.choices[0].message.content is None:
@@ -88,11 +82,7 @@ def rt(movie_title: str) -> str:
         title_tag = soup.find("title")
         rt_title_tag = soup.find("rt-title")
 
-        title = (
-            title_tag.get_text(strip=True)
-            if title_tag
-            else rt_title_tag.get_text(strip=True) if rt_title_tag else "N/A"
-        )
+        title = title_tag.get_text(strip=True) if title_tag else rt_title_tag.get_text(strip=True) if rt_title_tag else "N/A"
 
         # Extract the critics score
         critics_score_tag = soup.find("rt-button", {"slot": "criticsScore"})
@@ -102,18 +92,10 @@ def rt(movie_title: str) -> str:
         if image_url:
             image_url = image_url.split("/v2/")[-1]
 
-        critics_score = (
-            critics_score_tag.find("rt-text").get_text(strip=True)
-            if critics_score_tag
-            else "N/A"
-        )
+        critics_score = critics_score_tag.find("rt-text").get_text(strip=True) if critics_score_tag else "N/A"
         logger.info(f"Critic score extracted: {critics_score}")
 
-        audience_score = (
-            audience_score_tag.find("rt-text").get_text(strip=True)
-            if audience_score_tag
-            else "N/A"
-        )
+        audience_score = audience_score_tag.find("rt-text").get_text(strip=True) if audience_score_tag else "N/A"
 
         logger.info(f"Audience score extracted: {audience_score}")
 
@@ -121,7 +103,5 @@ def rt(movie_title: str) -> str:
         logger.info(f"Result: {result}")
         return result
     else:
-        logger.error(
-            f"Failed to retrieve the page. Status code: {response.status_code}"
-        )
+        logger.error(f"Failed to retrieve the page. Status code: {response.status_code}")
         return f"Failed to retrieve the page. Status code: {response.status_code}"

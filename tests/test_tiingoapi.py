@@ -4,14 +4,7 @@ from datetime import datetime, timedelta
 import pytest
 from dateutil import tz
 from dateutil.parser import parse
-from tiingoapi import (
-    get_em_all,
-    get_meme_stocks,
-    get_stocks,
-    is_new,
-    timezoner,
-    validate_stonk,
-)
+from tiingoapi import get_em_all, get_meme_stocks, get_stocks, is_new, timezoner, validate_stonk
 
 
 @pytest.fixture(scope="session")
@@ -46,9 +39,7 @@ def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
             "low": 120.42,
         }
     ]
-    mocker.patch("tiingoapi.requests.get").return_value.json.return_value = (
-        mock_response
-    )
+    mocker.patch("tiingoapi.requests.get").return_value.json.return_value = mock_response
 
     # Act
     result = get_stocks(stock)
