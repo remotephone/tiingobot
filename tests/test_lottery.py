@@ -1,16 +1,16 @@
-from concurrent.futures import process
 import json
+from concurrent.futures import process
 from pathlib import Path
 
 from lottery import (
+    get_megamillions,
+    get_next_powerball,
+    get_powerball,
     make_lottery_web_request,
     parse_megamillions_results,
-    process_megamillions_results,
-    get_megamillions,
-    get_powerball,
     parse_powerball_results,
-    get_next_powerball,
     pick_my_powerball_numbers,
+    process_megamillions_results,
 )
 
 

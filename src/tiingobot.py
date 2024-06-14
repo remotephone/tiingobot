@@ -1,11 +1,11 @@
+import json
 import logging
 import os
-import json
 
 import discord
-from discord.ext import commands
 
 from complaints import complaint_lodger, get_complaints_for_user
+from discord.ext import commands
 
 from lottery import (
     get_megamillions,
@@ -19,15 +19,10 @@ from randoms import (
     get_tax_refund,
     rt,
 )
+from sparkle import get_leaderboard, give_sparkle
 
-from tiingoapi import (
-    get_stocks,
-    get_stockest,
-    get_stocks_monthly,
-    get_stocks_weekly,
-)
+from tiingoapi import get_stockest, get_stocks, get_stocks_monthly, get_stocks_weekly
 from tiingocrypto import get_crypto
-from sparkle import give_sparkle, get_leaderboard
 
 
 class JsonFormatter(logging.Formatter):

@@ -1,6 +1,5 @@
 import os
-import requests
-import os
+
 import pytest
 import requests
 from tiingocrypto import get_crypto

@@ -16,6 +16,7 @@ pytest = "*"
 pytest-docker = "1.0.1"
 black = "*"
 pytest-mock = "*"
+ufmt = "*"
 
 [requires]
 python_version = "3.10"

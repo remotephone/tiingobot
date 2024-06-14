@@ -1,15 +1,16 @@
-import pytest
 import os
 from datetime import datetime, timedelta
+
+import pytest
 from dateutil import tz
 from dateutil.parser import parse
 from tiingoapi import (
     get_em_all,
+    get_meme_stocks,
     get_stocks,
     is_new,
     timezoner,
     validate_stonk,
-    get_meme_stocks,
 )
 
 

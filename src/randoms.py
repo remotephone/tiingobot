@@ -1,11 +1,13 @@
 import json
+import logging
 import os
 import random
-import logging
+
 import openai
 import requests
 from bs4 import BeautifulSoup
-from src.tiingobot import logger
+
+logger = logging.getLogger("tiingobot_logger")
 
 
 def get_tax_refund(ssn: str = None):

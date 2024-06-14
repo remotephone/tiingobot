@@ -1,10 +1,11 @@
+import json
+import logging
+import random
+import re
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
-import re
-import json
-import random
-import logging
-from datetime import datetime
 from dateutil import tz
 
 logger = logging.getLogger("tiingobot_logger")

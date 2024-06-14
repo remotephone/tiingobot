@@ -1,9 +1,10 @@
 import logging
 import os
+
+import random
 import re
 from datetime import datetime, timedelta
 
-import random
 import requests
 from dateutil import tz
 from dateutil.parser import parse
