@@ -400,16 +400,30 @@ async def get_complaints(ctx: commands.Context) -> None:
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def movie(ctx: commands.Context, *, arg: str):
-    movie = arg.split(" ", 1)[1]
-    logger.info(f"{ctx.message.author} requested movie {movie}")
-    # Ensure movie string is upper and lower case letters, numbers, and spaces only
-    if not movie.isalnum() or len(movie) > 60:
+    # Strip surrounding whitespace and check for quotes
+    arg = arg.strip()
+    if not (arg.startswith('"') and arg.endswith('"')):
+        await ctx.send("Please use double quotes around the movie title.")
+        return
+
+    # Remove quotes and strip again
+    movie = arg[1:-1].strip()
+
+    # Ensure movie string contains only valid characters
+    if not re.match(r"^[\w\s-]+$", movie):
         await ctx.send("No funny business")
+        return
+
+    logger.info(f"{ctx.message.author} requested movie {movie}")
+
     try:
         results = rt(movie)
         logger.info(f"got {results}")
     except Exception as e:
         logger.error(f"no movie for you - {e}")
+        await ctx.send("There was an error processing your request.")
+        return
+
     logger.info(f"{ctx.message.author} got results {results}")
     await ctx.send(results)
 
