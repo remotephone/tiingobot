@@ -435,8 +435,8 @@ async def get_complaints(ctx: commands.Context) -> None:
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def movie(ctx: commands.Context, *, arg: str):
-    logger.info(f"{ctx.message.author} requested movie {movie}")
     movie = arg.split(" ", 1)[1]
+    logger.info(f"{ctx.message.author} requested movie {movie}")
     # Ensure movie string is upper and lower case letters, numbers, and spaces only
     if not movie.isalnum() or len(movie) > 60:
         await ctx.send("No funny business")
