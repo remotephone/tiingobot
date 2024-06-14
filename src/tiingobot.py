@@ -430,12 +430,16 @@ async def get_complaints(ctx: commands.Context) -> None:
 
 @bot.command(
     name="movie",
-    help="Get the rotten tomatoes score for a movie, syntax is !movie <movie title>",
+    help="Get the rotten tomatoes score for a movie, syntax is !movie \"<movie title>\" - Quotes matter, no funny business",
     aliases=["rt", "rotten_tomatoes", "rotten_tomatoes_score", "movies"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
-async def movie(ctx: commands.Context, movie: str):
+async def movie(ctx: commands.Context, *, arg: str):
     logger.info(f"{ctx.message.author} requested movie {movie}")
+    movie = arg.split(" ", 1)[1]
+    # Ensure movie string is upper and lower case letters, numbers, and spaces only
+    if not movie.isalnum() or len(movie) > 60:
+        await ctx.send("No funny business")
     try:
         results = rt(movie)
         logger.info(f"got {results}")
