@@ -63,12 +63,7 @@ def process_movie_title(title):
 
 
 def rt(movie_title: str) -> str:
-    # Setup basic logging
-
-    # Function to process movie title input
-
     # Get user input for the movie title
-    movie_title = input("Enter the movie title: ")
     logger.info(
         f"User input for movie title: {movie_title}"
     )  # Use logger instead of logging
