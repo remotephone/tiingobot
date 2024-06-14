@@ -88,6 +88,10 @@ def rt(movie_title: str) -> str:
         # Extract the critics score
         critics_score_tag = soup.find("rt-button", {"slot": "criticsScore"})
         audience_score_tag = soup.find("rt-button", {"slot": "audienceScore"})
+        image_tag = soup.find('rt-img', {'alt': 'movie poster'})
+        image_url = image_tag['src'] if image_tag else None
+        if image_url:
+            image_url = image_url.split('/v2/')[-1]
 
         critics_score = (
             critics_score_tag.find("rt-text").get_text(strip=True)
@@ -104,7 +108,7 @@ def rt(movie_title: str) -> str:
 
         logger.info(f"Audience score extracted: {audience_score}")
 
-        result = f"Critics Score: {critics_score}\nAudience Score: {audience_score}"
+        result = f"[Poster:]({image_url})\nCritics Score: {critics_score}\nAudience Score: {audience_score}"
         logger.info(f"Result: {result}")
         return result
     else:
