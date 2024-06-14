@@ -436,6 +436,7 @@ async def get_complaints(ctx: commands.Context) -> None:
 @bot.command(
     name="movie",
     help="Get the rotten tomatoes score for a movie, syntax is !movie <movie title>",
+    aliases=["rt", "rotten_tomatoes", "rotten_tomatoes_score", "movies"],
 )
 @commands.cooldown(1, 10, commands.BucketType.user)
 async def movie(ctx: commands.Context, movie: str):

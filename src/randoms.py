@@ -5,10 +5,14 @@ import logging
 import openai
 import requests
 from bs4 import BeautifulSoup
+from src.tiingobot import logger
 
 
 def get_tax_refund(ssn: str = None):
     if not ssn:
+        logger.warning(
+            "No SSN provided"
+        )  # Assuming 'logger' is the imported logger instance
         return "Please provide your real, honest social security number"
     ssn = ssn.replace("-", "")
     try:
@@ -16,12 +20,15 @@ def get_tax_refund(ssn: str = None):
         maximum = int(ssn) * 10
         random.seed()
         refund = random.randint(minimum, maximum)
-        print(refund)
+        logger.info(f"Calculated refund: {refund}")  # Replaced print with logger.info
         if refund > 0:
             return f"Your refund is ${str(abs(refund))}"
         else:
             return f"You owe ${str(abs(refund))}"
     except ValueError as e:
+        logger.error(
+            "Error calculating refund", exc_info=True
+        )  # Use logger to log exceptions
         return "You owe one million dollars"
 
 
@@ -51,37 +58,38 @@ def get_artificial_intelligence_v2(question: str) -> str:
 
 
 def process_movie_title(title):
-    logging.info(f"Processing movie title: {title}")
+    logger.info(f"Processing movie title: {title}")  # Use logger instead of logging
     return title.lower().replace(" ", "_")
 
 
 def rt(movie_title: str) -> str:
     # Setup basic logging
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-    )
 
     # Function to process movie title input
 
     # Get user input for the movie title
     movie_title = input("Enter the movie title: ")
-    logging.info(f"User input for movie title: {movie_title}")
+    logger.info(
+        f"User input for movie title: {movie_title}"
+    )  # Use logger instead of logging
 
     # Process the movie title
     processed_title = process_movie_title(movie_title)
-    logging.info(f"Processed movie title: {processed_title}")
+    logger.info(
+        f"Processed movie title: {processed_title}"
+    )  # Use logger instead of logging
 
     # Construct the URL of the Rotten Tomatoes movie page
     url = f"https://www.rottentomatoes.com/m/{processed_title}"
-    logging.info(f"Constructed URL: {url}")
+    logger.info(f"Constructed URL: {url}")  # Use logger instead of logging
 
     # Make the HTTP request to the URL
-    logging.info(f"Making HTTP request to URL: {url}")
+    logger.info(f"Making HTTP request to URL: {url}")  # Use logger instead of logging
     response = requests.get(url)
 
     # Check if the request was successful
     if response.status_code == 200:
-        logging.info("HTTP request successful")
+        logger.info("HTTP request successful")  # Use logger instead of logging
         # Parse the HTML content of the page
         soup = BeautifulSoup(response.content, "html.parser")
 
@@ -92,7 +100,9 @@ def rt(movie_title: str) -> str:
             if critics_score_button
             else "N/A"
         )
-        logging.info(f"Critics score extracted: {critics_score_text}")
+        logger.info(
+            f"Critics score extracted: {critics_score_text}"
+        )  # Use logger instead of logging
 
         # Extract the audience score
         audience_score_button = soup.find("rt-button", {"slot": "audienceScore"})
@@ -101,13 +111,15 @@ def rt(movie_title: str) -> str:
             if audience_score_button
             else "N/A"
         )
-        logging.info(f"Audience score extracted: {audience_score_text}")
+        logger.info(
+            f"Audience score extracted: {audience_score_text}"
+        )  # Use logger instead of logging
 
         result = f"Critics Score: {critics_score_text}\nAudience Score: {audience_score_text}"
-        logging.info(f"Result: {result}")
+        logger.info(f"Result: {result}")  # Use logger instead of logging
         return result
     else:
-        logging.error(
+        logger.error(
             f"Failed to retrieve the page. Status code: {response.status_code}"
-        )
+        )  # Use logger instead of logging
         return f"Failed to retrieve the page. Status code: {response.status_code}"
