@@ -6,8 +6,7 @@ from datetime import datetime, timedelta
 import requests
 from dateutil import tz
 from dateutil.parser import parse
-
-logger = logging.getLogger("tiingobot_logger")
+from tiingologger import logger
 
 
 def validate_stonk(crypto):

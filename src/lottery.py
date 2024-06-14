@@ -7,8 +7,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 from dateutil import tz
-
-logger = logging.getLogger("tiingobot_logger")
+from tiingologger import logger
 
 
 def get_next_powerball():

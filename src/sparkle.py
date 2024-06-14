@@ -4,8 +4,7 @@ import uuid
 from collections import Counter
 
 from azure.cosmos import CosmosClient
-
-logger = logging.getLogger("tiingobot_logger")
+from tiingologger import logger
 
 
 def db_connection():
