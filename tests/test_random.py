@@ -113,7 +113,7 @@ def test_rt_live_successful_request():
     # Check if result contains expected parts. Adapt to actual website response.
     assert "Critics Score:" in result
     assert "Audience Score:" in result
-    assert "Poster:" in result
+    assert " | Rotten Tomatoes:" in result
 
 
 @pytest.mark.live

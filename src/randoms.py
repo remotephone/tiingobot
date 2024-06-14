@@ -85,13 +85,22 @@ def rt(movie_title: str) -> str:
         # Parse the HTML content of the page
         soup = BeautifulSoup(response.content, "html.parser")
 
+        title_tag = soup.find("title")
+        rt_title_tag = soup.find("rt-title")
+
+        title = (
+            title_tag.get_text(strip=True)
+            if title_tag
+            else rt_title_tag.get_text(strip=True) if rt_title_tag else "N/A"
+        )
+
         # Extract the critics score
         critics_score_tag = soup.find("rt-button", {"slot": "criticsScore"})
         audience_score_tag = soup.find("rt-button", {"slot": "audienceScore"})
-        image_tag = soup.find('rt-img', {'alt': 'movie poster'})
-        image_url = image_tag['src'] if image_tag else None
+        image_tag = soup.find("rt-img", {"alt": "movie poster"})
+        image_url = image_tag["src"] if image_tag else None
         if image_url:
-            image_url = image_url.split('/v2/')[-1]
+            image_url = image_url.split("/v2/")[-1]
 
         critics_score = (
             critics_score_tag.find("rt-text").get_text(strip=True)
@@ -108,7 +117,7 @@ def rt(movie_title: str) -> str:
 
         logger.info(f"Audience score extracted: {audience_score}")
 
-        result = f"[Poster:]({image_url})\nCritics Score: {critics_score}\nAudience Score: {audience_score}"
+        result = f"[{title}:]({image_url})\nCritics Score: {critics_score}\nAudience Score: {audience_score}"
         logger.info(f"Result: {result}")
         return result
     else:
