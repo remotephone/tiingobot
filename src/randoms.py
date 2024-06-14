@@ -1,7 +1,7 @@
 import json
 import os
 import random
-
+import logging
 import openai
 import requests
 from bs4 import BeautifulSoup
@@ -49,16 +49,19 @@ def get_artificial_intelligence_v2(question: str) -> str:
 
     return completion.choices[0].message.content
 
-import logging
 
-def rt(movie: str) -> str:
+def process_movie_title(title):
+    logging.info(f"Processing movie title: {title}")
+    return title.lower().replace(" ", "_")
+
+
+def rt(movie_title: str) -> str:
     # Setup basic logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
     # Function to process movie title input
-    def process_movie_title(title):
-        logging.info(f"Processing movie title: {title}")
-        return title.lower().replace(" ", "_")
 
     # Get user input for the movie title
     movie_title = input("Enter the movie title: ")
@@ -104,5 +107,7 @@ def rt(movie: str) -> str:
         logging.info(f"Result: {result}")
         return result
     else:
-        logging.error(f"Failed to retrieve the page. Status code: {response.status_code}")
+        logging.error(
+            f"Failed to retrieve the page. Status code: {response.status_code}"
+        )
         return f"Failed to retrieve the page. Status code: {response.status_code}"
