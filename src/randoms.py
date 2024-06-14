@@ -99,7 +99,7 @@ def rt(movie_title: str) -> str:
 
         logger.info(f"Audience score extracted: {audience_score}")
 
-        result = f"[{title}:]({image_url})\nCritics Score: {critics_score}\nAudience Score: {audience_score}"
+        result = f"[{title}:]({url})\nCritics Score: {critics_score}\nAudience Score: {audience_score}"
         logger.info(f"Result: {result}")
         return result
     else:
