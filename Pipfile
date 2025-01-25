@@ -8,7 +8,7 @@ requests = "*"
 "discord.py" = "*"
 python-dateutil = "*"
 azure-cosmos = "*"
-openai = "0.27"
+openai = "*"
 bs4 = "*"
 
 [dev-packages]
@@ -19,4 +19,4 @@ pytest-mock = "*"
 ufmt = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.12"
