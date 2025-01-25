@@ -8,7 +8,7 @@ requests = "*"
 "discord.py" = "*"
 python-dateutil = "*"
 azure-cosmos = "*"
-openai = "0.27"
+openai = "*"
 bs4 = "*"
 
 [dev-packages]
