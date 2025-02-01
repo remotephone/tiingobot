@@ -13,7 +13,7 @@ bs4 = "*"
 
 [dev-packages]
 pytest = "*"
-pytest-docker = "1.0.1"
+pytest-docker = "3.1.1"
 black = "*"
 pytest-mock = "*"
 ufmt = "*"
