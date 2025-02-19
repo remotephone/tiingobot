@@ -217,6 +217,7 @@ def is_new(time):
 
 
 def timezoner(stamp):
+    print(stamp)
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
 
@@ -267,7 +268,6 @@ def get_stocks(stock):
                 clean_stock["Mood"] = "\U0001f4c8"
             elif validstock[0]["tngoLast"] < validstock[0]["open"]:
                 clean_stock["Mood"] = "\U0001f4c9"
-
     return clean_stock
 
 
