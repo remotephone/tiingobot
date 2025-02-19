@@ -217,6 +217,7 @@ def is_new(time):
 
 
 def timezoner(stamp):
+    print(stamp)
     return parse(stamp).astimezone(tz.tzlocal()).strftime("%Y-%m-%d %H:%M %Z")
 
 
@@ -235,7 +236,7 @@ def get_stocks(stock):
         logger.error(f"Failed to connect to tiingo api. Reason: {e}")
         validstock = []
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'timestamp': '2021-03-15T20:00:00+00:00',
     # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
     # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
     # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0, 'last': 123.99}]
@@ -247,23 +248,23 @@ def get_stocks(stock):
         logger.info(f"ticker failed to return any results for {str(stock)}")
     else:
         clean_stock["Ticker"] = validstock[0]["ticker"]
-        clean_stock["Quote Timestamp"] = timezoner(validstock[0]["quoteTimestamp"])
-        clean_stock["Most Recent Price"] = validstock[0]["last"]
+        clean_stock["Quote Timestamp"] = timezoner(validstock[0]["timestamp"])
+        clean_stock["Most Recent Price"] = validstock[0]["tngoLast"]
         clean_stock["Last Close"] = validstock[0]["prevClose"]
         clean_stock["Open"] = validstock[0]["open"]
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
         if validstock[0]["prevClose"] is not None:
             clean_stock["% Change since last close"] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
-            if validstock[0]["last"] > validstock[0]["prevClose"]:
+            if validstock[0]["tngoLast"] > validstock[0]["prevClose"]:
                 clean_stock["Mood"] = "\U0001F4C8"
-            elif validstock[0]["last"] < validstock[0]["prevClose"]:
+            elif validstock[0]["tngoLast"] < validstock[0]["prevClose"]:
                 clean_stock["Mood"] = "\U0001F4C9"
         else:
             clean_stock["% Change since open"] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
-            if validstock[0]["last"] > validstock[0]["open"]:
+            if validstock[0]["tngoLast"] > validstock[0]["open"]:
                 clean_stock["Mood"] = "\U0001F4C8"
-            elif validstock[0]["last"] < validstock[0]["open"]:
+            elif validstock[0]["tngoLast"] < validstock[0]["open"]:
                 clean_stock["Mood"] = "\U0001F4C9"
 
     return clean_stock
@@ -280,8 +281,8 @@ def get_stockest(stocks_type):
     for stock in stocks:
         clean_stock = {
             "Ticker": stock["ticker"],
-            "Quote Timestamp": stock["quoteTimestamp"],
-            "Most Recent Price": stock["last"],
+            "Quote Timestamp": stock["timestamp"],
+            "Most Recent Price": stock["tngoLast"],
             "Open": stock["open"],
         }
 
@@ -289,23 +290,23 @@ def get_stockest(stocks_type):
             if stock["prevClose"] is not None:
                 if stocks_type == "stonkest":
                     clean_stock["\U0001F680"] = round(
-                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
+                        ((float(stock["tngoLast"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
                         2,
                     )
                 elif stocks_type == "stankest":
                     clean_stock["\U0001F4A5"] = round(
-                        ((float(stock["last"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
+                        ((float(stock["tngoLast"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
                         2,
                     )
             else:
                 if stocks_type == "stonkest":
                     clean_stock["\U0001F680"] = round(
-                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100,
+                        ((float(stock["tngoLast"]) - float(stock["open"])) / float(stock["open"])) * 100,
                         2,
                     )
                 elif stocks_type == "stankest":
                     clean_stock["\U0001F4A5"] = round(
-                        ((float(stock["last"]) - float(stock["open"])) / float(stock["open"])) * 100,
+                        ((float(stock["tngoLast"]) - float(stock["open"])) / float(stock["open"])) * 100,
                         2,
                     )
         except Exception as e:
@@ -385,7 +386,7 @@ def get_stock_on_day(valid_stock, day):
         price_at_day = None
     logger.info(f"Working with price_at_day = {price_at_day}")
     # This returns a list of dictionaries with each item a stock
-    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'quoteTimestamp': '2021-03-15T20:00:00+00:00',
+    # [{'askPrice': None, 'ticker': 'AAPL', 'mid': None, 'timestamp': '2021-03-15T20:00:00+00:00',
     # 'timestamp': '2021-03-15T20:00:00+00:00', 'askSize': None, 'open': 121.41, 'prevClose': 121.03,
     # 'tngoLast': 123.99, 'bidSize': None, 'lastSaleTimestamp': '2021-03-15T20:00:00+00:00',
     # 'volume': 92590555, 'bidPrice': None, 'low': 120.42, 'lastSize': None, 'high': 124.0,
