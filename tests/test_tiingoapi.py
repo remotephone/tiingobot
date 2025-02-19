@@ -52,8 +52,8 @@ def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
     mock_response = [
         {
             "ticker": "AAPL",
-            "quoteTimestamp": "2021-03-15T20:00:00+00:00",
-            "last": 123.99,
+            "timestamp": "2021-03-15T20:00:00+00:00",
+            "tngoLast": 123.99,
             "prevClose": 121.03,
             "open": 121.41,
             "high": 124.0,
