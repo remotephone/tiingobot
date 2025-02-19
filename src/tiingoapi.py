@@ -255,18 +255,19 @@ def get_stocks(stock):
         clean_stock["High"] = validstock[0]["high"]
         clean_stock["Low"] = validstock[0]["low"]
         if validstock[0]["prevClose"] is not None:
-            clean_stock["% Change since last close"] = f"{round(((validstock[0]['last'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
+            clean_stock["% Change since last close"] = (
+                f"{round(((validstock[0]['tngoLast'] - validstock[0]['prevClose']) / validstock[0]['prevClose']) * 100, 2)}%"
+            )
             if validstock[0]["tngoLast"] > validstock[0]["prevClose"]:
-                clean_stock["Mood"] = "\U0001F4C8"
+                clean_stock["Mood"] = "\U0001f4c8"
             elif validstock[0]["tngoLast"] < validstock[0]["prevClose"]:
-                clean_stock["Mood"] = "\U0001F4C9"
+                clean_stock["Mood"] = "\U0001f4c9"
         else:
-            clean_stock["% Change since open"] = f"{round(((validstock[0]['last'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
+            clean_stock["% Change since open"] = f"{round(((validstock[0]['tngoLast'] - validstock[0]['open']) / validstock[0]['open']) * 100, 2)}%"
             if validstock[0]["tngoLast"] > validstock[0]["open"]:
-                clean_stock["Mood"] = "\U0001F4C8"
+                clean_stock["Mood"] = "\U0001f4c8"
             elif validstock[0]["tngoLast"] < validstock[0]["open"]:
-                clean_stock["Mood"] = "\U0001F4C9"
-
+                clean_stock["Mood"] = "\U0001f4c9"
     return clean_stock
 
 
@@ -289,23 +290,23 @@ def get_stockest(stocks_type):
         try:
             if stock["prevClose"] is not None:
                 if stocks_type == "stonkest":
-                    clean_stock["\U0001F680"] = round(
+                    clean_stock["\U0001f680"] = round(
                         ((float(stock["tngoLast"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
                         2,
                     )
                 elif stocks_type == "stankest":
-                    clean_stock["\U0001F4A5"] = round(
+                    clean_stock["\U0001f4a5"] = round(
                         ((float(stock["tngoLast"]) - float(stock["prevClose"])) / float(stock["prevClose"])) * 100,
                         2,
                     )
             else:
                 if stocks_type == "stonkest":
-                    clean_stock["\U0001F680"] = round(
+                    clean_stock["\U0001f680"] = round(
                         ((float(stock["tngoLast"]) - float(stock["open"])) / float(stock["open"])) * 100,
                         2,
                     )
                 elif stocks_type == "stankest":
-                    clean_stock["\U0001F4A5"] = round(
+                    clean_stock["\U0001f4a5"] = round(
                         ((float(stock["tngoLast"]) - float(stock["open"])) / float(stock["open"])) * 100,
                         2,
                     )
@@ -325,18 +326,18 @@ def get_stockest(stocks_type):
     logger.info(f"Returned {len(no_pennies)} non-penny stocks")
 
     if stocks_type == "stonkest":
-        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001F680"])
+        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001f680"])
     elif stocks_type == "stankest":
-        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001F4A5"], reverse=True)
+        sorted_stocks = sorted(no_pennies, key=lambda x: x["\U0001f4a5"], reverse=True)
 
     logger.info(f"Sorted {len(sorted_stocks)} stocks successfully")
 
     for stock in sorted_stocks:
         stock["Quote Timestamp"] = timezoner(stock["Quote Timestamp"])
         if stocks_type == "stonkest":
-            stock["\U0001F680"] = "{}% ".format(str(stock["\U0001F680"]))
+            stock["\U0001f680"] = "{}% ".format(str(stock["\U0001f680"]))
         elif stocks_type == "stankest":
-            stock["\U0001F4A5"] = "{}% ".format(str(stock["\U0001F4A5"]))
+            stock["\U0001f4a5"] = "{}% ".format(str(stock["\U0001f4a5"]))
 
     logger.info("Added emojis successfully")
 
@@ -452,9 +453,9 @@ def get_stocks_weekly(stock):
     clean_stock["End of Week Date"] = day.strftime("%Y-%m-%d")
     clean_stock["Change over Time"] = str(difference) + "%"
     if latest_price[0]["close"] > week_ago_price[0]["close"]:
-        clean_stock["Mood"] = "\U0001F4C8"
+        clean_stock["Mood"] = "\U0001f4c8"
     else:
-        clean_stock["Mood"] = "\U0001F4C9"
+        clean_stock["Mood"] = "\U0001f4c9"
     logger.info(f"Returning result {clean_stock}...")
     return clean_stock
 
@@ -509,8 +510,8 @@ def get_stocks_monthly(stock):
     clean_stock["End of month Date"] = day.strftime("%Y-%m-%d")
     clean_stock["Change over Time"] = str(difference) + "%"
     if latest_price[0]["close"] > month_ago_price[0]["close"]:
-        clean_stock["Mood"] = "\U0001F4C8"
+        clean_stock["Mood"] = "\U0001f4c8"
     else:
-        clean_stock["Mood"] = "\U0001F4C9"
+        clean_stock["Mood"] = "\U0001f4c9"
     logger.info(f"Returning result {clean_stock}...")
     return clean_stock
