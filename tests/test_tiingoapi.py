@@ -13,6 +13,27 @@ def mock_tiingo_token():
     yield
     del os.environ["TIINGO_TOKEN"]
 
+@pytest.mark.live
+def test_get_stocks():
+    # Arrange
+    stock = "AAPL"
+    # Act
+    result = get_stocks(stock)
+
+    # Assert result has the expected keys
+    expected_keys = [
+        "Ticker",
+        "Quote Timestamp",
+        "Most Recent Price",
+        "Last Close",
+        "Open",
+        "High",
+        "Low",
+        "% Change since last close",
+        "Mood",
+    ]
+    for key in expected_keys:
+        assert key in result
 
 def test_get_stocks_returns_clean_stock(mocker, mock_tiingo_token):
     # Arrange
