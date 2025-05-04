@@ -1,55 +1,54 @@
--i https://pypi.org/simple
-attrs==25.3.0; python_version >= '3.8'
-black==25.1.0; python_version >= '3.9'
-click==8.1.8; python_version >= '3.7'
-iniconfig==2.1.0; python_version >= '3.7'
-libcst==1.7.0; python_version >= '3.9'
-moreorless==0.4.0; python_version >= '3.6'
-mypy-extensions==1.1.0; python_version >= '3.5'
-packaging==25.0; python_version >= '3.8'
-pathspec==0.12.1; python_version >= '3.8'
-platformdirs==4.3.7; python_version >= '3.8'
-pluggy==1.5.0; python_version >= '3.8'
-pytest==8.3.5; python_version >= '3.7'
-pytest-docker==1.0.1; python_version >= '3.6'
-pytest-mock==3.14.0; python_version >= '3.8'
-pyyaml==6.0.2; python_version >= '3.8'
-stdlibs==2025.4.4; python_version >= '3.8'
-toml==0.10.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'
-tomlkit==0.13.2; python_version >= '3.8'
-trailrunner==1.4.0; python_version >= '3.7'
-typing-extensions==4.13.2; python_version >= '3.8'
-ufmt==2.8.0; python_version >= '3.8'
-usort==1.0.8.post1; python_version >= '3.6'
-aiohappyeyeballs==2.6.1; python_version >= '3.8'
-aiohttp==3.11.18; python_version >= '3.9'
-aiosignal==1.3.2; python_version >= '3.9'
-annotated-types==0.7.0; python_version >= '3.8'
-anyio==4.9.0; python_version >= '3.9'
-azure-core==1.33.0; python_version >= '3.8'
-azure-cosmos==4.9.0; python_version >= '3.8'
-beautifulsoup4==4.13.4; python_full_version >= '3.6.0'
+aiohappyeyeballs==2.4.4
+aiohttp==3.11.11
+aiosignal==1.3.2
+annotated-types==0.7.0
+anyio==4.8.0
+attrs==25.3.0
+azure-core==1.32.0
+azure-cosmos==4.9.0
+beautifulsoup4==4.12.3
+black==25.1.0
 bs4==0.0.2
-certifi==2025.4.26; python_version >= '3.6'
-charset-normalizer==3.4.1; python_version >= '3.7'
-discord.py==2.5.2; python_version >= '3.8'
-distro==1.9.0; python_version >= '3.6'
-frozenlist==1.6.0; python_version >= '3.8'
-h11==0.16.0; python_version >= '3.7'
-httpcore==1.0.9; python_version >= '3.8'
-httpx==0.28.1; python_version >= '3.8'
-idna==3.10; python_version >= '3.6'
-jiter==0.9.0; python_version >= '3.8'
-multidict==6.4.3; python_version >= '3.8'
-openai==1.76.2; python_version >= '3.8'
-propcache==0.3.1; python_version >= '3.9'
-pydantic==2.11.4; python_version >= '3.8'
-pydantic-core==2.34.1; python_version >= '3.8'
-python-dateutil==2.9.0.post0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
-requests==2.32.3; python_version >= '3.8'
-six==1.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
-sniffio==1.3.1; python_version >= '3.7'
-soupsieve==2.7; python_version >= '3.8'
-tqdm==4.67.1; python_version >= '3.7'
-urllib3==2.4.0; python_version >= '3.9'
-yarl==1.20.0; python_version >= '3.9'
+certifi==2024.12.14
+charset-normalizer==3.4.1
+click==8.1.8
+discord.py==2.4.0
+distro==1.9.0
+frozenlist==1.5.0
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+idna==3.10
+iniconfig==2.1.0
+jiter==0.8.2
+libcst==1.6.0
+moreorless==0.4.0
+multidict==6.1.0
+mypy_extensions==1.1.0
+openai==1.60.1
+packaging==25.0
+pathspec==0.12.1
+platformdirs==4.3.7
+pluggy==1.5.0
+propcache==0.2.1
+pydantic==2.10.6
+pydantic_core==2.27.2
+pytest==8.3.5
+pytest-docker==3.2.1
+pytest-mock==3.14.0
+python-dateutil==2.9.0.post0
+PyYAML==6.0.2
+requests==2.32.3
+six==1.17.0
+sniffio==1.3.1
+soupsieve==2.6
+stdlibs==2024.12.3
+toml==0.10.2
+tomlkit==0.13.2
+tqdm==4.67.1
+trailrunner==1.4.0
+typing_extensions==4.12.2
+ufmt==2.8.0
+urllib3==2.3.0
+usort==1.0.8.post1
+yarl==1.18.3
